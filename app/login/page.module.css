@@ -1,0 +1,374 @@
+/* 整体布局 */
+.layout {
+  min-height: 100vh;
+}
+
+/* 头部样式 */
+.header {
+  background: #fff;
+  padding: 0 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.headerContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #1890ff;
+}
+
+.logo span {
+  margin-left: 8px;
+}
+
+.spacer {
+  flex: 1;
+}
+
+/* 英雄区域 */
+.heroSection {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+  padding: 80px 24px;
+  text-align: center;
+}
+
+.heroContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.heroTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #0d1b2a;
+}
+
+.heroSubtitle {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 32px;
+}
+
+.heroSecondaryBtn {
+  border-color: #1890ff;
+  color: #1890ff;
+}
+
+/* 统计数据部分 */
+.statsSection {
+  padding: 60px 24px;
+  background: #fafafa;
+}
+
+.statsContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.statItem {
+  text-align: center;
+  padding: 20px;
+}
+
+.statValue {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1890ff;
+}
+
+.statLabel {
+  margin: 0;
+  font-size: 1rem;
+  color: #666;
+}
+
+/* 功能特性部分 */
+.featuresSection {
+  padding: 80px 24px;
+}
+
+.sectionTitle {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 16px;
+  color: #0d1b2a;
+}
+
+.sectionSubtitle {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 48px;
+}
+
+.featureCard {
+  height: 100%;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.featureCard:hover {
+  transform: translateY(-5px);
+}
+
+.featureCard .featureIconWrapper {
+  margin-bottom: 16px;
+}
+
+.featureIconWrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.featureIconBg {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.featureIconColor {
+  font-size: 32px;
+}
+
+.featureTitle {
+  margin-top: 0 !important;
+  margin-bottom: 8px !important;
+}
+
+.featureDescription {
+  margin-bottom: 0 !important;
+}
+
+/* 蓝色主题 */
+.featureCardblue {
+  border: 1px solid #1890ff;
+}
+
+.featureIconWrapperblue {
+  background: rgba(24, 144, 255, 0.1);
+}
+
+.featureIconBgblue {
+  background: rgba(24, 144, 255, 0.15);
+}
+
+.featureIconColor.blue {
+  color: #1890ff;
+}
+
+/* 绿色主题 */
+.featureCardgreen {
+  border: 1px solid #52c41a;
+}
+
+.featureIconWrappergreen {
+  background: rgba(82, 196, 26, 0.1);
+}
+
+.featureIconBggreen {
+  background: rgba(82, 196, 26, 0.15);
+}
+
+.featureIconColor.green {
+  color: #52c41a;
+}
+
+/* 紫色主题 */
+.featureCardpurple {
+  border: 1px solid #722ed1;
+}
+
+.featureIconWrapperpurple {
+  background: rgba(114, 46, 209, 0.1);
+}
+
+.featureIconBgpurple {
+  background: rgba(114, 46, 209, 0.15);
+}
+
+.featureIconColor.purple {
+  color: #722ed1;
+}
+
+/* 橙色主题 */
+.featureCardorange {
+  border: 1px solid #fa8c16;
+}
+
+.featureIconWrapperorange {
+  background: rgba(250, 140, 22, 0.1);
+}
+
+.featureIconBgorange {
+  background: rgba(250, 140, 22, 0.15);
+}
+
+.featureIconColor.orange {
+  color: #fa8c16;
+}
+
+/* 如何使用部分 */
+.howItWorksSection {
+  padding: 80px 24px;
+  background: #fff;
+}
+
+.sectionContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.processStep {
+  text-align: center;
+  padding: 20px;
+}
+
+.processAvatar {
+  margin-bottom: 16px;
+}
+
+.processTitle {
+  margin: 16px 0 !important;
+}
+
+.processDescription {
+  color: #666;
+}
+
+/* CTA 部分 */
+.ctaSection {
+  padding: 80px 24px;
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+  color: white;
+  text-align: center;
+}
+
+.ctaContainer {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.ctaTitle {
+  color: white;
+  font-size: 2rem;
+  margin-bottom: 16px;
+}
+
+.ctaSubtitle {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.1rem;
+  margin-bottom: 32px;
+}
+
+/* 页脚 */
+.footer {
+  background: #0d1b2a;
+  color: white;
+  padding: 48px 24px 24px;
+}
+
+.footerContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footerLogo {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 16px;
+}
+
+.footerLogo span {
+  margin-left: 8px;
+}
+
+.footerDescription {
+  color: #adb5bd;
+}
+
+.footerSectionTitle {
+  color: white;
+  margin-bottom: 16px;
+}
+
+.footerLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footerLink {
+  color: #adb5bd;
+  padding: 0;
+  height: auto;
+  text-align: left;
+}
+
+.footerLink:hover {
+  color: #1890ff;
+}
+
+.footerBottom {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #2b3e50;
+  text-align: center;
+  color: #adb5bd;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 2rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.5rem;
+  }
+
+  .headerContainer {
+    flex-direction: column;
+    padding: 10px 0;
+  }
+
+  .spacer {
+    display: none;
+  }
+
+  .statValue {
+    font-size: 2rem;
+  }
+
+  .ctaTitle {
+    font-size: 1.5rem;
+  }
+}

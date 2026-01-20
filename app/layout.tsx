@@ -1,8 +1,10 @@
+//布局文件集成导航栏和全局样式
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import './globals.css'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
 import { ConfigProvider } from 'antd'
+import Navigation from '@/app/components/Navigation'
+import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -28,7 +30,7 @@ export default function RootLayout({
               },
             }}
           >
-            {children}
+            <Navigation>{children}</Navigation>
           </ConfigProvider>
         </AntdRegistry>
       </body>
