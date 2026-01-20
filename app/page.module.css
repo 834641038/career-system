@@ -1,0 +1,583 @@
+.layout {
+  min-height: 100vh;
+}
+
+/* Header Styles */
+.header {
+  background: #fff !important;
+  padding: 0 24px !important;
+  box-shadow: 0 2px 8px #f0f1f2;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.headerContainer {
+  display: flex;
+  align-items: center;
+  height: 64px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1890ff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spacer {
+  flex: 1;
+}
+
+/* Hero Section */
+.heroSection {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 100px 24px;
+  text-align: center;
+}
+
+.heroContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.heroTitle {
+  color: white !important;
+  margin-bottom: 24px !important;
+}
+
+.heroSubtitle {
+  font-size: 18px !important;
+  margin-bottom: 40px !important;
+  opacity: 0.9;
+}
+
+.heroSecondaryBtn {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Stats Section */
+.statsSection {
+  background: #fafafa;
+  padding: 40px 24px;
+  margin-top: -40px;
+}
+
+.statsContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.statItem {
+  text-align: center;
+}
+
+.statValue {
+  color: #1890ff !important;
+  margin-bottom: 8px !important;
+}
+
+.statLabel {
+  margin: 0 !important;
+}
+
+/* Features Section */
+.featuresSection {
+  padding: 80px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  text-align: center !important;
+  margin-bottom: 16px !important;
+}
+
+.sectionSubtitle {
+  text-align: center !important;
+  margin-bottom: 48px !important;
+  font-size: 16px !important;
+  max-width: 600px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.featureCard {
+  text-align: center;
+  height: 100%;
+  cursor: pointer;
+}
+
+.featureIconWrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  margin: 0 auto 16px;
+  border-top-width: 4px;
+  border-top-style: solid;
+}
+
+.featureIconBg {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.featureTitle {
+  margin-bottom: 8px !important;
+}
+
+.featureDescription {
+  margin: 0 !important;
+}
+
+/* How It Works Section */
+.howItWorksSection {
+  background: #f6ffed;
+  padding: 80px 24px;
+  border-top: 1px solid #d9f7be;
+}
+
+.sectionContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.processStep {
+  text-align: center;
+}
+
+.processAvatar {
+  margin-bottom: 16px !important;
+}
+
+.processTitle {
+  margin-bottom: 0 !important;
+}
+
+.processDescription {
+  margin-top: 8px !important;
+}
+
+/* CTA Section */
+.ctaSection {
+  padding: 80px 24px;
+  text-align: center;
+  background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+}
+
+.ctaContainer {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.ctaTitle {
+  margin-bottom: 0 !important;
+}
+
+.ctaSubtitle {
+  font-size: 16px !important;
+  margin-bottom: 32px !important;
+}
+
+/* Footer */
+.footer {
+  background: #001529 !important;
+  color: white !important;
+  padding: 48px 24px 24px !important;
+}
+
+.footerContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footerLogo {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.footerDescription {
+  color: rgba(255, 255, 255, 0.65) !important;
+}
+
+.footerSectionTitle {
+  color: white !important;
+  margin-bottom: 16px !important;
+}
+
+.footerLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footerLink {
+  color: rgba(255, 255, 255, 0.65) !important;
+  padding: 0 !important;
+  text-align: left !important;
+}
+
+.footerBottom {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .heroSection {
+    padding: 60px 24px;
+  }
+  
+  .featuresSection {
+    padding: 40px 24px;
+  }
+  
+  .howItWorksSection {
+    padding: 40px 24px;
+  }
+  
+  .ctaSection {
+    padding: 40px 24px;
+  }
+}
+
+/* 在CSS文件中添加对应的颜色类 */
+/* 在CSS文件中添加对应的颜色类 */
+.featureIconWrapperBlue {
+  border-color: #1890ff;
+}
+
+.featureIconWrapperGreen {
+  border-color: #52c41a;
+}
+
+.featureIconWrapperPurple {
+  border-color: #722ed1;
+}
+
+.featureIconWrapperOrange {
+  border-color: #fa8c16;
+}
+
+.featureIconBgBlue {
+  background-color: #1890ff15; /* #1890ff with 15% opacity */
+}
+
+.featureIconBgGreen {
+  background-color: #52c41a15; /* #52c41a with 15% opacity */
+}
+
+.featureIconBgPurple {
+  background-color: #722ed115; /* #722ed1 with 15% opacity */
+}
+
+.featureIconBgOrange {
+  background-color: #fa8c1615; /* #fa8c16 with 15% opacity */
+}
+
+.featureIconColor {
+  color: inherit;
+}
+
+/* 其他现有样式保持不变 */
+.layout {
+  min-height: 100vh;
+}
+
+.header {
+  background: white;
+  padding: 0 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.headerContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.heroSection {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
+  padding: 80px 24px;
+  text-align: center;
+}
+
+.heroContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.heroTitle {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+  color: #1d3557;
+}
+
+.heroSubtitle {
+  font-size: 1.2rem;
+  color: #6c757d;
+  margin-bottom: 32px;
+}
+
+.heroSecondaryBtn {
+  border-color: #1890ff;
+  color: #1890ff;
+}
+
+.statsSection {
+  padding: 60px 24px;
+  background: white;
+}
+
+.statsContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.statItem {
+  text-align: center;
+  padding: 20px;
+}
+
+.statValue {
+  margin: 0;
+  color: #1890ff;
+  font-size: 2rem;
+}
+
+.statLabel {
+  margin: 8px 0 0 0;
+  font-size: 1rem;
+}
+
+.featuresSection {
+  padding: 80px 24px;
+  background: #fafafa;
+}
+
+.sectionTitle {
+  text-align: center;
+  margin-bottom: 16px;
+  color: #1d3557;
+}
+
+.sectionSubtitle {
+  text-align: center;
+  margin-bottom: 48px;
+  color: #6c757d;
+}
+
+.featureCard {
+  height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.featureCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.featureIconWrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.featureIconBg {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.featureIcon {
+  font-size: 24px;
+}
+
+.featureTitle {
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+}
+
+.featureDescription {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.howItWorksSection {
+  padding: 80px 24px;
+  background: white;
+}
+
+.sectionContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.processStep {
+  text-align: center;
+  padding: 20px;
+}
+
+.processAvatar {
+  margin-bottom: 16px;
+}
+
+.processTitle {
+  margin: 16px 0 8px 0;
+  color: #1d3557;
+}
+
+.processDescription {
+  color: #6c757d;
+}
+
+.ctaSection {
+  padding: 80px 24px;
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+  color: white;
+  text-align: center;
+}
+
+.ctaContainer {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.ctaTitle {
+  color: white;
+  margin-bottom: 16px;
+}
+
+.ctaSubtitle {
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 32px;
+}
+
+.footer {
+  background: #1d3557;
+  color: white;
+  padding: 40px 24px 20px;
+}
+
+.footerContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footerLogo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.footerDescription {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.footerSectionTitle {
+  color: white;
+  margin-bottom: 16px;
+}
+
+.footerLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footerLink {
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0;
+}
+
+.footerLink:hover {
+  color: white;
+}
+
+.footerBottom {
+  text-align: center;
+  padding-top: 24px;
+  margin-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 2rem;
+  }
+  
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+  
+  .headerContainer {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 0;
+  }
+  
+  .spacer {
+    display: none;
+  }
+  
+  .featureCard {
+    height: auto;
+    margin-bottom: 24px;
+  }
+}
