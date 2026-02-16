@@ -1,7 +1,6 @@
-//仪表盘页面
 'use client'
 import { useState, useEffect } from 'react'
-import { Card, Row, Col, Statistic, Progress, List, Button, Timeline, Tag, Avatar, Space, Modal } from 'antd'
+import { Card, Row, Col, Statistic, Progress, List, Button, Timeline, Tag, Avatar, Space, Modal, message } from 'antd'
 import { 
   DashboardOutlined,
   CalendarOutlined, 
@@ -17,18 +16,69 @@ import {
   RiseOutlined,
   CalendarFilled,
   BookFilled,
-  ExperimentFilled
+  ExperimentFilled,
+  PlusOutlined
 } from '@ant-design/icons'
 import { Line, Pie } from '@ant-design/charts'
 import dayjs from 'dayjs'
+import { useRouter } from 'next/navigation'
 import styles from './dashboard.module.css'
+
+// 导入服务
+import { planService } from '@/lib/services/planService'
+import { formatTimeDisplay, formatDateDisplay } from '@/lib/utils/date'
+import { DailyPlan, DailyTask } from '@/lib/types/plan'
+
+// 任务优先级工具函数
+const getPriorityColor = (priority: string) => {
+  switch(priority) {
+    case 'high': return '#ff4d4f'
+    case 'medium': return '#fa8c16'
+    case 'low': return '#52c41a'
+    default: return '#d9d9d9'
+  }
+}
+
+const getPriorityText = (priority: string) => {
+  switch(priority) {
+    case 'high': return '高优先级'
+    case 'medium': return '中优先级'
+    case 'low': return '低优先级'
+    default: return '普通'
+  }
+}
+
+// 任务接口
+interface Task {
+  id: number | string;
+  title: string;
+  date: string;
+  time?: string;
+  priority: 'high' | 'medium' | 'low';
+  completed: boolean;
+  category: string;
+  description?: string;
+  estimatedDuration?: number;
+}
 
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true)
-  const [selectedTask, setSelectedTask] = useState<any>(null)
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null)
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
+  const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false)
+  const [recentTasks, setRecentTasks] = useState<Task[]>([])
+  const [planStats, setPlanStats] = useState<any>(null)
+  const [newTask, setNewTask] = useState({
+    title: '',
+    date: dayjs().format('YYYY-MM-DD'),
+    time: '',
+    priority: 'medium' as 'high' | 'medium' | 'low',
+    category: '学习',
+    description: ''
+  })
+  const router = useRouter()
 
-  // Mock数据
+  // Mock数据 - 保留原有结构
   const [dashboardData, setDashboardData] = useState({
     stats: {
       todayTasks: { completed: 4, total: 10, progress: 40 },
@@ -77,34 +127,139 @@ export default function DashboardPage() {
   })
 
   useEffect(() => {
-    // 模拟加载数据
-    setTimeout(() => {
-      setLoading(false)
-    }, 800)
+    loadData()
   }, [])
 
-  const handleTaskClick = (task: any) => {
+  const loadData = async () => {
+    setLoading(true)
+    try {
+      // 加载数据（分别等待以保持类型信息）
+      const dailyResponse = await planService.getRecentDailyPlans(3)
+      const statsResponse = await planService.getPlanStats()
+
+      if (dailyResponse.success && dailyResponse.data) {
+        // 合并所有任务并按日期排序
+        const allTasks: Task[] = [];
+        dailyResponse.data.forEach((plan: DailyPlan) => {
+          plan.tasks.forEach((task: DailyTask) => {
+            allTasks.push({
+              id: task.id,
+              title: task.title,
+              date: task.date,
+              time: task.time,
+              priority: task.priority,
+              completed: task.completed,
+              category: task.category,
+              description: task.description,
+              estimatedDuration: task.estimatedDuration
+            });
+          });
+        });
+        
+        // 按日期和时间排序
+        allTasks.sort((a, b) => {
+          if (a.date === b.date) {
+            return (a.time || '').localeCompare(b.time || '');
+          }
+          return a.date.localeCompare(b.date);
+        });
+        
+        setRecentTasks(allTasks);
+      }
+
+      if (statsResponse.success && statsResponse.data) {
+        setPlanStats(statsResponse.data);
+        // 更新仪表盘统计数据
+        setDashboardData(prev => ({
+          ...prev,
+          stats: {
+            ...prev.stats,
+            todayTasks: {
+              completed: statsResponse.data!.daily.completed,
+              total: statsResponse.data!.daily.total,
+              progress: statsResponse.data!.daily.progress
+            },
+            weeklyProgress: statsResponse.data!.weekly.progress,
+            streakDays: statsResponse.data!.streakDays,
+            studyHours: statsResponse.data!.weeklyStudyHours
+          }
+        }));
+      }
+    } catch (error) {
+      console.error('加载数据失败:', error);
+      message.error('加载数据失败');
+    } finally {
+      setTimeout(() => {
+        setLoading(false)
+      }, 800)
+    }
+  }
+
+  const handleTaskClick = (task: Task) => {
     setSelectedTask(task)
     setIsTaskModalOpen(true)
   }
 
-  const completeTask = (taskId: number) => {
-    setDashboardData(prev => ({
-      ...prev,
-      tasks: prev.tasks.map(task => 
-        task.id === taskId ? { ...task, completed: true } : task
-      ),
-      stats: {
-        ...prev.stats,
-        todayTasks: {
-          ...prev.stats.todayTasks,
-          completed: prev.stats.todayTasks.completed + 1
-        }
+  const completeTask = async (taskId: number | string) => {
+    try {
+      const response = await planService.updateTaskStatus(taskId, true)
+      if (response.success) {
+        message.success('任务已完成')
+        // 更新本地状态
+        setRecentTasks(prev => 
+          prev.map(task => 
+            task.id === taskId ? { ...task, completed: true } : task
+          )
+        )
+        setIsTaskModalOpen(false)
+        setSelectedTask(null)
+        // 重新加载数据
+        loadData()
+      } else {
+        message.error(response.error || '更新任务失败')
       }
-    }))
-    setIsTaskModalOpen(false)
+    } catch (error) {
+      message.error('操作失败')
+    }
   }
 
+  const handleAddTask = async () => {
+    if (!newTask.title.trim()) {
+      message.warning('请输入任务标题')
+      return
+    }
+
+    try {
+      const response = await planService.createTask(newTask)
+      if (response.success) {
+        message.success('任务添加成功')
+        setIsAddTaskModalOpen(false)
+        setNewTask({
+          title: '',
+          date: dayjs().format('YYYY-MM-DD'),
+          time: '',
+          priority: 'medium',
+          category: '学习',
+          description: ''
+        })
+        // 重新加载数据
+        loadData()
+      } else {
+        message.error(response.error || '添加任务失败')
+      }
+    } catch (error) {
+      message.error('添加任务失败')
+    }
+  }
+
+  // 修改导航函数
+const navigateToSchedule = (view: 'day' | 'week' = 'day') => {
+  router.push(`/plan/schedule${view === 'week' ? '?view=week' : ''}`)
+}
+
+const navigateToTodayPlan = () => {
+  router.push(`/plan/schedule?date=${dayjs().format('YYYY-MM-DD')}`)
+}
   // 学习时间图表配置
   const studyChartConfig = {
     data: dashboardData.weeklyStudy,
@@ -138,24 +293,6 @@ export default function DashboardPage() {
     color: ['#1890ff', '#52c41a', '#722ed1', '#fa8c16', '#f759ab'],
   }
 
-  const getPriorityColor = (priority: string) => {
-    switch(priority) {
-      case 'high': return '#ff4d4f'
-      case 'medium': return '#fa8c16'
-      case 'low': return '#52c41a'
-      default: return '#d9d9d9'
-    }
-  }
-
-  const getPriorityText = (priority: string) => {
-    switch(priority) {
-      case 'high': return '高优先级'
-      case 'medium': return '中优先级'
-      case 'low': return '低优先级'
-      default: return '普通'
-    }
-  }
-
   return (
     <div className={styles.dashboardPage}>
       {/* 页面标题和欢迎语 */}
@@ -169,7 +306,11 @@ export default function DashboardPage() {
             <Tag icon={<FireOutlined />} color="red">
               连续打卡 {dashboardData.stats.streakDays} 天
             </Tag>
-            <Button type="primary" icon={<RocketOutlined />}>
+            <Button 
+              type="primary" 
+              icon={<RocketOutlined />}
+              onClick={navigateToTodayPlan}
+            >
               开始今日计划
             </Button>
           </div>
@@ -209,7 +350,7 @@ export default function DashboardPage() {
               valueStyle={{ color: '#1890ff' }}
             />
             <div className={styles.statCardSubtitle}>
-              已完成 35/48 项任务
+              {planStats ? `已完成 ${planStats.weekly.completed}/${planStats.weekly.total} 项任务` : '加载中...'}
             </div>
           </Card>
         </Col>
@@ -239,7 +380,7 @@ export default function DashboardPage() {
               valueStyle={{ color: '#722ed1' }}
             />
             <div className={styles.statCardSubtitle}>
-              本周累计 41.7 小时
+              {planStats ? `本周累计 ${planStats.weeklyStudyHours.toFixed(1)} 小时` : '加载中...'}
             </div>
           </Card>
         </Col>
@@ -249,25 +390,39 @@ export default function DashboardPage() {
       <Row gutter={[16, 16]}>
         {/* 左侧列 */}
         <Col xs={24} lg={16}>
-          {/* 今日待办 */}
+          {/* 近期任务 */}
           <Card 
             title={
               <span>
                 <CalendarOutlined style={{ marginRight: 8 }} />
-                今日待办
+                近期任务（3天）
               </span>
             }
             style={{ marginBottom: 16 }}
             extra={
-              <Button type="link" size="small">
-                查看全部
-              </Button>
+              <Space>
+                <Button 
+                  type="link" 
+                  size="small"
+                  onClick={() => setIsAddTaskModalOpen(true)}
+                  icon={<PlusOutlined />}
+                >
+                  添加任务
+                </Button>
+                <Button 
+                  type="link" 
+                  size="small"
+                  onClick={() => navigateToSchedule()}
+                >
+                  查看全部
+                </Button>
+              </Space>
             }
             loading={loading}
           >
             <List
-              dataSource={dashboardData.tasks}
-              renderItem={(item) => (
+              dataSource={recentTasks}
+              renderItem={(item, index) => (
                 <List.Item
                   className={`${item.completed ? styles.taskCompleted : ''} ${styles.taskItem}`}
                   actions={[
@@ -306,7 +461,12 @@ export default function DashboardPage() {
                       <div className={styles.taskItemDescription}>
                         <span style={{ color: '#666' }}>
                           <ClockCircleOutlined className={styles.taskItemTimeIcon} />
-                          {item.time}
+                          {formatTimeDisplay(item.time, item.date)}
+                          {item.estimatedDuration && (
+                            <span style={{ marginLeft: 8, color: '#999' }}>
+                              （约{Math.ceil(item.estimatedDuration / 60)}小时）
+                            </span>
+                          )}
                         </span>
                         <Tag color={getPriorityColor(item.priority)}> {getPriorityText(item.priority)}</Tag>
                       </div>
@@ -314,6 +474,9 @@ export default function DashboardPage() {
                   />
                 </List.Item>
               )}
+              locale={{
+                emptyText: '近期没有任务，快去添加吧！'
+              }}
             />
           </Card>
 
@@ -441,6 +604,7 @@ export default function DashboardPage() {
                 icon={<RocketOutlined />}
                 block
                 size="large"
+                onClick={navigateToTodayPlan}
               >
                 开始今日计划
               </Button>
@@ -448,15 +612,17 @@ export default function DashboardPage() {
                 icon={<CalendarOutlined />}
                 block
                 size="large"
+                onClick={() => navigateToSchedule('day')}
               >
-                查看周计划
+                查看日计划
               </Button>
               <Button 
-                icon={<TeamOutlined />}
+                icon={<CalendarFilled />}
                 block
                 size="large"
+                onClick={() => navigateToSchedule('week')}
               >
-                学习小组
+                查看周计划
               </Button>
               <Button 
                 icon={<BookOutlined />}
@@ -493,12 +659,162 @@ export default function DashboardPage() {
         {selectedTask && (
           <div>
             <h3>{selectedTask.title}</h3>
-            <p>时间：{selectedTask.time}</p>
-            <p>类别：{selectedTask.category}</p>
-            <p>优先级：{getPriorityText(selectedTask.priority)}</p>
-            <p>状态：{selectedTask.completed ? '已完成' : '未完成'}</p>
+            {selectedTask.description && (
+              <p style={{ margin: '8px 0', color: '#666' }}>{selectedTask.description}</p>
+            )}
+            <p><strong>时间：</strong>{formatTimeDisplay(selectedTask.time, selectedTask.date)}</p>
+            <p><strong>日期：</strong>{formatDateDisplay(selectedTask.date)}</p>
+            <p><strong>类别：</strong>{selectedTask.category}</p>
+            <p><strong>优先级：</strong>{getPriorityText(selectedTask.priority)}</p>
+            {selectedTask.estimatedDuration && (
+              <p><strong>预计时长：</strong>{Math.ceil(selectedTask.estimatedDuration / 60)}小时</p>
+            )}
+            <p><strong>状态：</strong>
+              <Tag color={selectedTask.completed ? 'success' : 'default'}>
+                {selectedTask.completed ? '已完成' : '未完成'}
+              </Tag>
+            </p>
           </div>
         )}
+      </Modal>
+
+      {/* 添加任务弹窗 */}
+      <Modal
+        title="添加新任务"
+        open={isAddTaskModalOpen}
+        onCancel={() => setIsAddTaskModalOpen(false)}
+        onOk={handleAddTask}
+        width={500}
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div>
+            <label htmlFor="newtask-title" style={{ display: 'block', marginBottom: 8, fontWeight: 500 }}>任务标题 *</label>
+            <input
+              id="newtask-title"
+              type="text"
+              value={newTask.title}
+              onChange={(e) => setNewTask({...newTask, title: e.target.value})}
+              placeholder="请输入任务标题"
+              title="任务标题"
+              style={{
+                width: '100%',
+                padding: '8px 12px',
+                border: '1px solid #d9d9d9',
+                borderRadius: 6,
+                fontSize: 14
+              }}
+            />
+          </div>
+          
+          <div>
+            <label htmlFor="newtask-desc" style={{ display: 'block', marginBottom: 8, fontWeight: 500 }}>任务描述</label>
+            <textarea
+              id="newtask-desc"
+              value={newTask.description}
+              onChange={(e) => setNewTask({...newTask, description: e.target.value})}
+              placeholder="请输入任务描述（可选）"
+              title="任务描述"
+              rows={3}
+              style={{
+                width: '100%',
+                padding: '8px 12px',
+                border: '1px solid #d9d9d9',
+                borderRadius: 6,
+                fontSize: 14,
+                resize: 'vertical'
+              }}
+            />
+          </div>
+          
+          <div style={{ display: 'flex', gap: 16 }}>
+            <div style={{ flex: 1 }}>
+              <label htmlFor="newtask-date" style={{ display: 'Block', marginBottom: 8, fontWeight: 500 }}>日期</label>
+              <input
+                id="newtask-date"
+                type="date"
+                value={newTask.date}
+                onChange={(e) => setNewTask({...newTask, date: e.target.value})}
+                placeholder="选择日期"
+                title="日期"
+                style={{
+                  width: '100%',
+                  padding: '8px 12px',
+                  border: '1px solid #d9d9d9',
+                  borderRadius: 6,
+                  fontSize: 14
+                }}
+              />
+            </div>
+            
+            <div style={{ flex: 1 }}>
+              <label htmlFor="newtask-time" style={{ display: 'Block', marginBottom: 8, fontWeight: 500 }}>时间</label>
+              <input
+                id="newtask-time"
+                type="time"
+                value={newTask.time}
+                onChange={(e) => setNewTask({...newTask, time: e.target.value})}
+                placeholder="选择时间"
+                title="时间"
+                style={{
+                  width: '100%',
+                  padding: '8px 12px',
+                  border: '1px solid #d9d9d9',
+                  borderRadius: 6,
+                  fontSize: 14
+                }}
+              />
+            </div>
+          </div>
+          
+          <div style={{ display: 'flex', gap: 16 }}>
+            <div style={{ flex: 1 }}>
+              <label htmlFor="newtask-priority" style={{ display: 'block', marginBottom: 8, fontWeight: 500 }}>优先级</label>
+              <select
+                id="newtask-priority"
+                value={newTask.priority}
+                onChange={(e) => setNewTask({...newTask, priority: e.target.value as any})}
+                title="优先级"
+                style={{
+                  width: '100%',
+                  padding: '8px 12px',
+                  border: '1px solid #d9d9d9',
+                  borderRadius: 6,
+                  fontSize: 14,
+                  background: 'white'
+                }}
+              >
+                <option value="high">高优先级</option>
+                <option value="medium">中优先级</option>
+                <option value="low">低优先级</option>
+              </select>
+            </div>
+            
+            <div style={{ flex: 1 }}>
+              <label htmlFor="newtask-category" style={{ display: 'block', marginBottom: 8, fontWeight: 500 }}>分类</label>
+              <select
+                id="newtask-category"
+                value={newTask.category}
+                onChange={(e) => setNewTask({...newTask, category: e.target.value})}
+                title="分类"
+                style={{
+                  width: '100%',
+                  padding: '8px 12px',
+                  border: '1px solid #d9d9d9',
+                  borderRadius: 6,
+                  fontSize: 14,
+                  background: 'white'
+                }}
+              >
+                <option value="学习">学习</option>
+                <option value="工作">工作</option>
+                <option value="生活">生活</option>
+                <option value="健康">健康</option>
+                <option value="社交">社交</option>
+                <option value="其他">其他</option>
+              </select>
+            </div>
+          </div>
+        </div>
       </Modal>
     </div>
   )

@@ -119,3 +119,11 @@
     padding: 12px;
   }
 }
+
+.smallTag {
+  font-size: 12px;
+  padding: 0 6px;
+  height: 20px;
+  line-height: 20px;
+  border-radius: 2px;
+}

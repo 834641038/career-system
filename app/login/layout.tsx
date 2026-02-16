@@ -1,7 +1,9 @@
+//登陆页面布局
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { ConfigProvider } from 'antd';
+import { AuthProvider } from '@/app/context/AuthContext';
 import '../globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -18,7 +20,7 @@ export default function LoginLayout({
 }) {
   return (
     <html lang="zh-CN">
-      <body className={inter.className}>
+      <body className={inter.className} style={{ margin: 0, padding: 0 }}>
         <AntdRegistry>
           <ConfigProvider
             theme={{
@@ -28,9 +30,17 @@ export default function LoginLayout({
               },
             }}
           >
-            <div style={{ minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#f0f2f5' }}>
-              {children}
-            </div>
+            <AuthProvider>
+              <div style={{ 
+                width: '100vw', 
+                height: '100vh', 
+                backgroundColor: '#ffffff',
+                margin: 0,
+                padding: 0
+              }}>
+                {children}
+              </div>
+            </AuthProvider>
           </ConfigProvider>
         </AntdRegistry>
       </body>

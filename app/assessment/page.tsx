@@ -23,28 +23,31 @@ export default function AssessmentPage() {
       id: 1,
       title: '霍兰德职业兴趣测评',
       description: '基于霍兰德理论，评估你的职业兴趣类型',
-      questions: 60,
+      questions: 30,
       time: '15-20分钟',
       icon: <ExperimentOutlined style={{ fontSize: 32 }} />,
-      color: '#1890ff'
+      color: '#1890ff',
+      route: ROUTES.ASSESSMENT_HOLLAND
     },
     {
       id: 2,
       title: '技能能力评估',
       description: '评估你在各个技能领域的掌握程度',
-      questions: 40,
+      questions: 20,
       time: '10-15分钟',
       icon: <CheckCircleOutlined style={{ fontSize: 32 }} />,
-      color: '#52c41a'
+      color: '#52c41a',
+      route: ROUTES.ASSESSMENT_SKILLS
     },
     {
       id: 3,
       title: '职业价值观测评',
       description: '了解你的职业价值观和追求',
-      questions: 30,
-      time: '8-10分钟',
+      questions: 24,
+      time: '10-15分钟',
       icon: <RocketOutlined style={{ fontSize: 32 }} />,
-      color: '#722ed1'
+      color: '#722ed1',
+      route: ROUTES.ASSESSMENT_VALUES // 添加职业价值观测评路由
     },
   ]
 
@@ -81,28 +84,28 @@ export default function AssessmentPage() {
         {/* 测评步骤 */}
         <Card style={{ marginBottom: 24 }}>
           <Title level={4}>测评流程</Title>
-            <Steps 
-    current={0} 
-    size="small"
-    items={[
-      {
-        title: '选择测评类型',
-        description: '选择适合你的测评'
-      },
-      {
-        title: '回答问题', 
-        description: '认真回答所有问题'
-      },
-      {
-        title: '生成报告',
-        description: '获取个性化分析报告'
-      },
-      {
-        title: '查看建议',
-        description: '获得职业发展建议'
-      }
-    ]}
-  />
+          <Steps 
+            current={0} 
+            size="small"
+            items={[
+              {
+                title: '选择测评类型',
+                description: '选择适合你的测评'
+              },
+              {
+                title: '回答问题', 
+                description: '认真回答所有问题'
+              },
+              {
+                title: '生成报告',
+                description: '获取个性化分析报告'
+              },
+              {
+                title: '查看建议',
+                description: '获得职业发展建议'
+              }
+            ]}
+          />
         </Card>
 
         {/* 测评类型选择 */}
@@ -124,7 +127,12 @@ export default function AssessmentPage() {
                     borderTop: `4px solid ${type.color}`,
                     height: '100%'
                   }}
-                  onClick={() => router.push(`${ROUTES.ASSESSMENT_START}?type=${type.id}`)}
+                  onClick={() => {
+                    // 根据不同类型采用不同的跳转逻辑
+                    if (type.route) {
+                      router.push(type.route)
+                    }
+                  }}
                 >
                   <div style={{ 
                     width: 64, 
@@ -278,6 +286,21 @@ export default function AssessmentPage() {
           justify-content: space-between;
           align-items: flex-start;
           margin-bottom: 24px;
+        }
+        
+        /* 修改Steps组件序号底色为蓝色 */
+        :global(.ant-steps-item-process .ant-steps-item-icon) {
+          background: #1890ff;
+          border-color: #1890ff;
+        }
+        
+        :global(.ant-steps-item-finish .ant-steps-item-icon) {
+          background: #1890ff;
+          border-color: #1890ff;
+        }
+        
+        :global(.ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title::after) {
+          background-color: #1890ff;
         }
         
         @media (max-width: 768px) {

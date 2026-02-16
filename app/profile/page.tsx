@@ -1,17 +1,21 @@
 //个人中心
 'use client'
 import { PageHeader } from '@ant-design/pro-components'
-import { Card, Button, Typography, Space, Row, Col, Avatar, Divider, Statistic } from 'antd'
+import { Card, Button, Typography, Space, Row, Col, Avatar, Divider, Statistic, List } from 'antd'
 import { 
   UserOutlined, 
   EditOutlined, 
   SettingOutlined, 
   TrophyOutlined,
   CalendarOutlined,
-  BookOutlined
+  BookOutlined,
+  FileTextOutlined,
+  EyeOutlined,
+  PlusOutlined
 } from '@ant-design/icons'
 import { useRouter } from 'next/navigation'
 import { ROUTES } from '@/app/lib/routes'
+import Link from 'next/link'
 
 const { Title, Paragraph } = Typography
 
@@ -43,6 +47,49 @@ export default function ProfilePage() {
     { id: 3, title: '学习积极分子', description: '连续学习30天', icon: <BookOutlined />, date: '2025-01-05' },
   ]
 
+  // 简历操作卡片
+  const resumeActions = [
+    {
+      key: 'fill',
+      title: '填写简历',
+      description: '完善您的个人信息和工作经历',
+      icon: <PlusOutlined />,
+      color: '#1890ff',
+      onClick: () => router.push('/profile/resume/edit')
+    },
+    {
+      key: 'view',
+      title: '我的简历',
+      description: '查看已填写的简历信息',
+      icon: <FileTextOutlined />,
+      color: '#52c41a',
+      onClick: () => {
+        // 检查是否有简历数据
+        const resumeData = localStorage.getItem('career_resume_data');
+        if (resumeData) {
+          router.push('/profile/resume/preview');
+        } else {
+          router.push('/profile/resume/edit');
+        }
+      }
+    },
+    {
+      key: 'generate',
+      title: '生成在线简历',
+      description: '创建精美的在线简历展示页',
+      icon: <EyeOutlined />,
+      color: '#722ed1',
+      onClick: () => {
+        const resumeData = localStorage.getItem('career_resume_data');
+        if (resumeData) {
+          router.push('/profile/resume/preview');
+        } else {
+          router.push('/profile/resume/edit');
+        }
+      }
+    }
+  ];
+
   return (
     <div className="profile-page">
       <PageHeader
@@ -52,7 +99,7 @@ export default function ProfilePage() {
           <Button 
             key="settings" 
             icon={<SettingOutlined />}
-            onClick={() => {}}
+            onClick={() => router.push(ROUTES.SETTINGS)}
           >
             设置
           </Button>,
@@ -60,7 +107,7 @@ export default function ProfilePage() {
             key="edit-profile" 
             type="primary"
             icon={<EditOutlined />}
-            onClick={() => {}}
+            onClick={() => router.push(ROUTES.PROFILE_EDIT)}
           >
             编辑资料
           </Button>,
@@ -92,6 +139,45 @@ export default function ProfilePage() {
           
           <Col span={16}>
             <Row gutter={[24, 24]}>
+              {/* 简历操作区域 */}
+              <Col span={24}>
+                <Card title="简历管理" extra={
+                  <Link href="/profile/resume/edit">
+                    <Button type="link">管理简历</Button>
+                  </Link>
+                }>
+                  <Row gutter={16}>
+                    {resumeActions.map(action => (
+                      <Col span={8} key={action.key}>
+                        <Card 
+                          hoverable
+                          onClick={action.onClick}
+                          style={{ 
+                            textAlign: 'center',
+                            cursor: 'pointer',
+                            height: '100%'
+                          }}
+                        >
+                          <div style={{ 
+                            fontSize: '32px', 
+                            color: action.color,
+                            marginBottom: '12px'
+                          }}>
+                            {action.icon}
+                          </div>
+                          <Title level={5} style={{ marginBottom: '8px' }}>
+                            {action.title}
+                          </Title>
+                          <Paragraph type="secondary" style={{ fontSize: '12px' }}>
+                            {action.description}
+                          </Paragraph>
+                        </Card>
+                      </Col>
+                    ))}
+                  </Row>
+                </Card>
+              </Col>
+
               <Col span={24}>
                 <Card title="统计数据">
                   <Row gutter={16}>

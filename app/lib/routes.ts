@@ -10,7 +10,10 @@ export const ROUTES = {
   LOGIN: '/login',
   REGISTER: '/register',
   PROFILE: '/profile',
-  SETTINGS: '/settings',
+  PROFILE_EDIT: '/profile/edit',
+  PROFILE_RESUME_EDIT: '/profile/resume/edit',    // 新增：简历填写页面
+  PROFILE_RESUME_PREVIEW: '/profile/resume/preview', // 新增：简历预览页面
+  SETTINGS: '/setting',
   
   // 核心功能
   DASHBOARD: '/dashboard',
@@ -18,6 +21,9 @@ export const ROUTES = {
   ASSESSMENT_START: '/assessment/start',
   ASSESSMENT_HISTORY: '/assessment/history',
   ASSESSMENT_RESULT: '/assessment/result',
+  ASSESSMENT_HOLLAND: '/assessment/holland', // 霍兰德测评路由
+  ASSESSMENT_SKILLS: '/assessment/skills', // 技能测评路由
+  ASSESSMENT_VALUES: '/assessment/values', // 职业价值观测评路由
   
   CAREER: '/career',
   CAREER_EXPLORE: '/career/explore',
@@ -45,6 +51,9 @@ export const ROUTES = {
   SITEMAP: '/sitemap',
 }
 
+// 导出路由键类型
+export type RouteKey = keyof typeof ROUTES
+
 /**
  * 导航菜单配置
  */
@@ -71,6 +80,21 @@ export const NAV_MENU = [
         key: 'assessment-start',
         label: '开始测评',
         path: ROUTES.ASSESSMENT_START,
+      },
+      {
+        key: 'assessment-holland',
+        label: '霍兰德测评',
+        path: ROUTES.ASSESSMENT_HOLLAND,
+      },
+      {
+        key: 'assessment-skills',
+        label: '技能测评',
+        path: ROUTES.ASSESSMENT_SKILLS,
+      },
+      {
+        key: 'assessment-values',
+        label: '价值观测评',
+        path: ROUTES.ASSESSMENT_VALUES,
       },
       {
         key: 'assessment-history',

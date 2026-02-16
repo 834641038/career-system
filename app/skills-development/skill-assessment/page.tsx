@@ -36,7 +36,19 @@ export default function SkillAssessmentPage() {
     { id: 4, skill: '数据分析', current: 70, required: 80, gap: 10 },
   ]
 
-  // 表格列定义
+  // 处理制定提升计划的跳转
+  const handleCreatePlan = (skillName: string, currentLevel: number) => {
+    // 根据技能水平映射到对应的等级描述
+    let levelDescription = '入门'
+    if (currentLevel >= 80) levelDescription = '高级'
+    else if (currentLevel >= 60) levelDescription = '中级'
+    else if (currentLevel >= 40) levelDescription = '初级'
+    
+    // 跳转到计划创建页面，传递技能信息作为查询参数
+    router.push(`${ROUTES.PLAN_CREATE}?skill=${encodeURIComponent(skillName)}&level=${levelDescription}`)
+  }
+
+  // 表格列定义 - 技能详情表格
   const columns = [
     {
       title: '技能名称',
@@ -83,12 +95,19 @@ export default function SkillAssessmentPage() {
       render: (record: any) => (
         <Space size="middle">
           <Button size="small" type="link">查看详情</Button>
-          <Button size="small" type="link">制定提升计划</Button>
+          <Button 
+            size="small" 
+            type="primary"
+            onClick={() => handleCreatePlan(record.name, record.level)}
+          >
+            制定提升计划
+          </Button>
         </Space>
       ),
     },
   ]
 
+  // 表格列定义 - 技能差距分析表格
   const gapColumns = [
     {
       title: '技能名称',
@@ -120,8 +139,14 @@ export default function SkillAssessmentPage() {
     {
       title: '建议',
       key: 'action',
-      render: () => (
-        <Button size="small" type="primary">推荐学习资源</Button>
+      render: (record: any) => (
+        <Button 
+          size="small" 
+          type="primary"
+          onClick={() => handleCreatePlan(record.skill, record.current)}
+        >
+          推荐学习资源
+        </Button>
       ),
     },
   ]
