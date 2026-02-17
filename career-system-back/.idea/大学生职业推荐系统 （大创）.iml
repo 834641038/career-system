@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="PYTHON_MODULE" version="4">//定义这是一个Python模块,使用版本4的模块配置格式
+  <component name="NewModuleRootManager">//组件管理模块的根目录
+    <content url="file://$MODULE_DIR$" />//模块所在的实际目录
+    <orderEntry type="jdk" jdkName="Python 3.13" jdkType="Python SDK" />//指定模块使用的Python解释器版本为3.13,类型为Python SDK
+    <orderEntry type="sourceFolder" forTests="false" />//将模块根目录标记为源代码文件夹,forTests="false"表示这不是专门用于测试的文件夹
+  </component>
+</module>
