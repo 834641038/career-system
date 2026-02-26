@@ -1,0 +1,58 @@
+.careerPage {
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.pageContent {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.centerContent {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.loadingText {
+  margin-top: 16px;
+  color: #666;
+}
+
+.cardMargin {
+  margin-bottom: 24px;
+}
+
+.alertMargin {
+  margin-bottom: 24px;
+}
+
+.listContainer {
+  padding: 20px 0;
+}
+
+.suggestionList {
+  margin: 8px 0 0 20px;
+  font-size: 12px;
+  color: #666;
+}
+
+.smallText {
+  font-size: 12px;
+  color: #888;
+  margin-top: 4px;
+}
+
+.marginTop {
+  margin-top: 8px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .careerPage {
+    padding: 12px;
+  }
+  
+  .listContainer {
+    padding: 12px 0;
+  }
+}

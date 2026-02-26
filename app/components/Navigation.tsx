@@ -91,7 +91,7 @@ const NAV_MENU: NavMenuItem[] = [
       {
         key: 'resume-builder',
         label: '简历构建',
-        path: '/job-search/resume-builder',
+        path: '/profile/resume/edit',
         icon: 'FileTextOutlined'
       },
       {

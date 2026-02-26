@@ -1,0 +1,122 @@
+.resourcesPage {
+  padding: 24px;
+}
+
+.pageContent {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* 卡片悬停效果 */
+.cardHover:hover {
+  transform: translateY(-2px);
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 技能缺口卡片样式 */
+.skillGapCard {
+  margin-bottom: 24px;
+}
+
+.skillGapTitle {
+  margin-bottom: 8px;
+}
+
+.skillGapProgress {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #666;
+}
+
+/* 课程封面样式 */
+.courseCover {
+  height: 140px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* 课程描述样式 */
+.courseDescription {
+  font-size: 12px;
+}
+
+.courseMetaSection {
+  margin-bottom: 8px;
+}
+
+.courseDescriptionText {
+  color: #666;
+  height: 40px;
+  overflow: hidden;
+}
+
+.courseSkillsSection {
+  margin-top: 8px;
+}
+
+.courseSkillsLabel {
+  font-size: 11px;
+  color: #999;
+  margin-bottom: 4px;
+}
+
+.skillTag {
+  font-size: 12px;
+}
+
+/* 加载和空状态样式 */
+.centerContent {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.loadingText {
+  margin-top: 16px;
+}
+
+.emptyStateIcon {
+  font-size: 48px;
+  color: #1890ff;
+  margin-bottom: 16px;
+}
+
+.bookIcon {
+  font-size: 48px;
+  color: #52c41a;
+  margin-bottom: 16px;
+}
+
+.userIcon {
+  font-size: 48px;
+  color: #722ed1;
+  margin-bottom: 16px;
+}
+
+.paragraphSecondary {
+  margin-bottom: 24px;
+}
+
+/* 搜索框样式 */
+.searchBox {
+  width: 300px;
+}
+
+/* 警告消息样式 */
+.alertMessage {
+  margin-bottom: 16px;
+}
+
+/* 标签样式 */
+.tagWithMargin {
+  margin-left: 8px;
+}
+
+.highRecommendationTag {
+  margin-left: 8px;
+}

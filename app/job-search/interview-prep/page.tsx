@@ -1,7 +1,7 @@
 //面试准备页面
 'use client'
 import { PageHeader } from '@ant-design/pro-components'
-import { Card, Button, Typography, Space, Tabs, List, Tag, Collapse, Input, message, Row, Col, Statistic } from 'antd'
+import { Card, Button, Typography, Space, Tabs, List, Tag, Collapse, Input, message, Row, Col, Statistic, Checkbox } from 'antd'
 import { 
   BookOutlined, 
   TrophyOutlined, 
@@ -18,7 +18,6 @@ import { ROUTES } from '@/app/lib/routes'
 import { useState } from 'react'
 
 const { Title, Paragraph } = Typography
-const { Panel } = Collapse
 const { TextArea } = Input
 
 export default function InterviewPrepPage() {
@@ -288,38 +287,53 @@ export default function InterviewPrepPage() {
 
             {/* 面试技巧 */}
             <Card title="面试技巧与建议">
-              <Collapse accordion>
-                <Panel header="自我介绍技巧" key="1">
-                  <Paragraph>
-                    <ul>
-                      <li>控制在1-3分钟内，突出与职位相关的经验和技能</li>
-                      <li>按照"过去-现在-未来"的结构：过去的经历→现在的角色→未来的期望</li>
-                      <li>准备2分钟和1分钟两个版本的自我介绍</li>
-                      <li>强调你能为公司带来的价值，而非仅仅谈论自己的经历</li>
-                    </ul>
-                  </Paragraph>
-                </Panel>
-                <Panel header="回答困难问题的策略" key="2">
-                  <Paragraph>
-                    <ul>
-                      <li>使用STAR法则回答行为问题：Situation（情境）、Task（任务）、Action（行动）、Result（结果）</li>
-                      <li>对于缺点问题，选择真实的缺点但要说明改进措施</li>
-                      <li>对于薪资期望问题，先了解市场行情，给出范围而非具体数字</li>
-                      <li>遇到不懂的技术问题，诚实承认但展示学习能力</li>
-                    </ul>
-                  </Paragraph>
-                </Panel>
-                <Panel header="面试后的跟进" key="3">
-                  <Paragraph>
-                    <ul>
-                      <li>面试结束后24小时内发送感谢邮件</li>
-                      <li>重申对职位的兴趣，并补充面试中未充分表达的信息</li>
-                      <li>如果长时间未收到回复，可以礼貌地询问进展</li>
-                      <li>无论结果如何，都将其作为经验积累</li>
-                    </ul>
-                  </Paragraph>
-                </Panel>
-              </Collapse>
+              <Collapse 
+                accordion
+                items={[
+                  {
+                    key: '1',
+                    label: '自我介绍技巧',
+                    children: (
+                      <Paragraph>
+                        <ul>
+                          <li>控制在1-3分钟内，突出与职位相关的经验和技能</li>
+                          <li>按照"过去-现在-未来"的结构：过去的经历→现在的角色→未来的期望</li>
+                          <li>准备2分钟和1分钟两个版本的自我介绍</li>
+                          <li>强调你能为公司带来的价值，而非仅仅谈论自己的经历</li>
+                        </ul>
+                      </Paragraph>
+                    )
+                  },
+                  {
+                    key: '2',
+                    label: '回答困难问题的策略',
+                    children: (
+                      <Paragraph>
+                        <ul>
+                          <li>使用STAR法则回答行为问题：Situation（情境）、Task（任务）、Action（行动）、Result（结果）</li>
+                          <li>对于缺点问题，选择真实的缺点但要说明改进措施</li>
+                          <li>对于薪资期望问题，先了解市场行情，给出范围而非具体数字</li>
+                          <li>遇到不懂的技术问题，诚实承认但展示学习能力</li>
+                        </ul>
+                      </Paragraph>
+                    )
+                  },
+                  {
+                    key: '3',
+                    label: '面试后的跟进',
+                    children: (
+                      <Paragraph>
+                        <ul>
+                          <li>面试结束后24小时内发送感谢邮件</li>
+                          <li>重申对职位的兴趣，并补充面试中未充分表达的信息</li>
+                          <li>如果长时间未收到回复，可以礼貌地询问进展</li>
+                          <li>无论结果如何，都将其作为经验积累</li>
+                        </ul>
+                      </Paragraph>
+                    )
+                  }
+                ]}
+              />
             </Card>
           </Col>
 
@@ -360,30 +374,3 @@ export default function InterviewPrepPage() {
     </div>
   )
 }
-
-// Checkbox组件需要单独引入，这里临时定义一个简单的实现
-const Checkbox = ({ checked, children }: { checked: boolean, children: React.ReactNode }) => (
-  <div style={{ display: 'flex', alignItems: 'center' }}>
-    <span style={{ 
-      display: 'inline-block', 
-      width: '16px', 
-      height: '16px', 
-      border: '1px solid #d9d9d9', 
-      borderRadius: '2px', 
-      marginRight: '8px',
-      backgroundColor: checked ? '#1890ff' : 'white',
-      position: 'relative'
-    }}>
-      {checked && (
-        <span style={{ 
-          position: 'absolute', 
-          left: '4px', 
-          top: '1px', 
-          color: 'white', 
-          fontSize: '10px' 
-        }}>✓</span>
-      )}
-    </span>
-    <span>{children}</span>
-  </div>
-)

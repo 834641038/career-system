@@ -1,52 +1,366 @@
-//学习资源页面
+// 学习资源页面
 'use client'
 import { PageHeader } from '@ant-design/pro-components'
-import { Card, Button, Typography, Space, Row, Col, Tabs, Tag, List } from 'antd'
 import { 
-  BookOutlined, 
-  VideoCameraOutlined, 
-  FileTextOutlined,
-  ToolOutlined,
-  LinkOutlined
+  Card, 
+  Button, 
+  Typography, 
+  Space, 
+  Tabs, 
+  Row, 
+  Col, 
+  List,
+  Spin,
+  Alert,
+  Tag,
+  Progress,
+  Input,
+  Select,
+  Divider
+} from 'antd'
+import { 
+  BookOutlined,
+  SearchOutlined,
+  LoadingOutlined,
+  FireOutlined,
+  StarOutlined,
+  ClockCircleOutlined,
+  UserOutlined
 } from '@ant-design/icons'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ROUTES } from '@/app/lib/routes'
+import { learningService } from '@/app/services/learningService'
+import { useEffect, useState } from 'react'
+import styles from './resources.module.css'
 
 const { Title, Paragraph } = Typography
-const { TabPane } = Tabs
+const { Search } = Input
+const { Option } = Select
 
 export default function ResourcesPage() {
   const router = useRouter()
+  const [activeTab, setActiveTab] = useState('courses')
+  const [loading, setLoading] = useState(false)
+  const [courses, setCourses] = useState<any[]>([])
+  const [skillGaps, setSkillGaps] = useState<any[]>([])
+  const [searchKeyword, setSearchKeyword] = useState('')
+  const [error, setError] = useState<string | null>(null)
 
-  // Mock资源数据
-  const courses = [
-    { id: 1, title: 'React实战开发', description: '从入门到精通React开发的完整课程', category: '前端开发', duration: '20小时', level: '中级' },
-    { id: 2, title: 'JavaScript进阶', description: '深入理解JavaScript核心概念和高级特性', category: '编程基础', duration: '15小时', level: '高级' },
-    { id: 3, title: 'UI/UX设计原理', description: '用户体验和界面设计的核心原则', category: '设计', duration: '12小时', level: '初级' },
-    { id: 4, title: 'Python数据分析', description: '使用Python进行数据分析和可视化', category: '数据分析', duration: '18小时', level: '中级' },
-  ]
+  // 加载推荐课程
+  useEffect(() => {
+    if (activeTab === 'courses') {
+      loadRecommendedCourses()
+    }
+  }, [activeTab])
 
-  const books = [
-    { id: 1, title: '《程序员修炼之道》', author: 'Andrew Hunt', category: '编程思维', rating: 4.8 },
-    { id: 2, title: '《设计心理学》', author: '唐纳德·诺曼', category: '设计', rating: 4.7 },
-    { id: 3, title: '《高效能人士的七个习惯》', author: '史蒂芬·柯维', category: '个人成长', rating: 4.6 },
-    { id: 4, title: '《算法导论》', author: 'Thomas H. Cormen', category: '算法', rating: 4.5 },
-  ]
+  const loadRecommendedCourses = async () => {
+    setLoading(true)
+    setError(null)
+    
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        setError('请先登录以获取个性化推荐')
+        setLoading(false)
+        return
+      }
 
-  const tools = [
-    { id: 1, name: 'Figma', description: '协作式界面设计工具', category: '设计', url: '#' },
-    { id: 2, name: 'VSCode', description: '轻量级代码编辑器', category: '开发', url: '#' },
-    { id: 3, name: 'Notion', description: '全能型笔记和项目管理工具', category: '效率', url: '#' },
-    { id: 4, name: 'Anki', description: '间隔重复记忆软件', category: '学习', url: '#' },
+      // 获取用户感兴趣的职业（可以从用户档案中获取）
+      const targetJobs = ['J2024001', 'J2024002'] // 示例职业ID
+      
+      const response = await learningService.getRecommendedCourses(targetJobs, 8)
+
+      if (response.success && response.data) {
+        setCourses(response.data.courses)
+        setSkillGaps(response.data.skill_gaps)
+      } else {
+        setError(response.error || '获取推荐失败')
+      }
+    } catch (err: any) {
+      setError(err.message || '加载失败')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleSearch = async (value: string) => {
+    if (!value.trim()) return
+    
+    setLoading(true)
+    setSearchKeyword(value)
+    
+    try {
+      const response = await learningService.searchCourses(value)
+      if (response.success && response.data) {
+        setCourses(response.data)
+      }
+    } catch (err: any) {
+      setError(err.message || '搜索失败')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const getPriorityColor = (priority: string) => {
+    switch(priority) {
+      case 'high': return 'red'
+      case 'medium': return 'orange'
+      case 'low': return 'green'
+      default: return 'blue'
+    }
+  }
+
+  const tabItems = [
+    {
+      key: 'courses',
+      label: '推荐课程',
+      children: (
+        <div>
+          {/* 技能缺口分析 */}
+          {skillGaps.length > 0 && (
+            <Card 
+              title={
+                <Space>
+                  <FireOutlined />
+                  您的技能缺口分析
+                </Space>
+              }
+              className={styles.skillGapCard}
+            >
+              <Row gutter={[16, 16]}>
+                {skillGaps.map((gap: any, index: number) => (
+                  <Col xs={24} md={12} lg={8} key={index}>
+                    <Card size="small">
+                      <div className={styles.skillGapTitle}>
+                        <strong>{gap.skill}</strong>
+                        <Tag 
+                          color={getPriorityColor(gap.priority)} 
+                          className={styles.tagWithMargin}
+                        >
+                          {gap.priority === 'high' ? '高优先级' : 
+                           gap.priority === 'medium' ? '中优先级' : '低优先级'}
+                        </Tag>
+                      </div>
+                      <div className={styles.skillGapTitle}>
+                        <Space size="small">
+                          <span>当前: {gap.current_level}</span>
+                          <span>→</span>
+                          <span>要求: {gap.required_level}</span>
+                        </Space>
+                      </div>
+                      <Progress 
+                        percent={Math.round((gap.current_level / gap.required_level) * 100)}
+                        status={gap.gap > 30 ? 'exception' : 'normal'}
+                        size="small"
+                      />
+                      <div className={styles.skillGapProgress}>
+                        缺口: {gap.gap}分
+                      </div>
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
+            </Card>
+          )}
+
+          {/* 课程推荐列表 */}
+          <Card 
+            title={
+              <Space>
+                <BookOutlined />
+                个性化课程推荐
+              </Space>
+            }
+            extra={
+              <Button 
+                type="link" 
+                onClick={loadRecommendedCourses}
+                disabled={loading}
+              >
+                刷新推荐
+              </Button>
+            }
+          >
+            {error && (
+              <Alert 
+                message={error} 
+                type="warning" 
+                showIcon 
+                className={styles.alertMessage}
+              />
+            )}
+            
+            {loading ? (
+              <div className={styles.centerContent}>
+                <Spin indicator={<LoadingOutlined spin />} />
+                <div className={styles.loadingText}>正在为您推荐合适的课程...</div>
+              </div>
+            ) : courses.length > 0 ? (
+              <List
+                grid={{ gutter: 16, xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }}
+                dataSource={courses}
+                renderItem={(course: any) => (
+                  <List.Item>
+                    <Card 
+                      hoverable
+                      className={styles.cardHover}
+                      cover={
+                        <div className={styles.courseCover}>
+                          {course.provider}
+                        </div>
+                      }
+                      actions={[
+                        <Button 
+                          type="primary" 
+                          size="small"
+                          block
+                          onClick={() => router.push(`/course/${course.course_id}`)}
+                        >
+                          开始学习
+                        </Button>
+                      ]}
+                    >
+                      <Card.Meta
+                        title={
+                          <div>
+                            {course.title}
+                            {course.relevance_score > 80 && (
+                              <Tag color="red" className={styles.highRecommendationTag}>高度推荐</Tag>
+                            )}
+                          </div>
+                        }
+                        description={
+                          <div className={styles.courseDescription}>
+                            <div className={styles.courseMetaSection}>
+                              <Space size="small">
+                                <StarOutlined />
+                                <span>{course.rating || '4.5'}</span>
+                                <ClockCircleOutlined />
+                                <span>{course.duration}</span>
+                              </Space>
+                            </div>
+                            <div className={styles.courseMetaSection}>
+                              <Tag>{course.difficulty}</Tag>
+                              {course.price && <Tag color="green">{course.price}</Tag>}
+                            </div>
+                            <div className={styles.courseDescriptionText}>
+                              {course.description}
+                            </div>
+                            {course.skills_covered && course.skills_covered.length > 0 && (
+                              <div className={styles.courseSkillsSection}>
+                                <div className={styles.courseSkillsLabel}>
+                                  涵盖技能:
+                                </div>
+                                <div>
+                                  {course.skills_covered.slice(0, 3).map((skill: string, idx: number) => (
+                                    <Tag key={idx} className={styles.skillTag}>{skill}</Tag>
+                                  ))}
+                                  {course.skills_covered.length > 3 && (
+                                    <Tag className={styles.skillTag}>+{course.skills_covered.length - 3}更多</Tag>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        }
+                      />
+                    </Card>
+                  </List.Item>
+                )}
+              />
+            ) : (
+              <div className={styles.centerContent}>
+                <BookOutlined className={styles.emptyStateIcon} />
+                <Title level={4}>暂无推荐课程</Title>
+                <Paragraph type="secondary">
+                  完善您的职业偏好设置，获取更精准的课程推荐
+                </Paragraph>
+                <Space>
+                  <Button 
+                    type="primary"
+                    onClick={() => router.push(ROUTES.ASSESSMENT)}
+                  >
+                    做职业测评
+                  </Button>
+                  <Button 
+                    onClick={loadRecommendedCourses}
+                  >
+                    重新获取推荐
+                  </Button>
+                </Space>
+              </div>
+            )}
+          </Card>
+        </div>
+      )
+    },
+    {
+      key: 'books',
+      label: '学习资料',
+      children: (
+        <Card>
+          <div className={styles.centerContent}>
+            <BookOutlined className={styles.bookIcon} />
+            <Title level={3}>学习资料库</Title>
+            <Paragraph type="secondary" className={styles.paragraphSecondary}>
+              精选的学习资料和参考书籍
+            </Paragraph>
+            <Button 
+              type="primary" 
+              size="large"
+              onClick={() => router.push('/resources/library')}
+            >
+              浏览资料库
+            </Button>
+          </div>
+        </Card>
+      )
+    },
+    {
+      key: 'tools',
+      label: '实用工具',
+      children: (
+        <Card>
+          <div className={styles.centerContent}>
+            <UserOutlined className={styles.userIcon} />
+            <Title level={3}>职业发展工具</Title>
+            <Paragraph type="secondary" className={styles.paragraphSecondary}>
+              提升职业技能的实用工具和资源
+            </Paragraph>
+            <Space>
+              <Button 
+                size="large"
+                onClick={() => router.push('/resources/resume-builder')}
+              >
+                简历制作
+              </Button>
+              <Button 
+                size="large"
+                onClick={() => router.push('/resources/interview-practice')}
+              >
+                面试练习
+              </Button>
+            </Space>
+          </div>
+        </Card>
+      )
+    }
   ]
 
   return (
-    <div className="resources-page">
+    <div className={styles.resourcesPage}>
       <PageHeader
-        title="学习资源"
-        subTitle="丰富的学习资源助力你的职业发展"
+        title="学习资源中心"
+        subTitle="获取个性化的学习推荐和职业发展资源"
         extra={[
+          <Search
+            key="search"
+            placeholder="搜索课程或技能..."
+            onSearch={handleSearch}
+            className={styles.searchBox}
+            enterButton
+          />,
           <Button 
             key="dashboard" 
             onClick={() => router.push(ROUTES.DASHBOARD)}
@@ -56,119 +370,12 @@ export default function ResourcesPage() {
         ]}
       />
 
-      <div className="page-content" style={{ padding: '24px' }}>
-        <Tabs defaultActiveKey="courses">
-          <TabPane tab="课程" key="courses" icon={<VideoCameraOutlined />}>
-            <Row gutter={[24, 24]}>
-              {courses.map(course => (
-                <Col span={12} key={course.id}>
-                  <Card 
-                    hoverable
-                    style={{ height: '100%' }}
-                    onClick={() => {}}
-                  >
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <div>
-                        <Title level={4} style={{ margin: 0 }}>{course.title}</Title>
-                        <Paragraph type="secondary">{course.description}</Paragraph>
-                      </div>
-                      <VideoCameraOutlined style={{ fontSize: '32px', color: '#1890ff' }} />
-                    </div>
-                    
-                    <div style={{ marginTop: 16 }}>
-                      <Tag color="blue">{course.category}</Tag>
-                      <Tag color="green">{course.level}</Tag>
-                      <Tag icon={<BookOutlined />} color="geekblue">{course.duration}</Tag>
-                    </div>
-                    
-                    <div style={{ marginTop: 16, textAlign: 'right' }}>
-                      <Button type="primary" onClick={() => {}}>
-                        开始学习
-                      </Button>
-                    </div>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-          </TabPane>
-          
-          <TabPane tab="书籍" key="books" icon={<FileTextOutlined />}>
-            <Row gutter={[24, 24]}>
-              {books.map(book => (
-                <Col span={12} key={book.id}>
-                  <Card 
-                    hoverable
-                    style={{ height: '100%' }}
-                    onClick={() => {}}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <FileTextOutlined style={{ fontSize: '48px', color: '#52c41a', marginRight: 16 }} />
-                      <div>
-                        <Title level={4} style={{ margin: 0 }}>{book.title}</Title>
-                        <Paragraph type="secondary">作者: {book.author}</Paragraph>
-                        <div style={{ marginTop: 8 }}>
-                          <Tag color="purple">{book.category}</Tag>
-                          <Tag color="gold">⭐ {book.rating}</Tag>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div style={{ marginTop: 16, textAlign: 'right' }}>
-                      <Button type="primary" onClick={() => {}}>
-                        开始阅读
-                      </Button>
-                    </div>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-          </TabPane>
-          
-          <TabPane tab="工具" key="tools" icon={<ToolOutlined />}>
-            <Row gutter={[24, 24]}>
-              {tools.map(tool => (
-                <Col span={8} key={tool.id}>
-                  <Card 
-                    hoverable
-                    style={{ height: '100%' }}
-                  >
-                    <div style={{ textAlign: 'center', padding: '20px 0' }}>
-                      <ToolOutlined style={{ fontSize: '48px', color: '#722ed1', marginBottom: 16 }} />
-                      <Title level={4} style={{ margin: '8px 0' }}>{tool.name}</Title>
-                      <Paragraph type="secondary">{tool.description}</Paragraph>
-                      
-                      <div style={{ marginTop: 16 }}>
-                        <Tag color="orange">{tool.category}</Tag>
-                      </div>
-                      
-                      <div style={{ marginTop: 16 }}>
-                        <Button 
-                          type="primary" 
-                          icon={<LinkOutlined />}
-                          href={tool.url}
-                          target="_blank"
-                        >
-                          访问工具
-                        </Button>
-                      </div>
-                    </div>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-          </TabPane>
-        </Tabs>
-        
-        <Card title="推荐学习路径" style={{ marginTop: 24 }}>
-          <Paragraph>
-            <ul>
-              <li><strong>前端开发路径:</strong> HTML/CSS → JavaScript → React/Vue → 实战项目</li>
-              <li><strong>后端开发路径:</strong> 计算机基础 → Node.js/Java/Python → 数据库 → API设计</li>
-              <li><strong>数据分析路径:</strong> Excel → SQL → Python → Tableau → 机器学习</li>
-              <li><strong>UI/UX设计路径:</strong> 设计基础 → Figma → 用户研究 → 交互设计</li>
-            </ul>
-          </Paragraph>
-        </Card>
+      <div className={styles.pageContent}>
+        <Tabs 
+          activeKey={activeTab}
+          onChange={setActiveTab}
+          items={tabItems} 
+        />
       </div>
     </div>
   )
