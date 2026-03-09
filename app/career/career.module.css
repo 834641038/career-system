@@ -1,6 +1,7 @@
 .careerPage {
   min-height: 100vh;
   padding: 24px;
+  background: #f5f7fa;
 }
 
 .pageContent {
@@ -16,6 +17,7 @@
 .loadingText {
   margin-top: 16px;
   color: #666;
+  font-size: 14px;
 }
 
 .cardMargin {
@@ -34,16 +36,82 @@
   margin: 8px 0 0 20px;
   font-size: 12px;
   color: #666;
+  line-height: 1.8;
 }
 
 .smallText {
   font-size: 12px;
   color: #888;
   margin-top: 4px;
+  line-height: 1.6;
 }
 
 .marginTop {
   margin-top: 8px;
+}
+
+/* 浏览卡片样式 */
+.browseCard {
+  height: 100%;
+  transition: all 0.3s;
+}
+
+.browseCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 分类标题样式 */
+.categoryTitle {
+  margin-bottom: 20px !important;
+  padding-left: 12px;
+  border-left: 4px solid #1890ff;
+}
+
+/* 探索页面样式 */
+.exploreContainer {
+  padding: 20px 0;
+}
+
+.exploreTitle {
+  margin-bottom: 16px !important;
+}
+
+.exploreSubtitle {
+  margin-bottom: 24px;
+  color: #666;
+}
+
+.searchControls {
+  margin: 20px 0;
+}
+
+.categoriesContainer {
+  margin-top: 32px;
+}
+
+/* 详情行样式 */
+.detailRow {
+  margin-bottom: 8px;
+  font-size: 14px;
+  line-height: 2;
+}
+
+.detailSection {
+  margin-top: 12px;
+}
+
+.skillTags {
+  margin-top: 8px;
+}
+
+.companyTags {
+  margin-top: 8px;
+}
+
+/* 详情弹窗样式 */
+.detailModalContent {
+  padding: 10px 0;
 }
 
 /* 响应式设计 */
@@ -54,5 +122,13 @@
   
   .listContainer {
     padding: 12px 0;
+  }
+  
+  .categoryTitle {
+    font-size: 16px !important;
+  }
+  
+  .exploreTitle {
+    font-size: 18px !important;
   }
 }

@@ -47,22 +47,16 @@ const NAV_MENU: NavMenuItem[] = [
     icon: 'ExperimentOutlined'
   },
   {
-    key: 'plan',
-    label: '生涯规划',
-    path: '/plan',
-    icon: 'CalendarOutlined'
-  },
-  {
-    key: 'dashboard',
-    label: '个人仪表盘',
-    path: '/dashboard',
-    icon: 'BarChartOutlined'
-  },
-  {
     key: 'career',
     label: '职业探索',
     path: '/career',
     icon: 'AimOutlined'
+  },
+  {
+    key: 'plan',
+    label: '生涯规划',
+    path: '/plan',
+    icon: 'CalendarOutlined'
   },
   {
     key: 'skills',
@@ -82,6 +76,12 @@ const NAV_MENU: NavMenuItem[] = [
         icon: 'CheckCircleOutlined'
       }
     ]
+  },
+  {
+    key: 'dashboard',
+    label: '个人仪表盘',
+    path: '/dashboard',
+    icon: 'BarChartOutlined'
   },
   {
     key: 'job-search',
