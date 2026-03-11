@@ -531,7 +531,7 @@ export default function PlanPage() {
                 </div>
               ) : careerPaths.length > 0 ? (
                 <List
-                  dataSource={careerPaths}
+                  dataSource={careerPaths.slice(0, 3)}
                   renderItem={(path: any) => (
                     <List.Item key={path.path_id}>
                       <List.Item.Meta

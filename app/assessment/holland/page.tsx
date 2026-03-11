@@ -1,3 +1,4 @@
+// 文件路径: app/assessment/holland/page.tsx
 'use client'
 
 import React, { useState, useEffect } from 'react'
@@ -25,6 +26,7 @@ import { ROUTES } from '@/app/lib/routes'
 const { Title, Text, Paragraph } = Typography
 const { Group: RadioGroup } = Radio
 
+// 霍兰德职业兴趣测评题目数据
 const hollandQuestions = [
   {
     id: 1,
@@ -94,28 +96,40 @@ const hollandQuestions = [
   }
 ]
 
+// 扩展更多题目以达到60题
 const generateMoreQuestions = () => {
   const additionalQuestions = [
+    // 更多实际操作类题目
     "我喜欢使用工具制作东西",
     "我对机械装置很感兴趣",
     "我喜欢户外工作",
     "我喜欢动手实验",
+    
+    // 更多研究类题目
     "我喜欢分析数据和信息",
     "我对科学研究很感兴趣",
     "我喜欢解决复杂的数学问题",
     "我喜欢探索未知领域",
+    
+    // 更多艺术类题目
     "我喜欢设计美观的东西",
     "我对色彩搭配很敏感",
     "我喜欢自由创作",
     "我对美学有独特见解",
+    
+    // 更多社会服务类题目
     "我喜欢与人交流沟通",
     "我善于倾听他人的想法",
     "我喜欢团队合作",
     "我关心社会问题",
+    
+    // 更多企业经营类题目
     "我喜欢制定计划和策略",
     "我对商业运作很感兴趣",
     "我喜欢承担领导责任",
     "我善于影响他人",
+    
+    // 更多常规事务类题目
     "我喜欢处理文件和数据",
     "我对细节很关注",
     "我喜欢按部就班地工作",
@@ -137,6 +151,7 @@ const generateMoreQuestions = () => {
   }))
 }
 
+// 合并所有题目
 const allQuestions = [...hollandQuestions, ...generateMoreQuestions()]
 
 export default function HollandAssessmentPage() {
@@ -146,46 +161,28 @@ export default function HollandAssessmentPage() {
   const [answers, setAnswers] = useState<{[key: number]: number}>({})
   const [showResult, setShowResult] = useState(false)
   const [resultData, setResultData] = useState<any>(null)
-  const [timeLeft, setTimeLeft] = useState(20 * 60)
+  const [timeLeft, setTimeLeft] = useState(20 * 60) // 20分钟倒计时
   const [isTimeUp, setIsTimeUp] = useState(false)
-  const [version, setVersion] = useState<'simple' | 'full'>('full')
-  const [questions, setQuestions] = useState<typeof allQuestions>([])
 
+  // 倒计时效果
   useEffect(() => {
-    const versionParam = searchParams.get('version')
-    const selectedVersion = versionParam === 'simple' ? 'simple' : 'full'
-    setVersion(selectedVersion)
-    
-    if (selectedVersion === 'simple') {
-      setQuestions(allQuestions.slice(0, 10))
-      setTimeLeft(10 * 60)
-    } else {
-      setQuestions(allQuestions)
-      setTimeLeft(20 * 60)
-    }
-    setCurrentQuestion(0)
-    setAnswers({})
-    setShowResult(false)
-    setResultData(null)
-    setIsTimeUp(false)
-  }, [searchParams])
-
-  useEffect(() => {
-    if (timeLeft > 0 && !showResult && questions.length > 0) {
+    if (timeLeft > 0 && !showResult) {
       const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
       return () => clearTimeout(timer)
-    } else if (timeLeft === 0 && !showResult && questions.length > 0) {
+    } else if (timeLeft === 0 && !showResult) {
       setIsTimeUp(true)
       handleSubmit()
     }
-  }, [timeLeft, showResult, questions])
+  }, [timeLeft, showResult])
 
+  // 格式化时间显示
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
     const secs = seconds % 60
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
   }
 
+  // 处理答案选择
   const handleAnswerSelect = (value: number) => {
     setAnswers({
       ...answers,
@@ -193,6 +190,7 @@ export default function HollandAssessmentPage() {
     })
   }
 
+  // 计算测评结果
   const calculateResult = () => {
     const scores = {
       realistic: 0,
@@ -215,6 +213,7 @@ export default function HollandAssessmentPage() {
       }
     })
 
+    // 计算百分比
     const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0)
     const percentages = Object.entries(scores).map(([type, score]) => ({
       type,
@@ -229,13 +228,12 @@ export default function HollandAssessmentPage() {
     }
   }
 
+  // 提交测评
   const handleSubmit = () => {
-    if (!questions.length) return
-    
-    if (Object.keys(answers).length < questions.length) {
+    if (Object.keys(answers).length < allQuestions.length) {
       Modal.confirm({
         title: '还有未完成的题目',
-        content: `您还有${questions.length - Object.keys(answers).length}道题目未作答，确定要提交吗？`,
+        content: `您还有${allQuestions.length - Object.keys(answers).length}道题目未作答，确定要提交吗？`,
         onOk: () => {
           const result = calculateResult()
           setResultData(result)
@@ -249,28 +247,20 @@ export default function HollandAssessmentPage() {
     }
   }
 
+  // 重新测评
   const handleRetake = () => {
     setCurrentQuestion(0)
     setAnswers({})
     setShowResult(false)
     setResultData(null)
-    setTimeLeft(version === 'simple' ? 10 * 60 : 20 * 60)
+    setTimeLeft(20 * 60)
     setIsTimeUp(false)
   }
 
+  // 返回主页
   const handleGoHome = () => {
     router.push(ROUTES.ASSESSMENT)
   }
-
-  if (!questions.length) {
-    return (
-      <div style={{ padding: '24px', textAlign: 'center' }}>
-        <p>加载中...</p>
-      </div>
-    )
-  }
-
-  const currentQ = questions[currentQuestion]
 
   if (showResult && resultData) {
     return (
@@ -281,6 +271,7 @@ export default function HollandAssessmentPage() {
             title="霍兰德职业兴趣测评完成！"
             subTitle="根据您的选择，我们为您分析了职业兴趣倾向"
             extra={[
+
               <Button type="primary" key="retake" onClick={handleRetake}>
                 重新测评
               </Button>,
@@ -330,35 +321,36 @@ export default function HollandAssessmentPage() {
     )
   }
 
+  const currentQ = allQuestions[currentQuestion]
+
   return (
     <div style={{ padding: '24px', maxWidth: '800px', margin: '0 auto' }}>
+      {/* 顶部进度信息 */}
       <Card style={{ marginBottom: '24px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Space>
             <ClockCircleOutlined style={{ color: isTimeUp ? '#ff4d4f' : '#1890ff' }} />
             <Text strong style={{ color: isTimeUp ? '#ff4d4f' : '#1890ff' }}>
-              剩余时间：{formatTime(timeLeft)}
-            </Text>
-            <Text type="secondary" style={{ marginLeft: 16 }}>
-              {version === 'simple' ? '简单版' : '详细版'}
+              剩余时间: {formatTime(timeLeft)}
             </Text>
           </Space>
           <Space>
             <BarChartOutlined />
-            <Text>进度：{currentQuestion + 1}/{questions.length}</Text>
+            <Text>进度: {currentQuestion + 1}/{allQuestions.length}</Text>
           </Space>
         </div>
         <Progress 
-          percent={Math.round(((currentQuestion + 1) / questions.length) * 100)} 
+          percent={Math.round(((currentQuestion + 1) / allQuestions.length) * 100)} 
           showInfo={false}
           style={{ marginTop: '8px' }}
         />
       </Card>
 
+      {/* 题目内容 */}
       <Card>
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <Title level={3}>
-            题目 {currentQuestion + 1} / {questions.length}
+            题目 {currentQuestion + 1} / {allQuestions.length}
           </Title>
         </div>
 
@@ -391,6 +383,7 @@ export default function HollandAssessmentPage() {
           </Space>
         </RadioGroup>
 
+        {/* 导航按钮 */}
         <div style={{ 
           display: 'flex', 
           justifyContent: 'space-between', 
@@ -406,7 +399,7 @@ export default function HollandAssessmentPage() {
             上一题
           </Button>
           
-          {currentQuestion === questions.length - 1 ? (
+          {currentQuestion === allQuestions.length - 1 ? (
             <Button 
               type="primary" 
               icon={<CheckCircleOutlined />}
@@ -428,34 +421,38 @@ export default function HollandAssessmentPage() {
         </div>
       </Card>
 
+      {/* 时间提醒模态框 */}
       <Modal
         title="时间即将到期"
         open={timeLeft <= 60 && timeLeft > 0 && !isTimeUp}
         closable={false}
         footer={[
+
           <Button key="continue" type="primary" onClick={() => {}}>
             继续答题
           </Button>
         ]}
       >
-        <p>您还剩最后 1 分钟，请尽快完成答题。</p>
+        <p>您还剩最后1分钟，请尽快完成答题。</p>
       </Modal>
     </div>
   )
 }
 
+// 辅助函数：获取类型名称
 const getTypeName = (type: string) => {
   const typeNames: {[key: string]: string} = {
-    realistic: '现实型 (R)',
-    investigative: '研究型 (I)',
-    artistic: '艺术型 (A)',
-    social: '社会型 (S)',
-    enterprising: '企业型 (E)',
-    conventional: '常规型 (C)'
+    realistic: '现实型(R)',
+    investigative: '研究型(I)',
+    artistic: '艺术型(A)',
+    social: '社会型(S)',
+    enterprising: '企业型(E)',
+    conventional: '常规型(C)'
   }
   return typeNames[type] || type
 }
 
+// 辅助函数：获取类型描述
 const getTypeDescription = (type: string) => {
   const descriptions: {[key: string]: string} = {
     realistic: '喜欢使用工具、机器，需要基本操作技能的工作。要求具备机械方面才能、体力或从事与物件、机器、工具、运动器材、植物、动物相关的职业有兴趣，具有相应能力。',
