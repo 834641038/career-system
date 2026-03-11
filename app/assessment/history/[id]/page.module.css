@@ -1,0 +1,112 @@
+.container {
+  padding: 24px;
+}
+
+.pageHeader {
+  margin-bottom: 16px;
+}
+
+.resultCard {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.resultHeader {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.resultTitle {
+  margin-bottom: 0;
+}
+
+.titleIcon {
+  margin-right: 8px;
+  color: #1890ff;
+}
+
+.resultMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.scoreSection {
+  margin-top: 24px;
+}
+
+.scoreDisplay {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.scoreInfo {
+  max-width: 360px;
+}
+
+.resultSection {
+  margin-top: 24px;
+}
+
+.hollandTypes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.typeCard {
+  padding: 16px;
+}
+
+.typeCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.skillsList,
+.valuesList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.skillCard,
+.valueCard {
+  padding: 16px;
+}
+
+.skillHeader,
+.valueHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.skillScore {
+  margin-top: 12px;
+  text-align: right;
+  font-weight: 600;
+}
+
+.topValues {
+  margin-top: 16px;
+}
+
+.recommendationsSection {
+  margin-top: 16px;
+}
+
+.actionButtons {
+  text-align: right;
+  margin-top: 24px;
+}

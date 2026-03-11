@@ -130,7 +130,7 @@ export default function Home() {
         <div className={styles.headerContainer}>
           <Link href="/" className={styles.logo}>
             <RocketOutlined />
-            <span>UniCareer</span>
+            <span>职海航图</span>
           </Link>
           
           <div className={styles.spacer}></div>
@@ -469,7 +469,7 @@ export default function Home() {
                 <div className={styles.footerLogo}>
                   <Link href="/">
                     <RocketOutlined />
-                    <span>UniCareer</span>
+                    <span>职海航图</span>
                   </Link>
                 </div>
                 <Paragraph className={styles.footerDescription}>

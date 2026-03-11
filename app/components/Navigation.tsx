@@ -231,7 +231,7 @@ export default function Navigation({ children }: NavigationProps) {
         style={{ background: colorBgContainer }}
       >
         <div className="logo" style={{ height: 32, margin: 16, textAlign: 'center', background: 'rgba(255, 255, 255, 0.2)', lineHeight: '32px' }}>
-          {!collapsed && <span style={{ color: '#1890ff', fontWeight: 'bold' }}>UniCareer</span>}
+          {!collapsed && <span style={{ color: '#1890ff', fontWeight: 'bold' }}>职海航图</span>}
         </div>
         <Menu
           theme="light"
