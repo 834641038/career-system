@@ -14,7 +14,8 @@ import {
   AimOutlined,
   CheckCircleFilled,
   ScheduleOutlined,
-  LineChartOutlined
+  LineChartOutlined,
+  RobotOutlined
 } from '@ant-design/icons'
 import { useRouter } from 'next/navigation'
 import styles from './page.module.css'
@@ -94,6 +95,7 @@ export default function Home() {
     { text: '学期规划', link: '/plan', icon: <CalendarOutlined /> },
     { text: '学习资源', link: '/resources', icon: <BookOutlined /> },
     { text: '进度追踪', link: '/dashboard', icon: <BarChartOutlined /> },
+    { text: 'AI顾问', link: '/ai-advisor', icon: <RobotOutlined /> },
   ]
 
   // 使用流程
@@ -139,6 +141,9 @@ export default function Home() {
             <Link href="/" className={styles.navLink}>首页</Link>
             <Link href="/features" className={styles.navLink}>功能</Link>
             <Link href="/dashboard" className={styles.navLink}>仪表盘</Link>
+            <Link href="/ai-advisor" className={styles.navLink}>
+              <RobotOutlined /> AI顾问
+            </Link>
             <Link href="/about" className={styles.navLink}>关于</Link>
             
             <div className={styles.authButtons}>
@@ -185,6 +190,15 @@ export default function Home() {
                 className={styles.primaryCTA}
               >
                 免费开始测评
+              </Button>
+              
+              <Button 
+                size="large" 
+                icon={<RobotOutlined />}
+                className={styles.secondaryCTA}
+                onClick={() => router.push('/ai-advisor')}
+              >
+                AI 职业顾问
               </Button>
               
               <Button 
@@ -538,7 +552,7 @@ export default function Home() {
             
             <div className={styles.footerBottom}>
               <div className={styles.copyright}>
-                © 2026 大学生生涯规划系统. 版权所有.
+                © 2026 大学生生涯规划系统。版权所有.
               </div>
               <div className={styles.footerMeta}>
                 <span>版本 1.0.0</span>

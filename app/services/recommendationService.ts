@@ -224,3 +224,118 @@ class RecommendationService {
 }
 
 export const recommendationService = new RecommendationService();
+
+// ========== AI 对话服务 ==========
+
+interface AIChatResponse {
+  success: boolean;
+  data?: {
+    reply: string;
+    model: string;
+    usage?: {
+      input_tokens: number;
+      output_tokens: number;
+      total_tokens: number;
+    };
+  };
+  error?: string;
+}
+
+interface ChatMessage {
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+}
+
+interface AICareerAdviceResponse {
+  success: boolean;
+  data?: {
+    reply: string;
+    student_profile: {
+      major: string;
+      grade: string;
+      skills_count: number;
+    };
+  };
+  error?: string;
+}
+
+class AIService {
+  private baseUrl = 'http://localhost:5000/api';
+
+  private getHeaders(requireAuth: boolean = true) {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json'
+    };
+    if (requireAuth) {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+    }
+    return headers;
+  }
+
+  // 通用 AI 对话
+  async chat(message: string, context: ChatMessage[] = []): Promise<AIChatResponse> {
+    try {
+      const payload = {
+        message,
+        context
+      };
+
+      const response = await fetch(`${this.baseUrl}/ai/chat`, {
+        method: 'POST',
+        headers: this.getHeaders(false), // 不需要认证
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'AI 对话失败');
+      }
+
+      return {
+        success: true,
+        data: data.data
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        error: error.message || '网络连接错误'
+      };
+    }
+  }
+
+  // 个性化职业建议（需要登录）
+  async getCareerAdvice(question: string, studentId?: string): Promise<AICareerAdviceResponse> {
+    try {
+      const payload = {
+        question,
+        student_id: studentId
+      };
+
+      const response = await fetch(`${this.baseUrl}/ai/career-advice`, {
+        method: 'POST',
+        headers: this.getHeaders(true), // 需要认证
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || '获取职业建议失败');
+      }
+
+      return {
+        success: true,
+        data: data.data
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        error: error.message || '网络连接错误'
+      };
+    }
+  }
+}
+
+export const aiService = new AIService();
