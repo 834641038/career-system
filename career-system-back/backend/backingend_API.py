@@ -8,6 +8,9 @@ from sample_data import (
     get_course_catalog, CAREER_PATHS_DATABASE
 )
 import logging
+import os
+import requests
+from dotenv import load_dotenv
 
 # 配置日志
 logging.basicConfig(
@@ -26,13 +29,18 @@ try:
     try:
         from flask_cors import CORS
     except ImportError:
-        print("警告: flask-cors未安装，请运行: pip install flask-cors")
+        print("警告：flask-cors 未安装，请运行：pip install flask-cors")
         raise
     FLASK_AVAILABLE = True
 except ImportError:
     FLASK_AVAILABLE = False
-    print("警告: Flask未安装，API功能不可用。请运行: pip install flask flask-cors pyjwt")
+    print("警告：Flask 未安装，API 功能不可用。请运行：pip install flask flask-cors pyjwt")
 
+# 加载环境变量
+load_dotenv()
+
+# 导入数据库接口
+from database_interface import db
 
 def hash_password(password):
     """对密码进行哈希处理"""
@@ -43,8 +51,7 @@ def verify_password(plain_password, hashed_password):
     return hash_password(plain_password) == hashed_password
 
 def get_student_id_from_user(user_id):
-    """根据用户ID获取关联的学生ID"""
-    from database_interface import db
+    """根据用户 ID 获取关联的学生 ID"""
     user = db.get_user_by_id(user_id)
     if user:
         return user.get('student_id')
@@ -69,14 +76,20 @@ def log_request(f):
 if FLASK_AVAILABLE:
     app = Flask(__name__)
     CORS(app)
-    # 设置JWT密钥
-    app.config['SECRET_KEY'] = 'your-secret-key-change-this-in-production'  # JWT加密密钥，生产环境中应更换为安全密钥
+    # 设置 JWT 密钥
+    app.config['SECRET_KEY'] = 'your-secret-key-change-this-in-production'
+    
+    # 确保 JSON 响应使用 UTF-8 编码
+    app.config['JSON_AS_ASCII'] = False
 
     # 初始化推荐系统
     internship_recommender = InternshipRecommendationSystem()
     course_recommender = CourseRecommendationSystem()
     career_planner = CareerPathPlanner(CAREER_PATHS_DATABASE)
 
+    # 通义千问 AI 配置
+    DASHSCOPE_API_KEY = os.getenv('DASHSCOPE_API_KEY')
+    DASHSCOPE_ENDPOINT = os.getenv('DASHSCOPE_ENDPOINT', 'https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation')
     # 用户认证装饰器
     def token_required(f):
         @wraps(f)
@@ -86,7 +99,6 @@ if FLASK_AVAILABLE:
                 logger.warning("Missing authorization token")
                 return jsonify({'success': False, 'error': '未提供认证令牌'}), 401
             
-            # 移除 "Bearer " 前缀
             if token.startswith('Bearer '):
                 token = token[7:]
             
@@ -109,9 +121,220 @@ if FLASK_AVAILABLE:
         """健康检查端点"""
         return jsonify({
             'success': True,
-            'message': 'API服务运行正常',
+            'message': 'API 服务运行正常',
             'timestamp': datetime.datetime.now().isoformat()
         })
+
+    @app.route('/api/ai/chat', methods=['POST'])
+    @log_request
+    def ai_chat():
+        """
+        通义千问 AI 对话接口
+        Request Body:
+        {
+            "message": "如何做职业规划？",
+            "context": []
+        }
+        """
+        try:
+            if not DASHSCOPE_API_KEY:
+                logger.error("未配置通义千问 API密钥")
+                return jsonify({
+                    'success': False,
+                    'error': 'AI 服务未配置，请联系管理员'
+                }), 500
+            
+            data = request.json
+            if not data:
+                return jsonify({
+                    'success': False,
+                    'error': '请求体不能为空'
+                }), 400
+            
+            user_message = data.get('message', '')
+            context = data.get('context', [])
+            
+            if not user_message:
+                return jsonify({
+                    'success': False,
+                    'error': '消息内容不能为空'
+                }), 400
+            
+            messages = context.copy()
+            messages.append({"role": "user", "content": user_message})
+            
+            headers = {
+                'Authorization': f'Bearer {DASHSCOPE_API_KEY}',
+                'Content-Type': 'application/json'
+            }
+            
+            payload = {
+                "model": "qwen-max",
+                "input": {
+                    "messages": messages
+                },
+                "parameters": {
+                    "max_tokens": 1024,
+                    "temperature": 0.7,
+                    "result_format": "message"
+                }
+            }
+            
+            logger.info(f"Calling Qwen API with message: {user_message}")
+            
+            response = requests.post(
+                DASHSCOPE_ENDPOINT,
+                headers=headers,
+                json=payload,
+                timeout=30
+            )
+            
+            response.raise_for_status()
+            result = response.json()
+            
+            if result.get('output') and result['output'].get('choices'):
+                ai_reply = result['output']['choices'][0]['message']['content']
+                logger.info(f"AI reply generated: {ai_reply[:100]}...")
+                
+                return jsonify({
+                    'success': True,
+                    'data': {
+                        'reply': ai_reply,
+                        'model': 'qwen-max',
+                        'usage': result.get('usage', {})
+                    }
+                })
+            else:
+                logger.error(f"Invalid response from Qwen API: {result}")
+                return jsonify({
+                    'success': False,
+                    'error': 'AI 服务返回格式异常'
+                }), 500
+                
+        except requests.exceptions.Timeout:
+            logger.error("AI request timeout")
+            return jsonify({
+                'success': False,
+                'error': 'AI 服务响应超时，请稍后重试'
+            }), 504
+        except requests.exceptions.RequestException as e:
+            logger.error(f"AI request failed: {str(e)}")
+            return jsonify({
+                'success': False,
+                'error': f'AI 服务调用失败：{str(e)}'
+            }), 500
+        except Exception as e:
+            logger.error(f"AI chat error: {str(e)}")
+            return jsonify({
+                'success': False,
+                'error': str(e)
+            }), 500
+
+    @app.route('/api/ai/career-advice', methods=['POST'])
+    @token_required
+    @log_request
+    def ai_career_advice(current_user_id):
+        """
+        基于用户画像的 AI 职业建议（需要登录）
+        Request Body:
+        {
+            "question": "我适合什么工作？",
+            "student_id": "2024001"
+        }
+        """
+        try:
+            data = request.json
+            if not data:
+                return jsonify({
+                    'success': False,
+                    'error': '请求体不能为空'
+                }), 400
+            
+            student_id = data.get('student_id') or get_student_id_from_user(current_user_id)
+            question = data.get('question', '')
+            
+            if not student_id:
+                return jsonify({
+                    'success': False,
+                    'error': '未找到学生信息'
+                }), 400
+            
+            student = get_student_profile(student_id)
+            if not student:
+                return jsonify({
+                    'success': False,
+                    'error': f'学生 ID {student_id} 不存在'
+                }), 404
+            
+            system_prompt = f"""你是一位专业的职业规划顾问。请根据以下学生信息提供职业建议：
+- 专业：{student.get('major', '未知')}
+- 年级：{student.get('grade', '未知')}
+- 技能：{', '.join(student.get('skills', []))}
+- 兴趣：{', '.join(student.get('interests', []))}
+- 价值观：{', '.join(student.get('values', []))}
+
+学生的问题是：{question}
+
+请用专业、鼓励的语气给出具体建议。"""
+            
+            messages = [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": question}
+            ]
+            
+            headers = {
+                'Authorization': f'Bearer {DASHSCOPE_API_KEY}',
+                'Content-Type': 'application/json'
+            }
+            
+            payload = {
+                "model": "qwen-max",
+                "input": {
+                    "messages": messages
+                },
+                "parameters": {
+                    "max_tokens": 1024,
+                    "temperature": 0.7,
+                    "result_format": "message"
+                }
+            }
+            
+            response = requests.post(
+                DASHSCOPE_ENDPOINT,
+                headers=headers,
+                json=payload,
+                timeout=30
+            )
+            
+            response.raise_for_status()
+            result = response.json()
+            
+            if result.get('output') and result['output'].get('choices'):
+                ai_reply = result['output']['choices'][0]['message']['content']
+                
+                return jsonify({
+                    'success': True,
+                    'data': {
+                        'reply': ai_reply,
+                        'student_profile': {
+                            'major': student.get('major'),
+                            'grade': student.get('grade'),
+                            'skills_count': len(student.get('skills', []))
+                        }
+                    }
+                })
+            else:
+                return jsonify({
+                    'success': False,
+                    'error': 'AI 服务返回格式异常'
+                }), 500
+                
+        except Exception as e:
+            logger.error(f"AI career advice error: {str(e)}")
+            return jsonify({
+                'success': False,
+                'error': str(e)
+            }), 500
 
     @app.route('/api/auth/register', methods=['POST'])
     @log_request
@@ -139,23 +362,11 @@ if FLASK_AVAILABLE:
                     'error': '用户名和密码不能为空'
                 }), 400
             
-            from database_interface import db
-            # 从数据库获取用户信息
-            user = db.get_user_by_student_name(username)
-            if not user:
-                user = db.get_user_by_email(username)  # 支持使用邮箱登录
-            # 检查用户是否存在且密码正确
-            if not user or not verify_password(password, user.get('password')):
-                return jsonify({
-                    'success': False,
-                    'error': '用户名或密码错误'
-                }), 401
-            
-            # 创建新用户
+            # 创建新用户，使用与数据库接口一致的字段名
             user_data = {
-                'username': username,
-                'password': hash_password(password),
-                'email': email,
+                'user_name': username,
+                'password_hash': hash_password(password),
+                'user_email': email,
                 'student_id': student_id,
                 'created_at': datetime.datetime.now(),
                 'last_login': None
@@ -204,11 +415,16 @@ if FLASK_AVAILABLE:
                     'error': '用户名和密码不能为空'
                 }), 400
             
-            from database_interface import db
-            # 从数据库获取用户信息
+            # 从数据库获取用户信息，支持用户名或邮箱登录
             user = db.get_user_by_username(username)
-            if not user or not verify_password(password, user.get('password')):
-                logger.warning(f"Invalid login attempt for user: {username}")
+            if not user:
+                user = db.get_user_by_email(username)
+            # 支持旧字段和新字段名称
+            stored_hash = None
+            if user:
+                stored_hash = user.get('password_hash') or user.get('password')
+            if not user or not verify_password(password, stored_hash):
+                logger.warning(f"Invalid login attempt for user/email: {username}")
                 return jsonify({
                     'success': False,
                     'error': '用户名或密码错误'
@@ -242,6 +458,7 @@ if FLASK_AVAILABLE:
                 'error': str(e)
             }), 500
 
+   
     @app.route('/api/recommendations/career-paths', methods=['POST'])
     @token_required
     @log_request

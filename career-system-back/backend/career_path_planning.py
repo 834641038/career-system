@@ -8,12 +8,16 @@ class CareerPathPlanner:
     def __init__(self, career_paths_db=None):
         self.career_paths_db = career_paths_db or CAREER_PATHS_DATABASE or career_paths_database
     
-    def recommend_career_paths(self, student, top_n=3):
+    def recommend_career_paths(self, student, top_n=5):
         """
         为学生推荐职业发展路径
         
+        Args:
+            student: 学生信息字典
+            top_n: 返回的推荐数量，默认为 5 条
+            
         Returns:
-            list: 推荐的职业路径及详细规划
+            list: 推荐的职业路径及详细规划，按匹配度降序排列
         """
         # 初始化一个空列表，用于存储各职业路径的评分信息
         path_scores = []
@@ -25,14 +29,14 @@ class CareerPathPlanner:
             
             # 将当前职业路径的相关信息添加到评分列表中
             path_scores.append({
-                'path_id': path['path_id'],        # 职业路径ID
+                'path_id': path['path_id'],        # 职业路径 ID
                 'path_name': path['path_name'],    # 职业路径名称
                 'fit_score': score,                # 匹配度分数
                 'path_details': path,              # 职业路径详细信息
                 'personalized_plan': self._generate_personalized_plan(student, path)  # 个性化发展计划
             })
         
-        # 按适合度排序
+        # 按适合度排序（从高到低）
         path_scores.sort(key=lambda x: x['fit_score'], reverse=True)
         
         return path_scores[:top_n]

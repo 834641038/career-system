@@ -270,6 +270,11 @@ class DatabaseInterface:
         user_id = str(uuid.uuid4())
         user_data['user_id'] = user_id
 
+        # 兼容旧/新字段名
+        user_name = user_data.get('user_name') or user_data.get('username')
+        password_hash = user_data.get('password_hash') or user_data.get('password')
+        user_email = user_data.get('user_email') or user_data.get('email')
+
         if self.use_sqlserver:
             # 向SQL Server数据库插入新用户
             query = """
@@ -277,9 +282,9 @@ class DatabaseInterface:
             VALUES (?, ?, ?, ?, ?, ?)
             """
             params = (
-                user_data.get('username'),
-                user_data.get('password'),
-                user_data.get('email'),
+                user_name,
+                password_hash,
+                user_email,
                 user_data.get('user_status', 1),
                 user_data.get('created_at', datetime.now()),
                 user_data.get('user_remark')
@@ -287,6 +292,10 @@ class DatabaseInterface:
             return self._execute_update(query, params) > 0
         else:
             # 向内存数据添加新用户
+            # 保留原始数据结构，但确保常用字段同时存在
+            user_data['user_name'] = user_name
+            user_data['password_hash'] = password_hash
+            user_data['user_email'] = user_email
             self.users[user_id] = user_data
             return True
 
