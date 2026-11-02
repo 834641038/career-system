@@ -16,3 +16,5 @@ venv/
 /regression_report.txt
 /*.png
 /*.jpg
+
+!.env.example
