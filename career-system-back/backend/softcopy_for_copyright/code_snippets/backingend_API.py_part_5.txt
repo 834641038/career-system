@@ -1,0 +1,53 @@
+# Source: backingend_API.py
+# Lines 201-250
+
+                return jsonify({'success': False, 'error': '令牌已过期'}), 401
+            except jwt.InvalidTokenError:
+                logger.warning("Invalid token")
+                return jsonify({'success': False, 'error': '无效的令牌'}), 401
+            
+            return f(current_user_id, *args, **kwargs)
+        return decorated
+
+    @app.route('/api/health', methods=['GET'])
+    def health_check():
+        """健康检查端点"""
+        return jsonify({
+            'success': True,
+            'message': 'API 服务运行正常',
+            'timestamp': datetime.datetime.now().isoformat()
+        })
+
+    @app.route('/api/ai/chat', methods=['POST'])
+    @log_request
+    def ai_chat():
+        """
+        通义千问 AI 对话接口
+        Request Body:
+        {
+            "message": "如何做职业规划？",
+            "context": []
+        }
+        """
+        try:
+            data = request.json
+            if not data:
+                return jsonify({
+                    'success': False,
+                    'error': '请求体不能为空'
+                }), 400
+            
+            user_message = data.get('message', '')
+            context = data.get('context', [])
+            
+            if not user_message:
+                return jsonify({
+                    'success': False,
+                    'error': '消息内容不能为空'
+                }), 400
+            
+            messages = context.copy()
+            messages.append({"role": "user", "content": user_message})
+            
+            if not DASHSCOPE_API_KEY:
+                logger.warning("未配置通义千问 API密钥，使用兜底回复")

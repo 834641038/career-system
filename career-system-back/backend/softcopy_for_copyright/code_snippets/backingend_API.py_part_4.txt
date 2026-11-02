@@ -1,0 +1,53 @@
+# Source: backingend_API.py
+# Lines 151-200
+
+
+    # 兼容其他常见输出字段
+    if isinstance(result.get('text'), str):
+        return result.get('text')
+    if isinstance(result.get('reply'), str):
+        return result.get('reply')
+    if isinstance(result.get('content'), str):
+        return result.get('content')
+    
+    # 最后尝试解析为纯字符串
+    if isinstance(output, str):
+        return output
+    return None
+
+
+if FLASK_AVAILABLE:
+    app = Flask(__name__)
+    CORS(app)
+    # 设置 JWT 密钥
+    app.config['SECRET_KEY'] = 'your-secret-key-change-this-in-production'
+    
+    # 确保 JSON 响应使用 UTF-8 编码
+    app.config['JSON_AS_ASCII'] = False
+
+    # 初始化推荐系统
+    internship_recommender = InternshipRecommendationSystem()
+    course_recommender = CourseRecommendationSystem()
+    career_planner = CareerPathPlanner(CAREER_PATHS_DATABASE)
+
+    # 通义千问 AI 配置
+    DASHSCOPE_API_KEY = os.getenv('DASHSCOPE_API_KEY')
+    DASHSCOPE_ENDPOINT = os.getenv('DASHSCOPE_ENDPOINT', 'https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation')
+    # 用户认证装饰器
+    def token_required(f):
+        @wraps(f)
+        def decorated(*args, **kwargs):
+            token = request.headers.get('Authorization')
+            if not token:
+                logger.warning("Missing authorization token")
+                return jsonify({'success': False, 'error': '未提供认证令牌'}), 401
+            
+            if token.startswith('Bearer '):
+                token = token[7:]
+            
+            try:
+                data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+                current_user_id = data['user_id']
+                logger.info(f"User authenticated: {current_user_id}")
+            except jwt.ExpiredSignatureError:
+                logger.warning("Token expired")

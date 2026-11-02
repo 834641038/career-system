@@ -1,0 +1,28 @@
+# Source: internship_recommender.py
+# Lines 351-375
+
+            reasons.append("您的核心技能基本满足要求")
+        
+        if scores['academic_score'] >= 85:
+            reasons.append("您的学业表现优秀")
+        
+        if scores['preference_score'] >= 75:
+            reasons.append("岗位地点和公司类型符合您的偏好")
+        
+        return reasons
+
+
+if __name__ == "__main__":
+    # 测试代码
+    from sample_data import SAMPLE_STUDENTS, SAMPLE_JOBS
+    
+    recommender = InternshipRecommendationSystem()
+    if SAMPLE_STUDENTS and SAMPLE_JOBS:
+        recommendations = recommender.recommend_internships(
+            SAMPLE_STUDENTS[0], SAMPLE_JOBS, top_n=5
+        )
+        
+        for i, rec in enumerate(recommendations, 1):
+            print(f"\n{i}. {rec['company']} - {rec['position']}")
+            print(f"   匹配度: {rec['match_score']:.2f}分")
+            print(f"   推荐理由: {', '.join(rec['reasons'])}")

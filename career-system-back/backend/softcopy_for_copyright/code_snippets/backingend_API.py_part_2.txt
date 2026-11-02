@@ -1,0 +1,53 @@
+# Source: backingend_API.py
+# Lines 51-100
+
+def verify_password(plain_password, hashed_password):
+    """验证密码是否匹配哈希值"""
+    return hash_password(plain_password) == hashed_password
+
+def get_student_id_from_user(user_id):
+    """根据用户 ID 获取关联的学生 ID"""
+    user = db.get_user_by_id(user_id)
+    if user:
+        return user.get('student_id')
+    return None
+
+# 添加请求日志装饰器
+def log_request(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        logger.info(f"Request: {request.method} {request.url}")
+        logger.info(f"Headers: {dict(request.headers)}")
+        if request.is_json:
+            logger.info(f"Body: {request.get_json()}")
+        response = f(*args, **kwargs)
+        if isinstance(response, tuple):
+            logger.info(f"Response: {response[1]} - {response[0].get_json() if hasattr(response[0], 'get_json') else response[0]}")
+        else:
+            logger.info(f"Response: {response.status_code} - {response.get_json() if hasattr(response, 'get_json') else response}")
+        return response
+    return decorated_function
+
+
+def _generate_fallback_ai_reply(user_message: str) -> str:
+    """当外部 AI 服务不可用时，生成一个简短兜底推荐理由。"""
+    path_name = '该职业'
+    fit_score = ''
+    holland_codes = ''
+    average_salary = ''
+    growth_potential = ''
+    required_education = ''
+    typical_companies = ''
+
+    for line in user_message.splitlines():
+        if line.startswith('职业名称：'):
+            path_name = line.split('：', 1)[1].strip()
+        elif line.startswith('匹配度：'):
+            fit_score = line.split('：', 1)[1].strip()
+        elif line.startswith('霍兰德代码：'):
+            holland_codes = line.split('：', 1)[1].strip()
+        elif line.startswith('平均薪资：'):
+            average_salary = line.split('：', 1)[1].strip()
+        elif line.startswith('发展前景：'):
+            growth_potential = line.split('：', 1)[1].strip()
+        elif line.startswith('学历要求：'):

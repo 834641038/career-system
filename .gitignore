@@ -1,0 +1,18 @@
+# Python 缓存与虚拟环境
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 环境变量（含 API 密钥，禁止提交）
+.env
+.env.*
+
+# 本地诊断产物（截图/日志）
+/backend_check.txt
+/plan_error.txt
+/plan_profile_check.txt
+/regression_log.txt
+/regression_report.txt
+/*.png
+/*.jpg

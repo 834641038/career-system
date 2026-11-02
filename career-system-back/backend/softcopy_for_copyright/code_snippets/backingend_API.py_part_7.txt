@@ -1,0 +1,53 @@
+# Source: backingend_API.py
+# Lines 301-350
+
+                })
+            else:
+                logger.error(f"Invalid response from Qwen API: {json.dumps(result, ensure_ascii=False)[:1200]}")
+                fallback_reply = _generate_fallback_ai_reply(user_message)
+                return jsonify({
+                    'success': True,
+                    'data': {
+                        'reply': fallback_reply,
+                        'model': 'fallback',
+                        'usage': {}
+                    }
+                })
+                
+        except requests.exceptions.Timeout:
+            logger.error("AI request timeout")
+            fallback_reply = _generate_fallback_ai_reply(user_message)
+            return jsonify({
+                'success': True,
+                'data': {
+                    'reply': fallback_reply,
+                    'model': 'fallback',
+                    'usage': {}
+                }
+            })
+        except requests.exceptions.RequestException as e:
+            logger.error(f"AI request failed: {str(e)}")
+            fallback_reply = _generate_fallback_ai_reply(user_message)
+            return jsonify({
+                'success': True,
+                'data': {
+                    'reply': fallback_reply,
+                    'model': 'fallback',
+                    'usage': {}
+                }
+            })
+        except Exception as e:
+            logger.error(f"AI chat error: {str(e)}")
+            return jsonify({
+                'success': False,
+                'error': str(e)
+            }), 500
+
+    @app.route('/api/ai/career-advice', methods=['POST'])
+    @token_required
+    @log_request
+    def ai_career_advice(current_user_id):
+        """
+        基于用户画像的 AI 职业建议（需要登录）
+        Request Body:
+        {

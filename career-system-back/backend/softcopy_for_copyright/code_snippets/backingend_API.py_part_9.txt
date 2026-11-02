@@ -1,0 +1,53 @@
+# Source: backingend_API.py
+# Lines 401-450
+
+                "model": "qwen-max",
+                "input": {
+                    "messages": messages
+                },
+                "parameters": {
+                    "max_tokens": 1024,
+                    "temperature": 0.7,
+                    "result_format": "message"
+                }
+            }
+            
+            response = requests.post(
+                DASHSCOPE_ENDPOINT,
+                headers=headers,
+                json=payload,
+                timeout=30
+            )
+            
+            response.raise_for_status()
+            result = response.json()
+            
+            if result.get('output') and result['output'].get('choices'):
+                ai_reply = result['output']['choices'][0]['message']['content']
+                
+                return jsonify({
+                    'success': True,
+                    'data': {
+                        'reply': ai_reply,
+                        'student_profile': {
+                            'major': student.get('major'),
+                            'grade': student.get('grade'),
+                            'skills_count': len(student.get('skills', []))
+                        }
+                    }
+                })
+            else:
+                return jsonify({
+                    'success': False,
+                    'error': 'AI 服务返回格式异常'
+                }), 500
+                
+        except Exception as e:
+            logger.error(f"AI career advice error: {str(e)}")
+            return jsonify({
+                'success': False,
+                'error': str(e)
+            }), 500
+
+    @app.route('/api/auth/register', methods=['POST'])
+    @log_request

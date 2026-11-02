@@ -1,0 +1,52 @@
+# Source: internship_recommender.py
+# Lines 201-250
+
+            break
+    else:
+        major_score = 60  # 专业不完全匹配
+    
+    score += major_score * 0.3
+    
+    return score
+
+
+def preference_match_score(student_preferences, job_details):
+    """
+    计算学生偏好与岗位的匹配度
+    Args:
+        student_preferences (dict): 学生的偏好设置，包含工作地点、公司规模、工作生活平衡等
+        job_details (dict): 岗位详细信息，包含地点、公司规模、行业、工作生活平衡等
+    Returns:
+        float: 匹配度得分，范围在0-100之间
+    """
+    score = 0  # 初始化总分为0
+    
+    # 地点偏好（35%权重）
+    job_location = job_details.get('location', '')  # 获取岗位地点，若不存在则为空字符串
+    if job_location in student_preferences.get('work_location', []):  # 检查岗位地点是否在学生偏好地点中
+        location_score = 100  # 完全匹配
+    else:
+        location_score = 40  # 部分匹配
+    score += location_score * 0.35  # 按权重计算地点得分并加入总分
+    
+    # 公司规模偏好（25%权重）
+    company_size = job_details.get('company_size', '')  # 获取公司规模，若不存在则为空字符串
+    if company_size in student_preferences.get('company_size', []):  # 检查公司规模是否在学生偏好中
+        size_score = 100  # 完全匹配
+    else:
+        size_score = 60  # 部分匹配
+    score += size_score * 0.25  # 按权重计算公司规模得分并加入总分
+    
+    # 行业偏好（25%权重）
+    # 需要从岗位所属行业判断
+    industry_score = 70  # 默认中等匹配
+    score += industry_score * 0.25  # 按权重计算行业得分并加入总分
+    
+    # 工作生活平衡（15%权重）
+    wlb_preference = student_preferences.get('work_life_balance', 5)  # 获取学生对工作生活平衡的偏好，默认为5
+    # 假设根据公司和岗位评估WLB得分
+    job_wlb = job_details.get('work_life_balance', 7)  # 从历史数据或公司评价获取岗位工作生活平衡得分，默认为7
+    wlb_score = max(0, 100 - abs(wlb_preference - job_wlb) * 10)  # 计算工作生活平衡匹配得分，最小为0
+    score += wlb_score * 0.15  # 按权重计算工作生活平衡得分并加入总分
+    
+    return score  # 返回最终匹配度得分

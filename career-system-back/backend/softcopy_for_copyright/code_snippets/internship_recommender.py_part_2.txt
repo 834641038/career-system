@@ -1,0 +1,53 @@
+# Source: internship_recommender.py
+# Lines 51-100
+
+    similarity = cosine_similarity(
+        student_vector.reshape(1, -1),
+        job_vector.reshape(1, -1)
+    )[0][0]
+    
+    # 转换为0-100分
+    return similarity * 100
+
+
+def holland_weighted_distance(student_holland, job_holland):
+    """
+    使用加权欧氏距离计算匹配度
+    距离越小，匹配度越高
+    """
+    holland_types = ['R', 'I', 'A', 'S', 'E', 'C']
+    
+    distance = 0
+    for t in holland_types:
+        student_score = student_holland.get(t, 0)
+        job_weight = job_holland.get(t, 0)
+        job_score = job_weight * 100
+        
+        # 加权距离
+        distance += job_weight * (student_score - job_score) ** 2
+    
+    distance = np.sqrt(distance)
+    
+    # 转换为匹配度得分（距离越小，得分越高）
+    max_distance = 100  # 理论最大距离
+    match_score = (1 - distance / max_distance) * 100
+    
+    return max(0, match_score)
+
+
+def skill_match_score(student_skills, job_requirements):
+    """
+    计算技能匹配度
+    
+    Args:
+        student_skills: dict, 学生技能及等级
+        job_requirements: dict, 岗位技能要求
+            {
+                '必需技能': {'Python': 3, 'SQL': 3},
+                '加分技能': {'机器学习': 2}
+            }
+    
+    Returns:
+        float: 技能匹配度得分 (0-100)
+    """
+    # 必需技能匹配部分

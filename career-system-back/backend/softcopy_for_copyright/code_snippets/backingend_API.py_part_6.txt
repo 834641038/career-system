@@ -1,0 +1,53 @@
+# Source: backingend_API.py
+# Lines 251-300
+
+                fallback_reply = _generate_fallback_ai_reply(user_message)
+                return jsonify({
+                    'success': True,
+                    'data': {
+                        'reply': fallback_reply,
+                        'model': 'fallback',
+                        'usage': {}
+                    }
+                })
+            
+            headers = {
+                'Authorization': f'Bearer {DASHSCOPE_API_KEY}',
+                'Content-Type': 'application/json'
+            }
+            
+            payload = {
+                "model": "qwen-max",
+                "input": {
+                    "messages": messages
+                },
+                "parameters": {
+                    "max_tokens": 1024,
+                    "temperature": 0.7,
+                    "result_format": "message"
+                }
+            }
+            
+            logger.info(f"Calling Qwen API with message: {user_message}")
+            
+            response = requests.post(
+                DASHSCOPE_ENDPOINT,
+                headers=headers,
+                json=payload,
+                timeout=30
+            )
+            
+            response.raise_for_status()
+            result = response.json()
+            logger.info(f"Qwen API raw response: {json.dumps(result, ensure_ascii=False)[:1200]}")
+            
+            ai_reply = _extract_ai_reply(result)
+            if ai_reply:
+                logger.info(f"AI reply generated: {ai_reply[:100]}...")
+                return jsonify({
+                    'success': True,
+                    'data': {
+                        'reply': ai_reply,
+                        'model': 'qwen-max',
+                        'usage': result.get('usage', {})
+                    }

@@ -1,0 +1,53 @@
+# Source: internship_recommender.py
+# Lines 151-200
+
+        bonus_score = (bonus_score / len(bonus)) * 100
+    else:
+        bonus_score = 0  # 如果没有加分技能要求，则得0分
+    
+    # 综合得分
+    total_score = required_score * required_weight + bonus_score * bonus_weight
+    
+    return min(100, total_score)
+
+
+def academic_match_score(student_profile, job_requirements):
+    """
+    计算学业表现匹配度
+    """
+    score = 0
+    
+    # GPA匹配（40%权重）
+    student_gpa = student_profile['basic_info']['gpa']
+    min_gpa = job_requirements.get('min_gpa', 0)
+    
+    if min_gpa > 0:
+        if student_gpa >= min_gpa:
+            gpa_score = min(100, (student_gpa / 4.0) * 100)
+        else:
+            gpa_score = (student_gpa / min_gpa) * 60  # 未达标打折
+    else:
+        gpa_score = (student_gpa / 4.0) * 100
+    
+    score += gpa_score * 0.4
+    
+    # 年级匹配（30%权重）
+    student_grade = student_profile['basic_info']['grade']
+    grade_range = job_requirements.get('grade_range', [0, 4])
+    
+    if grade_range[0] <= student_grade <= grade_range[1]:
+        grade_score = 100
+    else:
+        grade_score = 50  # 年级不匹配减分
+    
+    score += grade_score * 0.3
+    
+    # 专业匹配（30%权重）
+    student_major = student_profile['basic_info']['major']
+    preferred_majors = job_requirements.get('preferred_majors', [])
+    
+    # 使用关键词匹配
+    major_score = 0
+    for preferred in preferred_majors:
+        if preferred in student_major or student_major in preferred:
+            major_score = 100

@@ -1,0 +1,53 @@
+# Source: internship_recommender.py
+# Lines 1-50
+
+#实习岗位推荐系统
+from sample_data import *
+import numpy as np
+
+# 简单实现 cosine_similarity，以避免外部依赖 scikit-learn
+def cosine_similarity(a, b):
+    a = np.asarray(a)
+    b = np.asarray(b)
+    # 支持 1-D 或 2-D 输入，返回与 sklearn 相同的 2-D 结果
+    if a.ndim == 1:
+        a = a.reshape(1, -1)
+    if b.ndim == 1:
+        b = b.reshape(1, -1)
+    # 逐行计算余弦相似度（这里输入通常是两条向量）
+    result = np.zeros((a.shape[0], b.shape[0]), dtype=float)
+    for i in range(a.shape[0]):
+        for j in range(b.shape[0]):
+            ai = a[i]
+            bj = b[j]
+            denom = (np.linalg.norm(ai) * np.linalg.norm(bj))
+            if denom == 0:
+                result[i, j] = 0.0
+            else:
+                result[i, j] = float(np.dot(ai, bj) / denom)
+    return result
+
+
+def holland_match_score(student_holland, job_holland):
+    """
+    计算学生与岗位的霍兰德类型匹配度（使用余弦相似度）
+    
+    Args:
+        student_holland: dict, 学生的六维霍兰德得分 {'R': 45, 'I': 85, ...}
+        job_holland: dict, 岗位的霍兰德权重 {'I': 0.7, 'C': 0.2, 'E': 0.1}
+    
+    Returns:
+        float: 匹配度得分 (0-100)
+    """
+    # 将字典转为向量（按RIASEC顺序）
+    holland_types = ['R', 'I', 'A', 'S', 'E', 'C']
+    
+    student_vector = np.array([student_holland.get(t, 0) for t in holland_types])
+    
+    # 岗位向量：将权重转换为100分制
+    job_vector = np.zeros(6)
+    for t, weight in job_holland.items():
+        idx = holland_types.index(t)
+        job_vector[idx] = weight * 100
+    
+    # 计算余弦相似度

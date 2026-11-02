@@ -1,0 +1,53 @@
+# Source: internship_recommender.py
+# Lines 101-150
+
+    required = job_requirements.get('必需技能', {})  # 获取必需技能要求
+    required_score = 0  # 初始化必需技能得分
+    required_weight = 0.7  # 必需技能权重
+    
+    # 遍历所有必需技能
+    for skill, required_level in required.items():
+        # 获取学生技能等级
+        student_level = 0
+        if skill in student_skills:
+            # 处理技能等级可能是字典的情况
+            if isinstance(student_skills[skill], dict):
+                student_level = student_skills[skill].get('level', 0)
+            else:
+                student_level = student_skills[skill]
+        
+        # 计算技能得分
+        if student_level >= required_level:
+            # 满足要求得满分，超过要求额外加分
+            required_score += 1 + 0.1 * (student_level - required_level)
+        else:
+            # 未达到要求，按比例计分
+            required_score += student_level / required_level * 0.6 if required_level > 0 else 0
+    
+    # 计算必需技能平均分
+    if len(required) > 0:
+        required_score = (required_score / len(required)) * 100
+    else:
+        required_score = 100  # 如果没有必需技能要求，则得满分
+    
+    # 加分技能匹配部分
+    bonus = job_requirements.get('加分技能', {})  # 获取加分技能要求
+    bonus_score = 0  # 初始化加分技能得分
+    bonus_weight = 0.3  # 加分技能权重
+    
+    # 遍历所有加分技能
+    for skill, required_level in bonus.items():
+        student_level = 0
+        if skill in student_skills:
+            # 处理技能等级可能是字典的情况
+            if isinstance(student_skills[skill], dict):
+                student_level = student_skills[skill].get('level', 0)
+            else:
+                student_level = student_skills[skill]
+        
+        # 计算加分技能得分
+        if student_level >= required_level:
+            bonus_score += 1
+    
+    # 计算加分技能平均分
+    if len(bonus) > 0:

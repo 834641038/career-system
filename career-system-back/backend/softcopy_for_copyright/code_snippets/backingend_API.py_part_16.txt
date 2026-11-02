@@ -1,0 +1,41 @@
+# Source: backingend_API.py
+# Lines 751-788
+
+            # 推荐课程
+            course_catalog = get_course_catalog()
+            recommendations = course_recommender.recommend_courses(
+                student, skill_gaps, course_catalog, top_n
+            )
+            
+            logger.info(f"Generated course recommendations for student: {student_id}")
+            
+            return jsonify({
+                'success': True,
+                'data': {
+                    'skill_gaps': skill_gaps,
+                    'course_recommendations': recommendations
+                },
+                'metadata': {
+                    'student_id': student_id,
+                    'target_jobs_count': len(target_job_ids),
+                    'skill_gaps_found': len(skill_gaps),
+                    'courses_recommended': len(recommendations)
+                }
+            })
+        except Exception as e:
+            logger.error(f"Course recommendation error: {str(e)}")
+            return jsonify({
+                'success': False,
+                'error': str(e)
+            }), 500
+
+    # 计划模块和其他API保持不变...
+    # [此处保留原有的计划模块代码]
+
+if __name__ == '__main__':
+    if FLASK_AVAILABLE:
+        logger.info("启动API服务器在 http://localhost:5000")
+        app.run(debug=True, port=5000, host='0.0.0.0')
+    else:
+        print("Flask未安装，无法启动API服务器")
+        print("请安装依赖: pip install flask flask-cors pyjwt")

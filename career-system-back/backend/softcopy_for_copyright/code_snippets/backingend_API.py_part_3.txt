@@ -1,0 +1,53 @@
+# Source: backingend_API.py
+# Lines 101-150
+
+            required_education = line.split('：', 1)[1].strip()
+        elif line.startswith('典型雇主：'):
+            typical_companies = line.split('：', 1)[1].strip()
+
+    return (
+        f"当前AI服务暂时不可用，以下为基于已有路径信息的推荐理由：\n\n"
+        f"职业名称：{path_name}\n"
+        f"匹配度：{fit_score}\n"
+        f"霍兰德代码：{holland_codes}\n"
+        f"平均薪资：{average_salary}\n"
+        f"发展前景：{growth_potential}\n"
+        f"学历要求：{required_education}\n"
+        f"典型雇主：{typical_companies}\n\n"
+        "推荐理由：该职业与您的兴趣和能力倾向具有较好契合，建议继续加强核心技能和项目经验，尤其是与霍兰德代码相匹配的方向。"
+    )
+
+
+def _extract_ai_reply(result):
+    """从通义千问响应中提取 AI 回复内容。"""
+    if not result:
+        return None
+
+    output = result.get('output')
+    if isinstance(output, dict):
+        choices = output.get('choices')
+        if choices and isinstance(choices, list):
+            first_choice = choices[0]
+            if isinstance(first_choice, dict):
+                message = first_choice.get('message')
+                if isinstance(message, dict):
+                    content = message.get('content')
+                    if isinstance(content, str):
+                        return content
+                content = first_choice.get('content')
+                if isinstance(content, str):
+                    return content
+    elif isinstance(output, list):
+        first_item = output[0] if output else None
+        if isinstance(first_item, dict):
+            content_section = first_item.get('content')
+            if isinstance(content_section, list) and len(content_section) > 0:
+                text = content_section[0].get('text')
+                if isinstance(text, str):
+                    return text
+            if isinstance(content_section, str):
+                return content_section
+            if isinstance(first_item.get('message'), dict):
+                content = first_item['message'].get('content')
+                if isinstance(content, str):
+                    return content

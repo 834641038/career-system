@@ -1,0 +1,53 @@
+# Source: internship_recommender.py
+# Lines 251-300
+
+
+class InternshipRecommendationSystem:
+    """实习岗位推荐系统"""
+    
+    def __init__(self, alpha=0.35, beta=0.30, gamma=0.20, delta=0.15):
+        self.alpha = alpha  # 霍兰德权重
+        self.beta = beta    # 技能权重
+        self.gamma = gamma  # 学业权重
+        self.delta = delta  # 偏好权重
+    
+    def calculate_match_score(self, student, job):
+        """计算综合匹配度"""
+        
+        # 1. 霍兰德匹配度
+        holland_score = holland_weighted_distance(
+            student['holland_scores'],
+            job.get('holland_match', {})
+        )
+        
+        # 2. 技能匹配度
+        # 合并所有技能类别
+        all_skills = {}
+        for category, skills in student.get('skills', {}).items():
+            if isinstance(skills, dict):
+                all_skills.update(skills)
+        
+        skill_score = skill_match_score(
+            all_skills,
+            job.get('required_skills', {})
+        )
+        
+        # 3. 学业匹配度
+        academic_score = academic_match_score(
+            student,
+            job.get('requirements', {})
+        )
+        
+        # 4. 偏好匹配度
+        preference_score = preference_match_score(
+            student.get('career_preferences', {}),
+            job.get('job_details', {})
+        )
+        
+        # 综合得分
+        total_score = (
+            self.alpha * holland_score +
+            self.beta * skill_score +
+            self.gamma * academic_score +
+            self.delta * preference_score
+        )

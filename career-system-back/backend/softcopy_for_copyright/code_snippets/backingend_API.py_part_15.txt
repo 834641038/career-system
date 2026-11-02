@@ -1,0 +1,53 @@
+# Source: backingend_API.py
+# Lines 701-750
+
+            return jsonify({
+                'success': False,
+                'error': str(e)
+            }), 500
+
+    @app.route('/api/recommendations/courses', methods=['POST'])
+    @token_required
+    @log_request
+    def get_course_recommendations(current_user_id):
+        """
+        获取课程推荐
+        
+        Request Body:
+        {
+            "student_id": "2024001",
+            "target_jobs": ["J2024001", "J2024002"],
+            "top_n": 5
+        }
+        """
+        try:
+            data = request.json
+            if not data:
+                return jsonify({
+                    'success': False,
+                    'error': '请求体不能为空'
+                }), 400
+                
+            student_id = data.get('student_id') or get_student_id_from_user(current_user_id)
+            target_job_ids = data.get('target_jobs', [])
+            top_n = data.get('top_n', 5)
+            
+            if not student_id:
+                return jsonify({
+                    'success': False,
+                    'error': '未提供学生ID'
+                }), 400
+            
+            student = get_student_profile(student_id)
+            if not student:
+                logger.warning(f"Student not found: {student_id}")
+                return jsonify({
+                    'success': False,
+                    'error': f'学生ID {student_id} 不存在'
+                }), 404
+            
+            target_jobs = get_jobs_by_ids(target_job_ids)
+            
+            # 分析技能缺口
+            skill_gaps = analyze_skill_gap(student, target_jobs)
+            

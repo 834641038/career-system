@@ -1,0 +1,53 @@
+# Source: internship_recommender.py
+# Lines 301-350
+
+        
+        return {
+            'total_score': total_score,
+            'holland_score': holland_score,
+            'skill_score': skill_score,
+            'academic_score': academic_score,
+            'preference_score': preference_score
+        }
+    
+    def recommend_internships(self, student, job_list, top_n=10, min_score=0):
+        """
+        为学生推荐实习岗位
+        
+        Returns:
+            list: 推荐岗位列表，按匹配度降序排列
+        """
+        recommendations = []
+        
+        for job in job_list:
+            scores = self.calculate_match_score(student, job)
+            
+            if scores['total_score'] >= min_score:
+                recommendations.append({
+                    'job_id': job.get('job_id', ''),
+                    'company': job.get('company', ''),
+                    'position': job.get('position', ''),
+                    'location': job.get('location', ''),
+                    'match_score': scores['total_score'],
+                    'score_breakdown': scores,
+                    'reasons': self._generate_match_reasons(scores, student, job),
+                    'job_details': job.get('job_details', {})
+                })
+        
+        # 按匹配度排序
+        recommendations.sort(key=lambda x: x['match_score'], reverse=True)
+        
+        return recommendations[:top_n]
+    
+    def _generate_match_reasons(self, scores, student, job):
+        """生成推荐理由"""
+        reasons = []
+        
+        # 根据各项得分生成推荐理由
+        if scores['holland_score'] >= 80:
+            holland_code = student.get('holland_code', '')
+            reasons.append(f"您的职业兴趣类型({holland_code})与该岗位高度匹配")
+        
+        if scores['skill_score'] >= 80:
+            reasons.append("您的技能完全满足岗位要求")
+        elif scores['skill_score'] >= 60:

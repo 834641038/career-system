@@ -839,7 +839,7 @@ SAMPLE_COURSES = [
 ]
 
 # 4. 职业发展路径示例数据
-CAREER_PATHS_DATABASE = [
+CAREER_PATHS_DATABASE_ALT = [
     {
         # 路径唯一标识符
         "path_id": "P001",

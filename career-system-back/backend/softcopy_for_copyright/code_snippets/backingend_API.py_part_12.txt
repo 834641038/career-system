@@ -1,0 +1,53 @@
+# Source: backingend_API.py
+# Lines 551-600
+
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
+            }, app.config['SECRET_KEY'], algorithm="HS256")
+            
+            logger.info(f"User logged in successfully: {username}")
+            return jsonify({
+                'success': True,
+                'token': token,
+                'user': {
+                    'user_id': user_id,
+                    'username': username,
+                    'student_id': user.get('student_id')
+                }
+            })
+        except Exception as e:
+            logger.error(f"Login error: {str(e)}")
+            return jsonify({
+                'success': False,
+                'error': str(e)
+            }), 500
+
+   
+    @app.route('/api/recommendations/career-paths', methods=['POST'])
+    @token_required
+    @log_request
+    def get_career_path_recommendations(current_user_id):
+        """
+        获取职业发展路径推荐
+
+        Args:
+            student_id (str): 学生唯一标识符
+            top_n (int, optional): 返回的职业发展路径数量，默认为3
+            
+        Returns:
+            JSON response containing:
+                - success (bool): 请求是否成功
+                - data (list): 职业发展路径推荐列表
+                或
+                - success (bool): 请求是否成功
+                - error (str): 错误信息
+        """
+        try:
+            data = request.json
+            if not data:
+                return jsonify({
+                    'success': False,
+                    'error': '请求体不能为空'
+                }), 400
+                
+            student_id = data.get('student_id') or get_student_id_from_user(current_user_id)
+            top_n = data.get('top_n', 3)

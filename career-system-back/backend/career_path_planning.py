@@ -32,8 +32,9 @@ class CareerPathPlanner:
                 'path_id': path['path_id'],        # 职业路径 ID
                 'path_name': path['path_name'],    # 职业路径名称
                 'fit_score': score,                # 匹配度分数
-                'path_details': path,              # 职业路径详细信息
-                'personalized_plan': self._generate_personalized_plan(student, path)  # 个性化发展计划
+                'path_details': self._build_path_details(path),
+                'personalized_plan': self._generate_personalized_plan(student, path),
+                'short_reason': path.get('short_reason') or self._generate_short_reason(student, path, score)
             })
         
         # 按适合度排序（从高到低）
@@ -161,6 +162,57 @@ class CareerPathPlanner:
         
         # 满意度越高，该路径越可靠
         return avg_satisfaction * 10  # 转换为百分制
+
+    def _build_path_details(self, path):
+        """构建前端展示所需的路径详情"""
+        description = path.get('description')
+        if not description:
+            first_stage = path.get('stages', [])[0] if path.get('stages') else {}
+            goals = first_stage.get('goals', [])
+            description = f"{path.get('path_name')}，侧重于{first_stage.get('stage', '职业发展')}，包含{ '、'.join(goals[:2]) if goals else '关键技能提升' }等内容。"
+
+        return {
+            'description': description,
+            'holland_codes': path.get('holland_codes', []),
+            'average_salary': path.get('average_salary') or self._infer_average_salary(path),
+            'growth_potential': path.get('growth_potential') or self._infer_growth_potential(path),
+            'typical_companies': path.get('typical_companies') or self._infer_typical_companies(path),
+            'required_education': path.get('required_education') or '本科及以上'
+        }
+
+    def _infer_average_salary(self, path):
+        name = path.get('path_name', '')
+        if '数据' in name or '算法' in name or '人工智能' in name:
+            return '15K-35K/月'
+        if '产品' in name or '运营' in name:
+            return '12K-25K/月'
+        return '10K-22K/月'
+
+    def _infer_growth_potential(self, path):
+        name = path.get('path_name', '')
+        if '数据' in name or '人工智能' in name or '算法' in name:
+            return '高'
+        return '良好'
+
+    def _infer_typical_companies(self, path):
+        if path.get('typical_companies'):
+            return path.get('typical_companies')
+        if path.get('career_options'):
+            return path.get('career_options')[:3]
+        return ['知名科技公司', '行业领先企业']
+
+    def _generate_short_reason(self, student, path, score):
+        holland_codes = ''.join(path.get('holland_codes', []))
+        if score >= 80:
+            prefix = '强烈推荐'
+        elif score >= 70:
+            prefix = '推荐'
+        elif score >= 60:
+            prefix = '可考虑'
+        else:
+            prefix = '谨慎考虑'
+
+        return f"{prefix}：该路径与您的霍兰德类型{holland_codes}匹配良好，具备清晰的阶段性目标和成长空间。"
     
     def _generate_personalized_plan(self, student, path):
         """

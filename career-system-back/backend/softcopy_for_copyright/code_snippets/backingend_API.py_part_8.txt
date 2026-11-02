@@ -1,0 +1,53 @@
+# Source: backingend_API.py
+# Lines 351-400
+
+            "question": "我适合什么工作？",
+            "student_id": "2024001"
+        }
+        """
+        try:
+            data = request.json
+            if not data:
+                return jsonify({
+                    'success': False,
+                    'error': '请求体不能为空'
+                }), 400
+            
+            student_id = data.get('student_id') or get_student_id_from_user(current_user_id)
+            question = data.get('question', '')
+            
+            if not student_id:
+                return jsonify({
+                    'success': False,
+                    'error': '未找到学生信息'
+                }), 400
+            
+            student = get_student_profile(student_id)
+            if not student:
+                return jsonify({
+                    'success': False,
+                    'error': f'学生 ID {student_id} 不存在'
+                }), 404
+            
+            system_prompt = f"""你是一位专业的职业规划顾问。请根据以下学生信息提供职业建议：
+- 专业：{student.get('major', '未知')}
+- 年级：{student.get('grade', '未知')}
+- 技能：{', '.join(student.get('skills', []))}
+- 兴趣：{', '.join(student.get('interests', []))}
+- 价值观：{', '.join(student.get('values', []))}
+
+学生的问题是：{question}
+
+请用专业、鼓励的语气给出具体建议。"""
+            
+            messages = [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": question}
+            ]
+            
+            headers = {
+                'Authorization': f'Bearer {DASHSCOPE_API_KEY}',
+                'Content-Type': 'application/json'
+            }
+            
+            payload = {
