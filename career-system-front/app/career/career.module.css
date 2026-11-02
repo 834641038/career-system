@@ -1,0 +1,99 @@
+.careerPage {
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.pageContent {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.centerContent {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.loadingText {
+  margin-top: 16px;
+  color: #666;
+}
+
+.cardMargin {
+  margin-bottom: 24px;
+}
+
+.alertMargin {
+  margin-bottom: 24px;
+}
+
+.listContainer {
+  padding: 20px 0;
+}
+
+.suggestionList {
+  margin: 8px 0 0 20px;
+  font-size: 12px;
+  color: #666;
+}
+
+.smallText {
+  font-size: 12px;
+  color: #888;
+  margin-top: 4px;
+}
+
+.marginTop {
+  margin-top: 8px;
+}
+
+.reasonBox {
+  margin-top: 16px;
+  padding: 12px;
+  background-color: #f6ffed;
+  border: 1px solid #b7eb8f;
+  border-radius: 4px;
+}
+
+.reasonTitle {
+  font-weight: 600;
+  color: #52c41a;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.reasonContent {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+}
+
+.aiLoading {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.aiReason {
+  padding: 16px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.aiReasonContent {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #333;
+  white-space: pre-wrap;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .careerPage {
+    padding: 12px;
+  }
+  
+  .listContainer {
+    padding: 12px 0;
+  }
+}

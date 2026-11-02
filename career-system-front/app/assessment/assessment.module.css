@@ -1,0 +1,414 @@
+.container {
+  min-height: 100vh;
+  background: #ffffff;
+  padding: 24px;
+}
+
+.pageHeaderWrapper {
+  margin-bottom: 24px;
+  background: #fafafa;
+  padding: 24px;
+  border-radius: 8px;
+}
+
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.titleSection {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.mainTitle {
+  margin: 0 !important;
+  font-size: 24px !important;
+  font-weight: bold;
+  color: #333333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.titleIcon {
+  color: #1890ff;
+  font-size: 28px;
+}
+
+.subTitle {
+  margin: 0 !important;
+  font-size: 14px !important;
+  color: #666666;
+  white-space: nowrap;
+}
+
+.headerActions {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.divider {
+  margin: 0 0 32px 0 !important;
+  background: #f0f0f0;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sectionCard {
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border: 1px solid #f0f0f0;
+}
+
+.sectionCard:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.cardTitle {
+  margin-bottom: 16px !important;
+  font-size: 16px !important;
+  font-weight: 600;
+  color: #333333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cardTitleIcon {
+  color: #1890ff;
+}
+
+.cardTitleSmall {
+  margin-bottom: 12px !important;
+  font-size: 16px !important;
+}
+
+.stepsContainer {
+  padding: 20px;
+  background: #fafafa;
+  border-radius: 6px;
+}
+
+.cardsRow {
+  margin: 0 -8px;
+}
+
+.assessmentCard {
+  height: 100%;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.assessmentCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.recommendedTag {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 1;
+}
+
+.cardContent {
+  padding: 8px 0;
+}
+
+.cardSubtitle {
+  margin-bottom: 16px !important;
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+  min-height: 40px;
+}
+
+.cardInfo {
+  margin: 16px 0;
+  padding: 12px;
+  background: #f5f7fa;
+  border-radius: 6px;
+}
+
+.card.divider {
+  color: #d9d9d9;
+  margin: 0 8px;
+}
+
+.infoText {
+  font-size: 13px;
+  color: #666666;
+}
+
+.cardButton {
+  margin-top: 16px;
+  height: 40px;
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.cardButton:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.recordsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.viewAllLink {
+  color: #165DFF;
+  font-size: 14px;
+  transition: color 0.3s ease;
+  text-decoration: none;
+}
+
+.viewAllLink:hover {
+  color: #4080FF;
+}
+
+.listItem {
+  padding: 16px;
+  border-bottom: 1px solid #f0f0f0;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+}
+
+.listItem:hover {
+  background: #fafafa;
+}
+
+.listItem:last-child {
+  border-bottom: none;
+}
+
+.recordContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.recordName {
+  font-size: 15px;
+  color: #333333;
+  font-weight: 500;
+}
+
+.recordMeta {
+  font-size: 14px;
+}
+
+.score {
+  color: #52C41A;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.reportLink {
+  color: #165DFF;
+  transition: color 0.3s ease;
+  text-decoration: none;
+}
+
+.reportLink:hover {
+  color: #4080FF;
+  text-decoration: underline;
+}
+
+.nextStepsButtons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.nextStepButton {
+  min-width: 140px;
+  height: 40px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  border-radius: 6px;
+}
+
+.nextStepButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.versionModalContent {
+  padding: 8px 0;
+}
+
+.versionRadioGroup {
+  width: 100%;
+}
+
+.versionCard {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid #f0f0f0;
+}
+
+.versionCard:hover {
+  border-color: #165DFF;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(22, 93, 255, 0.15);
+}
+
+.versionCardSelected {
+  border-color: #165DFF;
+  background: #f0f5ff;
+}
+
+.versionCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.versionCardTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.versionRadio {
+  margin: 0;
+}
+
+.versionRadio :global(.ant-radio-inner) {
+  border-color: #165DFF;
+}
+
+.versionRadio :global(.ant-radio-inner::after) {
+  background-color: #165DFF;
+}
+
+.recommendedBadge {
+  font-size: 12px;
+  padding: 2px 8px;
+}
+
+.versionCardMeta {
+  flex-shrink: 0;
+}
+
+.metaDivider {
+  color: #d9d9d9;
+  margin: 0 8px;
+}
+
+.metaText {
+  font-size: 13px;
+  color: #666666;
+}
+
+.versionCardDescription {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+  
+  .pageHeaderWrapper {
+    padding: 20px;
+  }
+  
+  .headerContent {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .titleSection {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    gap: 8px;
+  }
+  
+  .mainTitle {
+    font-size: 20px !important;
+  }
+  
+  .titleIcon {
+    font-size: 24px;
+  }
+  
+  .subTitle {
+    font-size: 13px !important;
+    white-space: normal;
+  }
+  
+  .cardTitle {
+    font-size: 15px !important;
+  }
+  
+  .cardsRow {
+    justify-content: center;
+  }
+  
+  .nextStepsButtons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .nextStepButton {
+    width: 100%;
+  }
+  
+  .recordsHeader {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  
+  .versionCardHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .versionCardMeta {
+    width: 100%;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .cardsRow {
+    justify-content: center;
+  }
+  
+  .titleSection {
+    flex-wrap: wrap;
+  }
+  
+  .subTitle {
+    white-space: normal;
+  }
+}

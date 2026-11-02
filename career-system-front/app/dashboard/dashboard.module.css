@@ -1,0 +1,129 @@
+.dashboardPage {
+  padding: 24px;
+  background: #f0f2f5;
+  min-height: 100vh;
+}
+
+.pageHeader {
+  margin-bottom: 24px;
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.headerTitle {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.headerTitleIcon {
+  margin-right: 8px;
+  color: #1890ff;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.welcomeText {
+  color: #666;
+  margin: 0;
+}
+
+.welcomeTextBold {
+  font-weight: bold;
+  color: #1890ff;
+}
+
+.statCard {
+  border: none;
+}
+
+.statCardProgress {
+  margin-top: 8px;
+}
+
+.statCardSubtitle {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #666;
+}
+
+.taskCompleted {
+  opacity: 0.6;
+  background: #f6ffed !important;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+}
+
+.taskItem {
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+}
+
+.taskItemContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.taskItemDescription {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.taskItemTimeIcon {
+  margin-right: 4px;
+}
+
+.skillItem {
+  margin-bottom: 16px;
+}
+
+.skillHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.skillLevel {
+  font-weight: bold;
+}
+
+.skillTarget {
+  font-size: 12px;
+  color: #999;
+  margin-top: 2px;
+}
+
+.timelineItemTime {
+  font-weight: bold;
+}
+
+.taskCompletedText {
+  text-decoration: line-through;
+}
+
+@media (max-width: 768px) {
+  .dashboardPage {
+    padding: 12px;
+  }
+}
+
+.smallTag {
+  font-size: 12px;
+  padding: 0 6px;
+  height: 20px;
+  line-height: 20px;
+  border-radius: 2px;
+}

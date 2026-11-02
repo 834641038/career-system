@@ -1,0 +1,143 @@
+/* 计划页面样式 */
+.schedulePage {
+  padding: 24px;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.pageHeader {
+  margin-bottom: 24px;
+}
+
+.pageHeader h1 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1d1d1d;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pageHeader p {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+.dayView, .weekView {
+  padding: 16px 0;
+}
+
+.viewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.viewHeader h2 {
+  font-size: 20px;
+  font-weight: 500;
+  color: #1d1d1d;
+  margin: 0;
+}
+
+.dayCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dayStats {
+  margin-bottom: 16px;
+}
+
+.dayStatsText {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.taskCompleted {
+  opacity: 0.6;
+}
+
+.taskTitle {
+  font-weight: 500;
+  color: #1d1d1d;
+}
+
+.taskInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: #666;
+}
+
+.priorityDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.emptyTasks {
+  text-align: center;
+  padding: 32px 0;
+  color: #999;
+}
+
+.emptyTasks p {
+  margin-bottom: 16px;
+}
+
+.weekHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.weekInfo h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1d1d1d;
+  margin: 0 0 8px 0;
+}
+
+.weekDates {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+.weekStats {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.smallTag {
+  font-size: 12px;
+  margin-left: 8px;
+}
+
+@media (max-width: 768px) {
+  .schedulePage {
+    padding: 16px;
+  }
+  
+  .weekHeader {
+    flex-direction: column;
+  }
+  
+  .weekStats {
+    width: 100%;
+    justify-content: space-around;
+  }
+}
