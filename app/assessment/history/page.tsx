@@ -177,7 +177,7 @@ export default function AssessmentHistoryPage() {
       dataIndex: 'title',
       key: 'title',
       render: (text, record) => (
-        <Space direction="vertical" size={0}>
+        <Space orientation="vertical" size={0}>
           <Text strong>{text}</Text>
           <Text type="secondary" style={{ fontSize: '12px' }}>{record.description}</Text>
         </Space>
@@ -323,7 +323,7 @@ export default function AssessmentHistoryPage() {
               title="已完成测评"
               value={completedCount}
               prefix={<CheckCircleOutlined />}
-              valueStyle={{ color: '#52c41a' }}
+              styles={{ content: {  color: '#52c41a'  } }}
             />
           </Card>
         </Col>
@@ -333,7 +333,7 @@ export default function AssessmentHistoryPage() {
               title="待完成测评"
               value={pendingCount}
               prefix={<ExclamationCircleOutlined />}
-              valueStyle={{ color: '#faad14' }}
+              styles={{ content: {  color: '#faad14'  } }}
             />
           </Card>
         </Col>
@@ -345,7 +345,7 @@ export default function AssessmentHistoryPage() {
               prefix={<StarOutlined />}
               suffix="分"
               precision={1}
-              valueStyle={{ color: '#1890ff' }}
+              styles={{ content: {  color: '#1890ff'  } }}
             />
           </Card>
         </Col>
@@ -492,7 +492,7 @@ export default function AssessmentHistoryPage() {
             </Descriptions.Item>
             {selectedRecord.recommendations.length > 0 && (
               <Descriptions.Item label="个性化建议" span={2}>
-                <Space direction="vertical">
+                <Space orientation="vertical">
                   {selectedRecord.recommendations.map((rec, index) => (
                     <Tag key={index} color="green">{rec}</Tag>
                   ))}

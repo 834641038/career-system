@@ -1,7 +1,7 @@
 import { DailyPlan, WeeklyPlan, PlanStats, ApiResponse } from '@/lib/types/plan';
 
 class PlanService {
-  private baseUrl = '/api/plan'
+  private baseUrl = 'http://localhost:5000/api/plan'
 
   private getHeaders(requireAuth: boolean = true) {
     const headers: Record<string, string> = { 'Content-Type': 'application/json' }

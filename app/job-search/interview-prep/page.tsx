@@ -361,7 +361,7 @@ export default function InterviewPrepPage() {
 
             {/* 推荐学习资源 */}
             <Card title="推荐学习资源">
-              <Space direction="vertical" size="middle" style={{ width: '100%' }}>
+              <Space orientation="vertical" size="middle" style={{ width: '100%' }}>
                 <Button icon={<BulbOutlined />} block>面试常见问题解析</Button>
                 <Button icon={<CalendarOutlined />} block>面试时间管理技巧</Button>
                 <Button icon={<RiseOutlined />} block>技术面试专项训练</Button>

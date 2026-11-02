@@ -95,7 +95,6 @@ export default function Home() {
     { text: '学期规划', link: '/plan', icon: <CalendarOutlined /> },
     { text: '学习资源', link: '/resources', icon: <BookOutlined /> },
     { text: '进度追踪', link: '/dashboard', icon: <BarChartOutlined /> },
-    { text: 'AI顾问', link: '/ai-advisor', icon: <RobotOutlined /> },
   ]
 
   // 使用流程

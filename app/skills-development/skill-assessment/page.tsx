@@ -248,7 +248,7 @@ export default function SkillAssessmentPage() {
 
         {/* 下一步建议 */}
         <Card title="下一步建议">
-          <Space direction="vertical" style={{ width: '100%' }}>
+          <Space orientation="vertical" style={{ width: '100%' }}>
             <Title level={4}>根据您的技能评估结果，我们建议：</Title>
             <Paragraph type="secondary">
               1. 重点关注差距较大的技能领域，制定专门的学习计划

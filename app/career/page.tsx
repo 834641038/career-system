@@ -16,7 +16,9 @@ import {
   Tag,
   Statistic,
   message,
-  Empty
+  Empty,
+  Modal,
+  Descriptions
 } from 'antd'
 import { 
   RocketOutlined,
@@ -30,17 +32,18 @@ import {
   UserOutlined,
   BankOutlined,
   DollarOutlined,
-  LineChartOutlined
+  LineChartOutlined,
+  BulbOutlined,
+  RobotOutlined
 } from '@ant-design/icons'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ROUTES } from '@/app/lib/routes'
-import { recommendationService } from '@/app/services/recommendationService'
+import { aiService, recommendationService } from '@/app/services/recommendationService'
 import { useEffect, useState } from 'react'
 import styles from './career.module.css'
 
 const { Title, Paragraph } = Typography
-const { TabPane } = Tabs
 
 export default function CareerPage() {
   const router = useRouter()
@@ -48,6 +51,10 @@ export default function CareerPage() {
   const [careerPaths, setCareerPaths] = useState<any[]>([])
   const [activeTab, setActiveTab] = useState('recommendations')
   const [error, setError] = useState<string | null>(null)
+  const [detailModalVisible, setDetailModalVisible] = useState(false)
+  const [selectedCareer, setSelectedCareer] = useState<any>(null)
+  const [aiLoading, setAiLoading] = useState(false)
+  const [aiReason, setAiReason] = useState('')
 
   // 加载职业路径推荐数据
   useEffect(() => {
@@ -62,7 +69,7 @@ export default function CareerPage() {
       // 从localStorage获取用户信息
       const token = localStorage.getItem('token')
       if (!token) {
-        // 使用mock数据
+        message.info('当前未登录，已加载演示数据。登录后可查看后端最新职业路径推荐。')
         loadMockData()
         return
       }
@@ -93,7 +100,7 @@ export default function CareerPage() {
         path_name: '前端开发工程师',
         fit_score: 85.5,
         path_details: {
-          description: '专注于用户界面开发，使用现代前端技术栈构建优秀的Web应用体验',
+          description: '专注于用户界面开发，使用现代前端技术栈构建优秀的 Web 应用体验',
           holland_codes: ['I', 'A', 'S'],
           average_salary: '15K-25K/月',
           growth_potential: '高',
@@ -102,11 +109,12 @@ export default function CareerPage() {
         },
         personalized_plan: {
           immediate_steps: [
-            '深入学习React/Vue框架核心原理',
-            '完成3个完整的前端项目作品集',
+            '深入学习 React/Vue 框架核心原理',
+            '完成 3 个完整的前端项目作品集',
             '掌握前端性能优化技巧'
           ]
-        }
+        },
+        short_reason: '与你的霍兰德代码 IAS 高度匹配，且技能匹配度达 85%'
       },
       {
         path_id: 'path_002',
@@ -122,11 +130,12 @@ export default function CareerPage() {
         },
         personalized_plan: {
           immediate_steps: [
-            '掌握Python数据分析库(Pandas,Numpy)',
-            '学习SQL数据库查询优化',
+            '掌握 Python 数据分析库 (Pandas,Numpy)',
+            '学习 SQL 数据库查询优化',
             '完成商业分析案例实践'
           ]
-        }
+        },
+        short_reason: '符合你的兴趣类型，行业发展前景良好'
       },
       {
         path_id: 'path_003',
@@ -143,35 +152,36 @@ export default function CareerPage() {
         personalized_plan: {
           immediate_steps: [
             '学习产品设计方法论',
-            '掌握Axure、Figma等原型工具',
+            '掌握 Axure、Figma 等原型工具',
             '参与实际产品项目'
           ]
-        }
+        },
+        short_reason: '发挥你的沟通优势，薪资增长空间大'
       },
       {
         path_id: 'path_004',
         path_name: '人工智能工程师',
         fit_score: 68.5,
         path_details: {
-          description: '从事机器学习、深度学习算法研发，推动AI技术在各领域的应用',
+          description: '从事机器学习、深度学习算法研发，推动 AI 技术在各领域的应用',
           holland_codes: ['I', 'R', 'C'],
           average_salary: '20K-40K/月',
           growth_potential: '很高',
-          typical_companies: ['头部AI公司', '科研院所', '大型互联网企业'],
+          typical_companies: ['头部 AI 公司', '科研院所', '大型互联网企业'],
           required_education: '硕士及以上'
         },
         personalized_plan: {
           immediate_steps: [
             '深入学习机器学习理论基础',
-            '掌握TensorFlow/PyTorch框架',
-            '完成AI项目实战'
+            '掌握 TensorFlow/PyTorch 框架',
+            '完成 AI 项目实战'
           ]
-        }
+        },
+        short_reason: '前沿技术领域，长期发展潜力巨大'
       }
     ]
     setCareerPaths(mockPaths)
   }
-
    // 添加职业浏览数据
   const careerCategories = [
     {
@@ -391,6 +401,51 @@ export default function CareerPage() {
     return { text: '较低匹配', color: 'gray' }
   }
 
+  const generateAIReason = async (career: any) => {
+    setAiLoading(true)
+    try {
+      const prompt = `请为以下职业推荐生成详细的推荐理由：
+        
+职业名称：${career.path_name}
+匹配度：${career.fit_score}%
+霍兰德代码：${career.path_details?.holland_codes?.join(',')}
+平均薪资：${career.path_details?.average_salary}
+发展前景：${career.path_details?.growth_potential}
+学历要求：${career.path_details?.required_education}
+典型雇主：${career.path_details?.typical_companies?.join(',')}
+
+请从以下几个方面分析：
+1. 为什么这个职业适合该学生（结合霍兰德代码和兴趣匹配）
+2. 职业发展优势和前景
+3. 薪资水平和增长空间
+4. 需要重点提升的技能
+5. 具体的发展建议
+
+请用中文回答，语气专业且鼓励性。`
+
+      const response = await aiService.chat(prompt, [])
+      
+      if (response.success && response.data) {
+        setAiReason(response.data.reply)
+      } else {
+        throw new Error(response.error || 'AI 服务失败')
+      }
+    } catch (err: any) {
+      console.error('生成 AI 推荐理由失败:', err)
+      setAiReason(err?.message || '暂时无法生成详细分析，请稍后重试。')
+      message.error(err?.message || 'AI 服务暂时不可用')
+    } finally {
+      setAiLoading(false)
+    }
+  }
+
+  const handleShowDetail = (career: any) => {
+    setSelectedCareer(career)
+    setDetailModalVisible(true)
+    setAiReason('')
+    generateAIReason(career)
+  }
+
   const renderCareerPathCard = (path: any) => {
     const matchLevel = getMatchLevel(path.fit_score)
     
@@ -409,7 +464,7 @@ export default function CareerPage() {
           </Button>,
           <Button 
             size="small"
-            onClick={() => router.push(`/career/path/${path.path_id}`)}
+            onClick={() => handleShowDetail(path)}
           >
             详情
           </Button>
@@ -426,7 +481,7 @@ export default function CareerPage() {
             </Space>
           }
           description={
-            <Space direction="vertical" style={{ width: '100%' }}>
+            <Space orientation="vertical" style={{ width: '100%' }}>
               <Paragraph ellipsis={{ rows: 2 }}>{path.path_details?.description}</Paragraph>
               
               <Space wrap>
@@ -468,12 +523,22 @@ export default function CareerPage() {
                   </ul>
                 </div>
               )}
+              
+              {path.short_reason && (
+                <div className={styles.reasonBox}>
+                  <div className={styles.reasonTitle}>
+                    <BulbOutlined /> 推荐理由
+                  </div>
+                  <div className={styles.reasonContent}>{path.short_reason}</div>
+                </div>
+              )}
             </Space>
           }
         />
       </Card>
     )
   }
+
 
   const renderCareerCard = (career: any) => (
     <Card
@@ -490,7 +555,7 @@ export default function CareerPage() {
           </Space>
         }
         description={
-          <Space direction="vertical" style={{ width: '100%' }}>
+          <Space orientation="vertical" style={{ width: '100%' }}>
             <Paragraph ellipsis={{ rows: 2 }}>{career.description}</Paragraph>
             <Divider style={{ margin: '12px 0' }} />
             <div>
@@ -618,7 +683,7 @@ export default function CareerPage() {
                                   title="强烈推荐" 
                                   value={careerPaths.filter(p => p.fit_score >= 80).length} 
                                   prefix={<StarOutlined />}
-                                  valueStyle={{ color: '#ff4d4f' }}
+                                  styles={{ content: {  color: '#ff4d4f'  } }}
                                 />
                               </Col>
                               <Col span={6}>
@@ -753,6 +818,111 @@ export default function CareerPage() {
           ]}
         />
       </div>
+       {/* 详情对话框 */}
+      <Modal
+        title={
+          <Space>
+            <span>{selectedCareer?.path_name || '职业详情'}</span>
+            <Tag color={selectedCareer ? getMatchLevel(selectedCareer.fit_score).color : ''}>
+              {selectedCareer ? getMatchLevel(selectedCareer.fit_score).text : ''}
+            </Tag>
+            <Tag color="gold">
+              <StarOutlined /> {selectedCareer ? (selectedCareer.fit_score || 0).toFixed(1) : 0}%
+            </Tag>
+          </Space>
+        }
+        open={detailModalVisible}
+        onCancel={() => setDetailModalVisible(false)}
+        footer={[
+          <Button key="close" onClick={() => setDetailModalVisible(false)}>
+            关闭
+          </Button>,
+          <Button 
+            key="plan"
+            type="primary"
+            onClick={() => {
+              setDetailModalVisible(false)
+              router.push(`${ROUTES.PLAN_CREATE}?career=${selectedCareer?.path_id}`)
+            }}
+          >
+            制定规划
+          </Button>
+        ]}
+        width={800}
+      >
+        {selectedCareer && (
+          <Space orientation="vertical" style={{ width: '100%' }} size="large">
+            <Descriptions title="基本信息" bordered column={2}>
+              <Descriptions.Item label="职业名称">{selectedCareer.path_name}</Descriptions.Item>
+              <Descriptions.Item label="匹配度">
+                <Tag color="gold"><StarOutlined /> {selectedCareer.fit_score.toFixed(1)}%</Tag>
+              </Descriptions.Item>
+              <Descriptions.Item label="平均薪资" span={2}>
+                <DollarOutlined /> {selectedCareer.path_details?.average_salary || '面议'}
+              </Descriptions.Item>
+              <Descriptions.Item label="发展前景" span={2}>
+                <LineChartOutlined /> {selectedCareer.path_details?.growth_potential || '良好'}
+              </Descriptions.Item>
+              <Descriptions.Item label="学历要求" span={2}>
+                <BankOutlined /> {selectedCareer.path_details?.required_education || '不限'}
+              </Descriptions.Item>
+              <Descriptions.Item label="霍兰德代码" span={2}>
+                <Space wrap>
+                  {selectedCareer.path_details?.holland_codes?.map((code: string, idx: number) => (
+                    <Tag key={idx} color="blue">{code}</Tag>
+                  ))}
+                </Space>
+                <div className={styles.smallText} style={{ marginTop: 8 }}>
+                  {getHollandDescription(selectedCareer.path_details?.holland_codes || [])}
+                </div>
+              </Descriptions.Item>
+              <Descriptions.Item label="典型雇主" span={2}>
+                <Space wrap>
+                  {selectedCareer.path_details?.typical_companies?.map((company: string, idx: number) => (
+                    <Tag key={idx} color="green">{company}</Tag>
+                  ))}
+                </Space>
+              </Descriptions.Item>
+            </Descriptions>
+
+            <Divider />
+
+            <div>
+              <Title level={4}>
+                <Space>
+                  <RobotOutlined />
+                  AI 详细推荐理由
+                </Space>
+              </Title>
+              {aiLoading ? (
+                <div className={styles.aiLoading}>
+                  <Spin tip="AI 正在分析中..." />
+                </div>
+              ) : (
+                <div className={styles.aiReason}>
+                  <Paragraph className={styles.aiReasonContent}>
+                    {aiReason || '暂无 AI 分析结果'}
+                  </Paragraph>
+                </div>
+              )}
+            </div>
+
+            {selectedCareer.personalized_plan?.immediate_steps && (
+              <>
+                <Divider />
+                <div>
+                  <Title level={4}>发展建议</Title>
+                  <ul className={styles.suggestionList}>
+                    {selectedCareer.personalized_plan.immediate_steps.map((step: string, idx: number) => (
+                      <li key={idx}>{step}</li>
+                    ))}
+                  </ul>
+                </div>
+              </>
+            )}
+          </Space>
+        )}
+      </Modal>
     </div>
   )
 }

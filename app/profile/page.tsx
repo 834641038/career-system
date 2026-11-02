@@ -25,7 +25,7 @@ import {
 import { useRouter } from 'next/navigation'
 import { ROUTES } from '@/app/lib/routes'
 import Link from 'next/link'
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const { Title, Paragraph } = Typography
 
@@ -87,61 +87,73 @@ interface UserData {
   recentActivities: Activity[];
 }
 
+// 默认用户数据（localStorage 无数据时使用；模块级常量，SSR 安全）
+const DEFAULT_USER_DATA: UserData = {
+  personalInfo: {
+    name: '张三',
+    email: 'zhangsan@example.com',
+    phone: '13987654321',
+    gender: 'male',
+    birthday: '2005-08-20',
+    location: '湖南省长沙市',
+    hometown: '湖北省武汉市',
+    bio: '计算机科学与技术专业学生，热爱前端开发和UI设计',
+    joinDate: '2024-09-01',
+    lastLogin: '2025-01-19',
+  },
+  academicBackground: {
+    university: '中南大学',
+    college: '信息科学与工程学院',
+    major: '数据科学与大数据技术',
+    degree: 'bachelor',
+    gpa: '3.6/4.0',
+    ranking: '专业前20%',
+    enrollmentYear: '2023',
+    expectedGraduation: '2027-06',
+    academicAchievements: [
+      '校级三好学生（2024年）',
+      '数学建模竞赛省级二等奖（2024年）',
+      '大数据分析挑战赛校级一等奖（2024年）',
+      '校级奖学金获得者（2023-2024学年）'
+    ]
+  },
+  activityStats: {
+    assessmentsCompleted: 5,
+    plansCreated: 3,
+    daysActive: 98,
+    badgesEarned: 8,
+    coursesCompleted: 10,
+    projectsContributed: 2
+  },
+  achievements: [
+    { id: 1, title: '测评达人', description: '完成5次职业测评', icon: <TrophyOutlined />, date: '2025-02-18', type: 'assessment' },
+    { id: 2, title: '学习新星', description: '完成10门数据分析课程', icon: <BookOutlined />, date: '2025-02-10', type: 'learning' },
+    { id: 3, title: '项目能手', description: '参与2个实战数据分析项目', icon: <BookOutlined />, date: '2025-01-25', type: 'projects' },
+    { id: 4, title: '实习先锋', description: '完成金融科技公司数据分析实习', icon: <TrophyOutlined />, date: '2024-09-30', type: 'internship' }
+  ],
+  recentActivities: [
+    { id: 1, type: 'resume_update', description: '更新了实习经历和项目经验', timestamp: '2025-02-20T10:15:00Z' },
+    { id: 2, type: 'course_learn', description: '学习\'高级数据分析与挖掘\'课程至80%进度', timestamp: '2025-02-18T16:30:00Z' },
+    { id: 3, type: 'assessment_complete', description: '完成金融行业职业匹配测评', timestamp: '2025-02-15T09:45:00Z' },
+    { id: 4, type: 'plan_create', description: '创建了\'2025年数据分析技能提升计划\'', timestamp: '2025-02-10T14:20:00Z' }
+  ]
+};
+
 export default function ProfilePage() {
   const router = useRouter()
 
-  // 从localStorage获取用户数据，如果没有则使用默认数据
-  const storedData = localStorage.getItem('complete_user_profile');
-  const userData: UserData = storedData ? JSON.parse(storedData) : {
-    personalInfo: {
-      name: '张三',
-      email: 'zhangsan@example.com',
-      phone: '13987654321',
-      gender: 'male',
-      birthday: '2005-08-20',
-      location: '湖南省长沙市',
-      hometown: '湖北省武汉市',
-      bio: '计算机科学与技术专业学生，热爱前端开发和UI设计',
-      joinDate: '2024-09-01',
-      lastLogin: '2025-01-19',
-    },
-    academicBackground: {
-      university: '中南大学',
-      college: '信息科学与工程学院',
-      major: '数据科学与大数据技术',
-      degree: 'bachelor',
-      gpa: '3.6/4.0',
-      ranking: '专业前20%',
-      enrollmentYear: '2023',
-      expectedGraduation: '2027-06',
-      academicAchievements: [
-        '校级三好学生（2024年）',
-        '数学建模竞赛省级二等奖（2024年）',
-        '大数据分析挑战赛校级一等奖（2024年）',
-        '校级奖学金获得者（2023-2024学年）'
-      ]
-    },
-    activityStats: {
-      assessmentsCompleted: 5,
-      plansCreated: 3,
-      daysActive: 98,
-      badgesEarned: 8,
-      coursesCompleted: 10,
-      projectsContributed: 2
-    },
-    achievements: [
-      { id: 1, title: '测评达人', description: '完成5次职业测评', icon: <TrophyOutlined />, date: '2025-02-18', type: 'assessment' },
-      { id: 2, title: '学习新星', description: '完成10门数据分析课程', icon: <BookOutlined />, date: '2025-02-10', type: 'learning' },
-      { id: 3, title: '项目能手', description: '参与2个实战数据分析项目', icon: <BookOutlined />, date: '2025-01-25', type: 'projects' },
-      { id: 4, title: '实习先锋', description: '完成金融科技公司数据分析实习', icon: <TrophyOutlined />, date: '2024-09-30', type: 'internship' }
-    ],
-    recentActivities: [
-      { id: 1, type: 'resume_update', description: '更新了实习经历和项目经验', timestamp: '2025-02-20T10:15:00Z' },
-      { id: 2, type: 'course_learn', description: '学习\'高级数据分析与挖掘\'课程至80%进度', timestamp: '2025-02-18T16:30:00Z' },
-      { id: 3, type: 'assessment_complete', description: '完成金融行业职业匹配测评', timestamp: '2025-02-15T09:45:00Z' },
-      { id: 4, type: 'plan_create', description: '创建了\'2025年数据分析技能提升计划\'', timestamp: '2025-02-10T14:20:00Z' }
-    ]
-  }
+  // 从localStorage获取用户数据，如果没有则使用默认数据（SSR 阶段无法访问 localStorage，须在 useEffect 中读取）
+  const [userData, setUserData] = useState<UserData>(DEFAULT_USER_DATA);
+  useEffect(() => {
+    const storedData = localStorage.getItem('complete_user_profile');
+    if (storedData) {
+      try {
+        setUserData(JSON.parse(storedData));
+      } catch {
+        // 解析失败时保持默认数据
+      }
+    }
+  }, [])
 
   // 获取个人基础信息
   const personalInfo = userData.personalInfo
@@ -234,7 +246,7 @@ export default function ProfilePage() {
               
               <Divider>联系信息</Divider>
               <div style={{ fontSize: '14px', lineHeight: '2' }}>
-                <Space direction="vertical" style={{ width: '100%' }}>
+                <Space orientation="vertical" style={{ width: '100%' }}>
                   <div><MailOutlined style={{ marginRight: '8px' }} />{personalInfo.email}</div>
                   <div><PhoneOutlined style={{ marginRight: '8px' }} />{personalInfo.phone}</div>
                   <div><HomeOutlined style={{ marginRight: '8px' }} />{personalInfo.location}</div>
@@ -252,7 +264,7 @@ export default function ProfilePage() {
             
             <Card title="学术背景" style={{ marginTop: 24 }}>
               <div style={{ fontSize: '14px', lineHeight: '2' }}>
-                <Space direction="vertical" style={{ width: '100%' }}>
+                <Space orientation="vertical" style={{ width: '100%' }}>
                   <div><BankOutlined style={{ marginRight: '8px' }} />{academicBackground.university}</div>
                   <div><UsergroupAddOutlined style={{ marginRight: '8px' }} />{academicBackground.college}</div>
                   <div><IdcardOutlined style={{ marginRight: '8px' }} />{academicBackground.major}</div>

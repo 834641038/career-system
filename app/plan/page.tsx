@@ -835,8 +835,9 @@ export default function PlanPage() {
                   colorField='type'
                   radius={0.8}
                   label={{
-                    type: 'outer',
-                    content: '{name}: {percentage}',
+                    // G2 v5 兼容写法（旧的 type:'outer'/content 在 v5 已失效）
+                    text: (data: any) => `${data.type}: ${data.value}%`,
+                    position: 'outside',
                   }}
                   interactions={[
                     {
@@ -890,7 +891,7 @@ export default function PlanPage() {
                     title="逾期数" 
                     value={plans.filter(p => p.isOverdue).length} 
                     prefix={<ExclamationCircleOutlined />}
-                    valueStyle={{ color: '#ff4d4f' }}
+                    styles={{ content: {  color: '#ff4d4f'  } }}
                   />
                 </Col>
                 <Col span={24}>
@@ -957,7 +958,7 @@ export default function PlanPage() {
           </div>
         ) : selectedPath ? (
           <div>
-            <Space direction="vertical" size="large" style={{ width: '100%' }}>
+            <Space orientation="vertical" size="large" style={{ width: '100%' }}>
               <div>
                 <Title level={3}>{selectedPath.path_name}</Title>
                 <Space>
@@ -992,7 +993,7 @@ export default function PlanPage() {
               {selectedPath.personalized_plan && (
                 <>
                   <Card size="small" title="个性化发展计划">
-                    <Space direction="vertical" style={{ width: '100%' }}>
+                    <Space orientation="vertical" style={{ width: '100%' }}>
                       <div>
                         <strong>近期建议 (0-6个月):</strong>
                         <ul>
@@ -1026,7 +1027,7 @@ export default function PlanPage() {
                   <Timeline>
                     {selectedPath.steps.map((step: any, index: number) => (
                       <Timeline.Item key={step.step_id} color={index === 0 ? 'green' : 'blue'}>
-                        <Space direction="vertical">
+                        <Space orientation="vertical">
                           <div>
                             <strong>{step.title}</strong> ({step.duration})
                           </div>
@@ -1072,7 +1073,7 @@ export default function PlanPage() {
                   <Statistic 
                     title="优先级" 
                     value={selectedPlan.priority} 
-                    valueStyle={{ color: getPriorityColor(selectedPlan.priority) }}
+                    styles={{ content: {  color: getPriorityColor(selectedPlan.priority)  } }}
                   />
                 </Col>
                 <Col span={8}>

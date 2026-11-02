@@ -122,7 +122,7 @@ export default function LearningPathPage() {
         <Card title="学习路径步骤" style={{ marginBottom: 24 }}>
           <Steps 
             current={2} 
-            direction="vertical" 
+            orientation="vertical" 
             size="small"
             items={learningSteps.map((step, index) => ({
               key: index,
@@ -211,7 +211,7 @@ export default function LearningPathPage() {
 
         {/* 下一步建议 */}
         <Card title="下一步建议">
-          <Space direction="vertical" style={{ width: '100%' }}>
+          <Space orientation="vertical" style={{ width: '100%' }}>
             <Title level={4}>根据您的学习进度，我们建议：</Title>
             <Paragraph type="secondary">
               1. 专注于当前正在进行的学习步骤：完成React入门项目

@@ -46,6 +46,47 @@
   margin-top: 8px;
 }
 
+.reasonBox {
+  margin-top: 16px;
+  padding: 12px;
+  background-color: #f6ffed;
+  border: 1px solid #b7eb8f;
+  border-radius: 4px;
+}
+
+.reasonTitle {
+  font-weight: 600;
+  color: #52c41a;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.reasonContent {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+}
+
+.aiLoading {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.aiReason {
+  padding: 16px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.aiReasonContent {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #333;
+  white-space: pre-wrap;
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
   .careerPage {

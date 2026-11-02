@@ -230,8 +230,28 @@ export default function Navigation({ children }: NavigationProps) {
         onCollapse={(value) => setCollapsed(value)}
         style={{ background: colorBgContainer }}
       >
-        <div className="logo" style={{ height: 32, margin: 16, textAlign: 'center', background: 'rgba(255, 255, 255, 0.2)', lineHeight: '32px' }}>
-          {!collapsed && <span style={{ color: '#1890ff', fontWeight: 'bold' }}>职海航图</span>}
+        <div className="logo" style={{ height: 32, margin: 16, textAlign: 'center', background: 'rgba(255, 255, 255, 0.2)', lineHeight: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+          {/* Logo 图片占位符 - 请替换为你的 logo 图片路径 */}
+          {!collapsed && (
+            <>
+              <img 
+                src="/logo.png" 
+                alt="职海航图 Logo" 
+                style={{ 
+                  height: '24px', 
+                  width: 'auto', 
+                  objectFit: 'contain',
+                  verticalAlign: 'middle'
+                }}
+                onError={(e) => {
+                  // 如果图片加载失败，隐藏图片
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                }}
+              />
+              <span style={{ color: '#1890ff', fontWeight: 'bold', fontSize: '16px' }}>职海航图</span>
+            </>
+          )}
         </div>
         <Menu
           theme="light"

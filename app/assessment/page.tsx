@@ -379,7 +379,7 @@ export default function AssessmentCenterPage() {
             onChange={(e) => setSelectedVersion(e.target.value)}
             className={styles.versionRadioGroup}
           >
-            <Space direction="vertical" style={{ width: '100%' }} size="large">
+            <Space orientation="vertical" style={{ width: '100%' }} size="large">
               {hollandVersions.map((option) => (
                 <Card 
                   key={option.version}

@@ -734,7 +734,7 @@ export default function SkillsAssessmentPage() {
               value={answers[currentQuestion?.id] || 0}
               style={{ width: '100%' }}
             >
-              <Space direction="vertical" style={{ width: '100%' }}>
+              <Space orientation="vertical" style={{ width: '100%' }}>
                 {currentQuestion?.options.map(option => (
                   <Radio 
                     key={option.value} 
@@ -884,7 +884,7 @@ export default function SkillsAssessmentPage() {
 
           {/* 建议区域 */}
           <Card title="个性化建议" style={{ marginTop: 24 }}>
-            <Space direction="vertical" style={{ width: '100%' }}>
+            <Space orientation="vertical" style={{ width: '100%' }}>
               <Paragraph>
                 <strong>优势领域：</strong>
                 {Object.entries(scores)

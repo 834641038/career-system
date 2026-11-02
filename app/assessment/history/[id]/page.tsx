@@ -334,7 +334,7 @@ export default function AssessmentHistoryDetailPage() {
                   </Title>
                   <Timeline
                     items={record.recommendations.map((rec: string, idx: number) => ({
-                      children: <Paragraph key={idx}>{rec}</Paragraph>,
+                      content: <Paragraph key={idx}>{rec}</Paragraph>,
                       color: 'green',
                     }))}
                   />

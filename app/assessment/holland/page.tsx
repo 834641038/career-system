@@ -301,7 +301,7 @@ export default function HollandAssessmentPage() {
                 key={item.type} 
                 style={{ marginBottom: '16px', borderLeft: `4px solid ${index === 0 ? '#1890ff' : '#52c41a'}` }}
               >
-                <Space direction="vertical" style={{ width: '100%' }}>
+                <Space orientation="vertical" style={{ width: '100%' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Text strong style={{ fontSize: '16px' }}>
                       {index === 0 ? '主要类型' : `次要类型${index}`}：{getTypeName(item.type)}
@@ -365,7 +365,7 @@ export default function HollandAssessmentPage() {
           value={answers[currentQuestion]}
           style={{ width: '100%' }}
         >
-          <Space direction="vertical" style={{ width: '100%' }}>
+          <Space orientation="vertical" style={{ width: '100%' }}>
             {currentQ.options.map((option) => (
               <Card 
                 key={option.value}

@@ -286,8 +286,9 @@ const navigateToTodayPlan = () => {
     colorField: 'name',
     radius: 0.8,
     label: {
-      type: 'outer',
-      content: '{name}: {percentage}',
+      // G2 v5 兼容写法：text 回调 + position 控制标签位置（旧的 type:'outer'/content 写法在 v5 中已失效）
+      text: (data: any) => `${data.name}: ${data.level}%`,
+      position: 'outside',
     },
     height: 200,
     color: ['#1890ff', '#52c41a', '#722ed1', '#fa8c16', '#f759ab'],
@@ -329,7 +330,7 @@ const navigateToTodayPlan = () => {
               value={dashboardData.stats.todayTasks.completed} 
               suffix={`/${dashboardData.stats.todayTasks.total}`}
               prefix={<CheckCircleOutlined style={{ color: '#52c41a' }} />}
-              valueStyle={{ color: '#52c41a' }}
+              styles={{ content: { color: '#52c41a' } }}
             />
             <Progress 
               percent={dashboardData.stats.todayTasks.progress} 
@@ -347,7 +348,7 @@ const navigateToTodayPlan = () => {
               value={dashboardData.stats.weeklyProgress} 
               suffix="%"
               prefix={<RiseOutlined style={{ color: '#1890ff' }} />}
-              valueStyle={{ color: '#1890ff' }}
+              styles={{ content: { color: '#1890ff' } }}
             />
             <div className={styles.statCardSubtitle}>
               {planStats ? `已完成 ${planStats.weekly.completed}/${planStats.weekly.total} 项任务` : '加载中...'}
@@ -362,7 +363,7 @@ const navigateToTodayPlan = () => {
               value={dashboardData.stats.skillsMastered} 
               suffix="项"
               prefix={<TrophyOutlined style={{ color: '#fa8c16' }} />}
-              valueStyle={{ color: '#fa8c16' }}
+              styles={{ content: { color: '#fa8c16' } }}
             />
             <div className={styles.statCardSubtitle}>
               总计 20 项技能
@@ -377,7 +378,7 @@ const navigateToTodayPlan = () => {
               value={dashboardData.stats.studyHours} 
               suffix="小时"
               prefix={<ClockCircleOutlined style={{ color: '#722ed1' }} />}
-              valueStyle={{ color: '#722ed1' }}
+              styles={{ content: { color: '#722ed1' } }}
             />
             <div className={styles.statCardSubtitle}>
               {planStats ? `本周累计 ${planStats.weeklyStudyHours.toFixed(1)} 小时` : '加载中...'}
@@ -420,64 +421,57 @@ const navigateToTodayPlan = () => {
             }
             loading={loading}
           >
-            <List
-              dataSource={recentTasks}
-              renderItem={(item, index) => (
-                <List.Item
+            {recentTasks.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '24px 0', color: '#999' }}>
+                近期没有任务，快去添加吧！
+              </div>
+            ) : (
+              recentTasks.map((item, index) => (
+                <div
+                  key={`${item.id}-${index}`}
                   className={`${item.completed ? styles.taskCompleted : ''} ${styles.taskItem}`}
-                  actions={[
-                    item.completed ? (
+                  style={{ display: 'flex', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid rgba(5,5,5,0.06)' }}
+                >
+                  <Avatar
+                    size="small"
+                    style={{ background: getPriorityColor(item.priority), fontSize: '12px', flexShrink: 0 }}
+                  >
+                    {item.priority === 'high' ? '高' : item.priority === 'medium' ? '中' : '低'}
+                  </Avatar>
+                  <div style={{ flex: 1, minWidth: 0, marginLeft: 16 }}>
+                    <div className={styles.taskItemContent}>
+                      <span>{item.title}</span>
+                      <Tag color="blue">{item.category}</Tag>
+                    </div>
+                    <div className={styles.taskItemDescription}>
+                      <span style={{ color: '#666' }}>
+                        <ClockCircleOutlined className={styles.taskItemTimeIcon} />
+                        {formatTimeDisplay(item.time, item.date)}
+                        {item.estimatedDuration && (
+                          <span style={{ marginLeft: 8, color: '#999' }}>
+                            （约{Math.ceil(item.estimatedDuration / 60)}小时）
+                          </span>
+                        )}
+                      </span>
+                      <Tag color={getPriorityColor(item.priority)}> {getPriorityText(item.priority)}</Tag>
+                    </div>
+                  </div>
+                  <div style={{ flexShrink: 0 }}>
+                    {item.completed ? (
                       <Tag color="success" icon={<CheckCircleOutlined />}>已完成</Tag>
                     ) : (
-                      <Button 
-                        type="link" 
+                      <Button
+                        type="link"
                         size="small"
                         onClick={() => handleTaskClick(item)}
                       >
                         开始
                       </Button>
-                    )
-                  ]}
-                >
-                  <List.Item.Meta
-                    avatar={
-                      <Avatar 
-                        size="small" 
-                        style={{ 
-                          background: getPriorityColor(item.priority),
-                          fontSize: '12px'
-                        }}
-                      >
-                        {item.priority === 'high' ? '高' : item.priority === 'medium' ? '中' : '低'}
-                      </Avatar>
-                    }
-                    title={
-                      <div className={styles.taskItemContent}>
-                        <span>{item.title}</span>
-                        <Tag color="blue">{item.category}</Tag>
-                      </div>
-                    }
-                    description={
-                      <div className={styles.taskItemDescription}>
-                        <span style={{ color: '#666' }}>
-                          <ClockCircleOutlined className={styles.taskItemTimeIcon} />
-                          {formatTimeDisplay(item.time, item.date)}
-                          {item.estimatedDuration && (
-                            <span style={{ marginLeft: 8, color: '#999' }}>
-                              （约{Math.ceil(item.estimatedDuration / 60)}小时）
-                            </span>
-                          )}
-                        </span>
-                        <Tag color={getPriorityColor(item.priority)}> {getPriorityText(item.priority)}</Tag>
-                      </div>
-                    }
-                  />
-                </List.Item>
-              )}
-              locale={{
-                emptyText: '近期没有任务，快去添加吧！'
-              }}
-            />
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
           </Card>
 
           {/* 技能成长 */}
@@ -534,18 +528,18 @@ const navigateToTodayPlan = () => {
             style={{ marginBottom: 16 }}
             loading={loading}
           >
-            <Timeline>
-              {dashboardData.timeline.map((item, index) => (
-                <Timeline.Item 
-                  key={index} 
-                  color={item.color}
-                  dot={item.icon}
-                >
-                  <div className={styles.timelineItemTime}>{item.time}</div>
-                  <div>{item.content}</div>
-                </Timeline.Item>
-              ))}
-            </Timeline>
+            <Timeline
+              items={dashboardData.timeline.map((item) => ({
+                color: item.color,
+                icon: item.icon,
+                content: (
+                  <>
+                    <div className={styles.timelineItemTime}>{item.time}</div>
+                    <div>{item.content}</div>
+                  </>
+                ),
+              }))}
+            />
           </Card>
 
           {/* 学习时间统计 */}
@@ -572,33 +566,26 @@ const navigateToTodayPlan = () => {
             }
             loading={loading}
           >
-            <List
-              dataSource={dashboardData.recentAchievements}
-              renderItem={(item) => (
-                <List.Item>
-                  <List.Item.Meta
-                    avatar={
-                      <Avatar 
-                        style={{ background: item.color }}
-                        icon={item.icon}
-                      />
-                    }
-                    title={item.title}
-                    description={
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span>{item.date}</span>
-                        <Tag color="success">已获得</Tag>
-                      </div>
-                    }
-                  />
-                </List.Item>
-              )}
-            />
+            {dashboardData.recentAchievements.map((item, index) => (
+              <div
+                key={index}
+                style={{ display: 'flex', alignItems: 'center', padding: '12px 0', borderBottom: index < dashboardData.recentAchievements.length - 1 ? '1px solid rgba(5,5,5,0.06)' : 'none' }}
+              >
+                <Avatar style={{ background: item.color, flexShrink: 0 }} icon={item.icon} />
+                <div style={{ flex: 1, minWidth: 0, marginLeft: 12 }}>
+                  <div>{item.title}</div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4 }}>
+                    <span style={{ color: '#999', fontSize: 12 }}>{item.date}</span>
+                    <Tag color="success">已获得</Tag>
+                  </div>
+                </div>
+              </div>
+            ))}
           </Card>
 
           {/* 快速行动 */}
           <Card title="快速行动" loading={loading}>
-            <Space direction="vertical" style={{ width: '100%' }}>
+            <Space orientation="vertical" style={{ width: '100%' }}>
               <Button 
                 type="primary" 
                 icon={<RocketOutlined />}
