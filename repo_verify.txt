@@ -1,0 +1,25 @@
+=== 根目录跟踪文件 ===
+.gitignore
+README.md
+probe.txt
+push_verify.txt
+
+=== 顶层目录统计 ===
+total tracked: 147
+front files: 90
+back files: 47
+database files: 2
+=== 最近历史 ===
+24c2247 fix: 修正 .gitignore 保留 .env.example，清理误入库的诊断文件
+6ff7d98 docs: 补充统一仓库 README 与 .env 示例
+a8534fc Add 'career-system-front/' from commit '37fca395cc0a13e794fa93493db78208b46d9577'
+b2cce15 chore: 解除前端 gitlink 追踪，为合并统一仓库做准备
+3f7a396 feat: 修复后端接口问题并新增路由
+37fca39 fix: 修复图表渲染、接口连接与页面 SSR 问题
+ff84e76 feat:前端页面完善
+d44756e feat: 后端代码完善
+
+=== 确认敏感文件未追踪 ===
+env tracked: 0
+pyc tracked: 0
+png tracked: 1
