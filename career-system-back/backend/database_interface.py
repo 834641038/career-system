@@ -14,6 +14,7 @@ except Exception:
 from sample_data import SAMPLE_STUDENTS, SAMPLE_JOBS, CAREER_PATHS_DATABASE, COURSE_CATALOG
 import hashlib
 import uuid
+import json
 from datetime import datetime
 
 
@@ -74,6 +75,8 @@ class DatabaseInterface:
         self.job_skill_requirements = {}  # 岗位技能要求表
         self.student_preferences = {}  # 学生偏好表
         self.matching_results = {}  # 匹配结果表
+        self.tasks = {}  # 计划任务表（内存模式）
+        self.saved_career_plans = {}  # 保存的职业规划表（内存模式）
         
         # 技能库与学生 - 技能关联表（内存后备方案）
         # 根据 SAMPLE_STUDENTS 中可能的技能字段预填充内存数据
@@ -1169,6 +1172,135 @@ class DatabaseInterface:
             self.users[user_id] = user_data
             self.students[student_id] = student_data
             return {'success': True, 'user_id': user_id, 'student_id': student_id}
+
+    # ==================== 计划任务模块 (tasks 表) ====================
+
+    def get_tasks_by_user(self, user_id):
+        """获取用户的计划任务列表"""
+        user_id = str(user_id)
+        if self.use_sqlserver:
+            query = """
+            SELECT task_uuid, title, description, priority, completed, category, task_date, task_time, created_at, updated_at
+            FROM tasks WHERE user_id = ? ORDER BY task_date DESC, task_time ASC
+            """
+            rows = self._execute_query(query, (user_id,))
+            return [self._task_row_to_dict(r) for r in rows]
+        else:
+            results = []
+            for task in self.tasks.values():
+                if str(task.get('user_id')) == user_id:
+                    results.append(task)
+            return sorted(results, key=lambda x: (x.get('date') or '', x.get('time') or ''), reverse=True)
+
+    def _task_row_to_dict(self, row):
+        """将 tasks 表行转换为前端任务字段格式"""
+        return {
+            'id': row.get('task_uuid'),
+            'title': row.get('title'),
+            'description': row.get('description') or '',
+            'priority': row.get('priority') or 'medium',
+            'completed': bool(row.get('completed')),
+            'category': row.get('category') or '学习',
+            'date': row.get('task_date'),
+            'time': row.get('task_time') or '',
+            'createdAt': row.get('created_at').isoformat() if isinstance(row.get('created_at'), datetime) else str(row.get('created_at')),
+            'updatedAt': row.get('updated_at').isoformat() if isinstance(row.get('updated_at'), datetime) else str(row.get('updated_at'))
+        }
+
+    def add_task(self, user_id, task):
+        """添加计划任务，返回任务字典"""
+        user_id = str(user_id)
+        task_uuid = str(task.get('id') or uuid.uuid4())
+        if self.use_sqlserver:
+            query = """
+            INSERT INTO tasks (user_id, task_uuid, title, description, priority, completed, category, task_date, task_time, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """
+            now = datetime.now()
+            params = (
+                user_id,
+                task_uuid,
+                task.get('title'),
+                task.get('description', ''),
+                task.get('priority', 'medium'),
+                1 if task.get('completed') else 0,
+                task.get('category', '学习'),
+                task.get('date') or datetime.now().strftime('%Y-%m-%d'),
+                task.get('time', ''),
+                now,
+                now
+            )
+            ok = self._execute_update(query, params) > 0
+        else:
+            self.tasks.setdefault(user_id, []).append(dict(task))
+            ok = True
+        if ok:
+            return dict(task, id=task_uuid)
+        return None
+
+    def update_task_status(self, user_id, task_id, completed):
+        """更新任务完成状态"""
+        user_id = str(user_id)
+        task_id = str(task_id)
+        if self.use_sqlserver:
+            query = "UPDATE tasks SET completed = ?, updated_at = ? WHERE user_id = ? AND task_uuid = ?"
+            return self._execute_update(query, (1 if completed else 0, datetime.now(), user_id, task_id)) > 0
+        else:
+            for task in self.tasks.get(user_id, []):
+                if str(task.get('id')) == task_id:
+                    task['completed'] = bool(completed)
+                    return True
+            return False
+
+    def delete_task(self, user_id, task_id):
+        """删除任务"""
+        user_id = str(user_id)
+        task_id = str(task_id)
+        if self.use_sqlserver:
+            query = "DELETE FROM tasks WHERE user_id = ? AND task_uuid = ?"
+            return self._execute_update(query, (user_id, task_id)) > 0
+        else:
+            tasks = self.tasks.get(user_id, [])
+            for i, task in enumerate(tasks):
+                if str(task.get('id')) == task_id:
+                    del tasks[i]
+                    return True
+            return False
+
+    # ==================== 保存的职业规划 (saved_career_plans 表) ====================
+
+    def get_career_plans_by_user(self, user_id):
+        """获取用户保存的职业规划列表"""
+        user_id = str(user_id)
+        if self.use_sqlserver:
+            query = "SELECT plan_uuid, plan_json, created_at FROM saved_career_plans WHERE user_id = ? ORDER BY created_at DESC"
+            rows = self._execute_query(query, (user_id,))
+            result = []
+            for row in rows:
+                try:
+                    plan = json.loads(row.get('plan_json'))
+                    plan.setdefault('id', row.get('plan_uuid'))
+                    plan.setdefault('created_at', str(row.get('created_at')))
+                    result.append(plan)
+                except Exception:
+                    continue
+            return result
+        else:
+            return self.saved_career_plans.get(user_id, [])
+
+    def add_career_plan(self, user_id, plan):
+        """保存职业规划，返回带 id 的规划字典"""
+        user_id = str(user_id)
+        plan_uuid = str(plan.get('id') or uuid.uuid4())
+        if self.use_sqlserver:
+            query = "INSERT INTO saved_career_plans (user_id, plan_uuid, plan_json, created_at) VALUES (?, ?, ?, ?)"
+            ok = self._execute_update(query, (user_id, plan_uuid, json.dumps(plan, ensure_ascii=False), datetime.now())) > 0
+        else:
+            self.saved_career_plans.setdefault(user_id, []).append(dict(plan))
+            ok = True
+        if ok:
+            return dict(plan, id=plan_uuid)
+        return None
 
     def close_connection(self):
         """关闭数据库连接"""

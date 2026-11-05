@@ -48,6 +48,7 @@ from database_interface import db
 DEFAULT_STUDENT_ID = '2024001'
 
 # 内存模式下的业务存储：key 均为 user_id
+# 说明：任务与保存的规划已迁移至数据库（database_interface），以下变量仅作兼容保留
 MEM_TASKS = {}  # user_id -> [任务 dict]
 MEM_PLANS = {}  # user_id -> [已保存的职业规划 list]
 
@@ -903,7 +904,7 @@ if FLASK_AVAILABLE:
     def get_career_plans(current_user_id):
         """获取当前用户保存的职业规划"""
         try:
-            plans = MEM_PLANS.get(current_user_id, [])
+            plans = db.get_career_plans_by_user(current_user_id)
             return jsonify({'success': True, 'data': plans})
         except Exception as e:
             logger.error(f"Get career plans error: {str(e)}")
@@ -921,8 +922,10 @@ if FLASK_AVAILABLE:
             plan.setdefault('id', str(uuid.uuid4()))
             plan.setdefault('created_at', datetime.datetime.now().isoformat())
             plan['user_id'] = current_user_id
-            MEM_PLANS.setdefault(current_user_id, []).append(plan)
-            return jsonify({'success': True, 'data': plan, 'message': '职业规划保存成功'})
+            saved = db.add_career_plan(current_user_id, plan)
+            if saved is None:
+                return jsonify({'success': False, 'error': '规划保存失败'}), 500
+            return jsonify({'success': True, 'data': saved, 'message': '职业规划保存成功'})
         except Exception as e:
             logger.error(f"Save career plan error: {str(e)}")
             return jsonify({'success': False, 'error': str(e)}), 500
@@ -930,10 +933,8 @@ if FLASK_AVAILABLE:
     # ==================== 计划模块接口（供前端 planService 调用） ====================
 
     def _get_user_tasks(user_id):
-        """获取用户的全部任务列表（惰性初始化）"""
-        if user_id not in MEM_TASKS:
-            MEM_TASKS[user_id] = []
-        return MEM_TASKS[user_id]
+        """获取用户的全部任务列表（来自数据库）"""
+        return db.get_tasks_by_user(user_id)
 
     @app.route('/api/plan/daily', methods=['GET'])
     @token_required
@@ -1047,7 +1048,7 @@ if FLASK_AVAILABLE:
     @app.route('/api/plan/tasks', methods=['POST'])
     @token_required
     def create_task(current_user_id):
-        """创建任务"""
+        """创建任务（持久化到数据库）"""
         try:
             data = request.json
             if not data or not data.get('title'):
@@ -1064,8 +1065,10 @@ if FLASK_AVAILABLE:
                 'createdAt': datetime.datetime.now().isoformat(),
                 'updatedAt': datetime.datetime.now().isoformat()
             }
-            _get_user_tasks(current_user_id).append(task)
-            return jsonify({'success': True, 'data': task})
+            saved = db.add_task(current_user_id, task)
+            if saved is None:
+                return jsonify({'success': False, 'error': '任务保存失败'}), 500
+            return jsonify({'success': True, 'data': saved})
         except Exception as e:
             logger.error(f"Create task error: {str(e)}")
             return jsonify({'success': False, 'error': str(e)}), 500
@@ -1076,12 +1079,13 @@ if FLASK_AVAILABLE:
         """更新任务完成状态"""
         try:
             data = request.json or {}
-            tasks = _get_user_tasks(current_user_id)
-            for task in tasks:
-                if str(task.get('id')) == str(task_id):
-                    task['completed'] = bool(data.get('completed', False))
-                    task['updatedAt'] = datetime.datetime.now().isoformat()
-                    return jsonify({'success': True, 'data': task})
+            completed = bool(data.get('completed', False))
+            if db.update_task_status(current_user_id, task_id, completed):
+                tasks = db.get_tasks_by_user(current_user_id)
+                for task in tasks:
+                    if str(task.get('id')) == str(task_id):
+                        return jsonify({'success': True, 'data': task})
+                return jsonify({'success': True, 'data': {'id': task_id, 'completed': completed}})
             return jsonify({'success': False, 'error': '任务不存在'}), 404
         except Exception as e:
             logger.error(f"Update task status error: {str(e)}")
@@ -1090,13 +1094,10 @@ if FLASK_AVAILABLE:
     @app.route('/api/plan/tasks/<task_id>', methods=['DELETE'])
     @token_required
     def delete_task(current_user_id, task_id):
-        """删除任务"""
+        """删除任务（持久化删除）"""
         try:
-            tasks = _get_user_tasks(current_user_id)
-            for i, task in enumerate(tasks):
-                if str(task.get('id')) == str(task_id):
-                    del tasks[i]
-                    return jsonify({'success': True, 'message': '任务已删除'})
+            if db.delete_task(current_user_id, task_id):
+                return jsonify({'success': True, 'message': '任务已删除'})
             return jsonify({'success': False, 'error': '任务不存在'}), 404
         except Exception as e:
             logger.error(f"Delete task error: {str(e)}")
