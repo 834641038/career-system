@@ -3,10 +3,8 @@
 from internship_recommender import InternshipRecommendationSystem
 from course_recommender import CourseRecommendationSystem, analyze_skill_gap
 from career_path_planning import CareerPathPlanner
-from sample_data import (
-    get_student_profile, get_filtered_jobs, get_jobs_by_ids,
-    get_course_catalog, CAREER_PATHS_DATABASE
-)
+import sample_data as sample_data_module
+from sample_data import CAREER_PATHS_DATABASE
 import logging
 import os
 import json
@@ -46,6 +44,46 @@ from database_interface import db
 
 # 内存模式下推荐的默认学生ID（当登录用户未关联学生档案时兜底使用样本学生）
 DEFAULT_STUDENT_ID = '2024001'
+
+# ==================== 推荐数据访问（SQL Server 模式从数据库读取，内存模式回退 sample_data） ====================
+
+def get_student_profile(student_id):
+    """根据学生ID获取学生画像：SQL 模式读 sample_students 表，内存模式读 sample_data"""
+    if db.use_sqlserver:
+        for student in (db.get_recommendation_students() or []):
+            if str(student.get('student_id')) == str(student_id):
+                return student
+        return None
+    return sample_data_module.get_student_profile(student_id)
+
+
+def get_filtered_jobs(filters):
+    """根据筛选条件获取岗位列表：SQL 模式读 sample_jobs 表，内存模式读 sample_data"""
+    if db.use_sqlserver:
+        jobs = db.get_recommendation_jobs() or []
+        filters = filters or {}
+        locs = filters.get('location') or []
+        inds = filters.get('industry') or []
+        if locs:
+            jobs = [j for j in jobs if j.get('location') in locs]
+        if inds:
+            jobs = [j for j in jobs if j.get('industry') in inds]
+        return jobs
+    return sample_data_module.get_filtered_jobs(filters)
+
+
+def get_jobs_by_ids(job_ids):
+    """根据岗位ID列表获取岗位：SQL 模式读 sample_jobs 表，内存模式读 sample_data"""
+    if db.use_sqlserver:
+        return [j for j in (db.get_recommendation_jobs() or []) if j.get('job_id') in job_ids]
+    return sample_data_module.get_jobs_by_ids(job_ids)
+
+
+def get_course_catalog():
+    """获取课程目录：SQL 模式读 sample_courses 表，内存模式读 sample_data"""
+    if db.use_sqlserver:
+        return db.get_recommendation_courses() or []
+    return sample_data_module.get_course_catalog()
 
 # 内存模式下的业务存储：key 均为 user_id
 # 说明：任务与保存的规划已迁移至数据库（database_interface），以下变量仅作兼容保留

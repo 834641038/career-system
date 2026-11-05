@@ -20,8 +20,9 @@ career-system/
 │   ├── backingend_API.py       # 后端入口
 │   └── requirements.txt
 ├── database/                   # 数据库初始化脚本
-│   ├── init_schema.sql         # 建库、建登录账号、建 16 张表
-│   └── seed_data.sql           # 基础数据（账号/学生/技能/职位等）
+│   ├── init_schema.sql         # 建库、建登录账号、建 19 张表
+│   ├── seed_data.sql           # 基础数据（账号/学生/技能/职位等）
+│   └── seed_recommend.sql      # 推荐数据（学生画像/岗位/课程，供推荐接口读取）
 └── README.md
 ```
 
@@ -33,13 +34,15 @@ career-system/
 ```bash
 sqlcmd -S localhost -E -i database/init_schema.sql   # 建库 + 建表
 sqlcmd -S localhost -E -i database/seed_data.sql     # 插入基础数据
+sqlcmd -S localhost -E -i database/seed_recommend.sql  # 插入推荐数据（学生画像/岗位/课程）
 ```
 
 3. 脚本会创建：
    - 数据库 `career_recommendation`（排序规则 Chinese_PRC_CI_AS）
    - SQL 登录 `app_user`（与后端 `database_interface.py` 默认连接配置一致）
-   - 16 张表：`users_login`、`students`、`companies`、`skills`、`holland_test_results`、`career_values`、`experiences`、`day_plans`、`week_plans`、`student_skills`、`jobs`、`job_skill_requirements`、`student_preferences`、`matching_results`、`tasks`、`saved_career_plans`
+   - 19 张表：`users_login`、`students`、`companies`、`skills`、`holland_test_results`、`career_values`、`experiences`、`day_plans`、`week_plans`、`student_skills`、`jobs`、`job_skill_requirements`、`student_preferences`、`matching_results`、`tasks`、`saved_career_plans`、`sample_students`、`sample_jobs`、`sample_courses`
    - 基础数据：2 个测试账号、2 名学生、15 项技能、4 家公司、4 个职位等
+   - 推荐数据：2 份学生画像、5 个推荐岗位、8 门推荐课程（推荐接口 career-paths/internships/courses 从数据库读取）
 
 4. 测试账号（密码均为 `Test123456`）：`testuser`、`zhangsan`。
 

@@ -307,5 +307,44 @@ BEGIN
 END
 GO
 
+-- 4.17 推荐学生画像表（JSON 存储，供推荐算法读取）
+IF OBJECT_ID(N'sample_students', N'U') IS NULL
+BEGIN
+    CREATE TABLE sample_students (
+        id          INT IDENTITY(1,1) NOT NULL,
+        student_id  VARCHAR(20) NOT NULL,
+        student_json NVARCHAR(MAX) NOT NULL,
+        CONSTRAINT PK_sample_students PRIMARY KEY (id),
+        CONSTRAINT UQ_sample_students UNIQUE (student_id)
+    );
+END
+GO
+
+-- 4.18 推荐岗位表（JSON 存储）
+IF OBJECT_ID(N'sample_jobs', N'U') IS NULL
+BEGIN
+    CREATE TABLE sample_jobs (
+        id       INT IDENTITY(1,1) NOT NULL,
+        job_id   VARCHAR(20) NOT NULL,
+        job_json NVARCHAR(MAX) NOT NULL,
+        CONSTRAINT PK_sample_jobs PRIMARY KEY (id),
+        CONSTRAINT UQ_sample_jobs UNIQUE (job_id)
+    );
+END
+GO
+
+-- 4.19 推荐课程表（JSON 存储）
+IF OBJECT_ID(N'sample_courses', N'U') IS NULL
+BEGIN
+    CREATE TABLE sample_courses (
+        id         INT IDENTITY(1,1) NOT NULL,
+        course_id  VARCHAR(20) NOT NULL,
+        course_json NVARCHAR(MAX) NOT NULL,
+        CONSTRAINT PK_sample_courses PRIMARY KEY (id),
+        CONSTRAINT UQ_sample_courses UNIQUE (course_id)
+    );
+END
+GO
+
 PRINT N'数据库与表结构初始化完成';
 GO

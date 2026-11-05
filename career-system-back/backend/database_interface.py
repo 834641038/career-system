@@ -1302,6 +1302,53 @@ class DatabaseInterface:
             return dict(plan, id=plan_uuid)
         return None
 
+    # ==================== 推荐数据读取（sample_students / sample_jobs / sample_courses 表） ====================
+
+    def get_recommendation_students(self):
+        """获取推荐用学生画像列表（SQL 模式读数据库；内存模式返回 None 由调用方回退 sample_data）"""
+        if not self.use_sqlserver:
+            return None
+        rows = self._execute_query("SELECT student_id, student_json FROM sample_students")
+        result = []
+        for row in rows:
+            try:
+                student = json.loads(row.get('student_json'))
+                student.setdefault('student_id', row.get('student_id'))
+                result.append(student)
+            except Exception:
+                continue
+        return result
+
+    def get_recommendation_jobs(self):
+        """获取推荐用岗位列表（SQL 模式读数据库；内存模式返回 None 由调用方回退 sample_data）"""
+        if not self.use_sqlserver:
+            return None
+        rows = self._execute_query("SELECT job_id, job_json FROM sample_jobs")
+        result = []
+        for row in rows:
+            try:
+                job = json.loads(row.get('job_json'))
+                job.setdefault('job_id', row.get('job_id'))
+                result.append(job)
+            except Exception:
+                continue
+        return result
+
+    def get_recommendation_courses(self):
+        """获取课程目录（SQL 模式读数据库；内存模式返回 None 由调用方回退 sample_data）"""
+        if not self.use_sqlserver:
+            return None
+        rows = self._execute_query("SELECT course_id, course_json FROM sample_courses")
+        result = []
+        for row in rows:
+            try:
+                course = json.loads(row.get('course_json'))
+                course.setdefault('course_id', row.get('course_id'))
+                result.append(course)
+            except Exception:
+                continue
+        return result
+
     def close_connection(self):
         """关闭数据库连接"""
         if self.use_sqlserver:
