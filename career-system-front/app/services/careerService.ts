@@ -45,7 +45,7 @@ interface CareerAssessment {
 }
 
 class CareerService {
-  private baseUrl = 'http://localhost:5000/api';
+  private baseUrl = '/api';
   private recommendationService = recommendationService;
 
   private getHeaders(requireAuth: boolean = true) {

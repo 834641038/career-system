@@ -62,7 +62,7 @@ interface CareerStep {
 }
 
 class RecommendationService {
-  private baseUrl = 'http://localhost:5000/api';
+  private baseUrl = '/api';
 
   private getHeaders(requireAuth: boolean = true) {
     const headers: Record<string, string> = {
@@ -260,7 +260,7 @@ interface AICareerAdviceResponse {
 }
 
 class AIService {
-  private baseUrl = 'http://localhost:5000/api';
+  private baseUrl = '/api';
 
   private getHeaders(requireAuth: boolean = true) {
     const headers: Record<string, string> = {

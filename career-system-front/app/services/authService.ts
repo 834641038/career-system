@@ -30,7 +30,7 @@ interface AuthResponse {
 }
 
 class AuthService {
-  private baseUrl = 'http://localhost:5000/api/auth'
+  private baseUrl = '/api/auth'
 
   private getHeaders(requireAuth: boolean = false) {
     const headers: Record<string, string> = {

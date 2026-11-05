@@ -39,7 +39,7 @@ interface LearningPath {
 }
 
 class LearningService {
-  private baseUrl = 'http://localhost:5000/api';
+  private baseUrl = '/api';
   private recommendationService = recommendationService;
 
   private getHeaders(requireAuth: boolean = true) {
