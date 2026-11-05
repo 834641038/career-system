@@ -92,7 +92,7 @@ class AuthService {
   async register(userData: RegisterData): Promise<AuthResponse> {
     try {
       const payload = {
-        username: userData.email,
+        username: userData.name, // 姓名作为登录用户名
         password: userData.password,
         email: userData.email,
         student_id: userData.studentId
