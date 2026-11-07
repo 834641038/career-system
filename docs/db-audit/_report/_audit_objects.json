@@ -1,0 +1,168 @@
+{
+ "checks": [
+  {
+   "table": "day_plans",
+   "name": "CK__day_plans__day_p__32767D0B",
+   "definition": "([day_plan_prority]>=(1) AND [day_plan_prority]<=(5))"
+  },
+  {
+   "table": "holland_tests",
+   "name": "CK__holland_t__holla__1B9317B3",
+   "definition": "([holland_R]>=(0))"
+  },
+  {
+   "table": "holland_tests",
+   "name": "CK__holland_t__holla__1C873BEC",
+   "definition": "([holland_I]>=(0))"
+  },
+  {
+   "table": "holland_tests",
+   "name": "CK__holland_t__holla__1D7B6025",
+   "definition": "([holland_A]>=(0))"
+  },
+  {
+   "table": "holland_tests",
+   "name": "CK__holland_t__holla__1E6F845E",
+   "definition": "([holland_S]>=(0))"
+  },
+  {
+   "table": "holland_tests",
+   "name": "CK__holland_t__holla__1F63A897",
+   "definition": "([holland_E]>=(0))"
+  },
+  {
+   "table": "holland_tests",
+   "name": "CK__holland_t__holla__2057CCD0",
+   "definition": "([holland_C]>=(0))"
+  },
+  {
+   "table": "job_skill_requirements",
+   "name": "CK__job_skill__requi__503BEA1C",
+   "definition": "([required_level]>=(1) AND [required_level]<=(5))"
+  },
+  {
+   "table": "job_skill_requirements",
+   "name": "CK__job_skill__requi__51300E55",
+   "definition": "([requirement_type]='加分' OR [requirement_type]='必需')"
+  },
+  {
+   "table": "jobs",
+   "name": "CK__jobs__job_type__4B7734FF",
+   "definition": "([job_type]='兼职' OR [job_type]='全职' OR [job_type]='实习')"
+  },
+  {
+   "table": "matching_results",
+   "name": "CK__matching___match__5AB9788F",
+   "definition": "([match_score]>=(0) AND [match_score]<=(100))"
+  },
+  {
+   "table": "student_skills",
+   "name": "CK__student_s__exper__46B27FE2",
+   "definition": "([experience_months]>=(0))"
+  },
+  {
+   "table": "student_skills",
+   "name": "CK__student_s__profi__45BE5BA9",
+   "definition": "([proficiency_level]>=(1) AND [proficiency_level]<=(5))"
+  },
+  {
+   "table": "students",
+   "name": "CK__students__gpa__3D2915A8",
+   "definition": "([gpa]>=(0.00) AND [gpa]<=(4.00))"
+  },
+  {
+   "table": "students",
+   "name": "CK__students__grade__3C34F16F",
+   "definition": "([grade]>=(1) AND [grade]<=(4))"
+  },
+  {
+   "table": "work_values",
+   "name": "CK__work_valu__achie__2610A626",
+   "definition": "([achievement_oriented]>=(0))"
+  },
+  {
+   "table": "work_values",
+   "name": "CK__work_valu__innov__29E1370A",
+   "definition": "([innovation_challenge]>=(0))"
+  },
+  {
+   "table": "work_values",
+   "name": "CK__work_valu__power__28ED12D1",
+   "definition": "([power_status]>=(0))"
+  },
+  {
+   "table": "work_values",
+   "name": "CK__work_valu__safe___2704CA5F",
+   "definition": "([safe_stable]>=(0))"
+  },
+  {
+   "table": "work_values",
+   "name": "CK__work_valu__socia__251C81ED",
+   "definition": "([social_contribution]>=(0))"
+  },
+  {
+   "table": "work_values",
+   "name": "CK__work_valu__work___27F8EE98",
+   "definition": "([work_life_balance]>=(0))"
+  }
+ ],
+ "uniques": [
+  {
+   "table": "job_skill_requirements",
+   "index": "UQ__job_skil__E1891E935F9DBFD1",
+   "is_constraint": true,
+   "cols": "job_id,skill_id"
+  },
+  {
+   "table": "matching_results",
+   "index": "UQ__matching__6CD02DF109345656",
+   "is_constraint": true,
+   "cols": "student_id,job_id"
+  },
+  {
+   "table": "skills",
+   "index": "UQ__skills__73C038ADCDAE75F1",
+   "is_constraint": true,
+   "cols": "skill_name"
+  },
+  {
+   "table": "student_preferences",
+   "index": "UQ__student___2A33069B44C887DD",
+   "is_constraint": true,
+   "cols": "student_id"
+  },
+  {
+   "table": "student_skills",
+   "index": "UQ__student___A588AEAC5D8917B4",
+   "is_constraint": true,
+   "cols": "student_id,skill_id"
+  }
+ ],
+ "modules_before": {
+  "GetTopRecommendations": {
+   "type": "SQL_STORED_PROCEDURE",
+   "ok": true,
+   "msg": "OK"
+  },
+  "StudentSkillDetails": {
+   "type": "VIEW",
+   "ok": true,
+   "msg": "OK"
+  }
+ },
+ "after_rename": {
+  "GetTopRecommendations": {
+   "ok": true,
+   "msg": "OK"
+  },
+  "StudentSkillDetails": {
+   "ok": true,
+   "msg": "OK"
+  }
+ },
+ "checks_after_rename": 12,
+ "restore": {
+  "tables_ok": true,
+  "checks": 12
+ }
+}

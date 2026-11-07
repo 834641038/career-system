@@ -1,0 +1,112 @@
+[
+ {
+  "ok": true,
+  "name": "D0 CREATE USER + db_datareader/db_datawriter",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "D1/D2 两张表改名成功",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "D3/D5 两个列改名成功",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "D4/D4b 列宽放宽 password_hash=510B user_email=200B",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "D6 加列并回填 20/20 行（UPDATE 影响 20 行）",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "SQL 通过数 55/58（目标 >=55）",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "改名后 IDENTITY 保留：[('career_values', 'value_id'), ('holland_test_results', 'holland_test_id')]",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "改名后默认值保留：(getdate())",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "改名后主键保留：[('career_values', 'value_id'), ('holland_test_results', 'holland_test_id')]",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "指向改名表的外键：无（这两张表无子表）",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "app_user 可 SELECT users_login（20 行）",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "app_user 可 INSERT",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "app_user 可 UPDATE",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "app_user 可 DELETE",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "app_user 可读改名后的 career_values",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "表名已复原",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "无残留新表名",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "student_id 列已移除",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "列宽已复原 password_hash=40B user_email=80B",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "app_user 用户映射已移除",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "users_login 行数复原 20",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "SQL 通过数复原 51 == 51",
+  "detail": ""
+ }
+]

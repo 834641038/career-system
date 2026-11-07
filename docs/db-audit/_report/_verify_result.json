@@ -1,0 +1,173 @@
+{
+ "pass": 30,
+ "fail": 0,
+ "warn": 1,
+ "known": 2,
+ "items": [
+  {
+   "tag": "PASS",
+   "title": "pyodbc 可用，驱动 7 个",
+   "detail": "SQL Server, ODBC Driver 17 for SQL Server, ODBC Driver 18 for SQL Server, Microsoft Access"
+  },
+  {
+   "tag": "PASS",
+   "title": "numpy 2.4.3",
+   "detail": ""
+  },
+  {
+   "tag": "PASS",
+   "title": "Python 3.13.11",
+   "detail": "D:\\Dev\\runtimes\\DataScience\\python\\version\\py3.13.11\\python.exe"
+  },
+  {
+   "tag": "PASS",
+   "title": "Windows 认证连接成功",
+   "detail": "安玖\\33648 / sysadmin=1 / Express Edition (64-bit)"
+  },
+  {
+   "tag": "KNOWN",
+   "title": "app_user → career_recommendation 不通（已知缺陷，待 D0 修复）",
+   "detail": "4060/18456 无数据库用户映射"
+  },
+  {
+   "tag": "PASS",
+   "title": "app_user → career_system",
+   "detail": "可连"
+  },
+  {
+   "tag": "PASS",
+   "title": "career_recommendation: 14 表 / 296 行 / 13 外键",
+   "detail": "自增列 0 个"
+  },
+  {
+   "tag": "PASS",
+   "title": "career_system: 24 表 / 82 行 / 30 外键",
+   "detail": "自增列 0 个"
+  },
+  {
+   "tag": "PASS",
+   "title": "从接口提取到 58 条 SQL",
+   "detail": ""
+  },
+  {
+   "tag": "PASS",
+   "title": "career_recommendation: 通过 51/58",
+   "detail": "失败方法 ['add_career_values', 'add_holland_test', 'get_career_values_by_student', 'get_day_plans_by_student', 'get_holland_test_by_student', 'get_jobs_by_criteria', 'get_user_by_studentname']"
+  },
+  {
+   "tag": "PASS",
+   "title": "career_system: 通过 3/58",
+   "detail": "失败方法 ['add_career_values', 'add_company', 'add_day_plan', 'add_experience', 'add_holland_test', 'add_job', 'add_job_skill_requirement', 'add_matching_result', 'add_skill', 'add_skill_to_student', 'add_student', 'add_student_preferences', 'add_user', 'add_week_plan', 'delete_day_plan', 'delete_experience', 'delete_student', 'get_all_companies', 'get_all_jobs', 'get_all_skills', 'get_all_students', 'get_career_values_by_student', 'get_company_by_id', 'get_day_plan_by_id', 'get_day_plans_by_student', 'get_experiences_by_student', 'get_holland_test_by_student', 'get_job_by_id', 'get_job_skill_requirements', 'get_jobs_by_criteria', 'get_matching_results_by_student', 'get_skill_by_id', 'get_skill_by_name', 'get_student_by_id', 'get_student_preferences', 'get_student_skills', 'get_user_by_email', 'get_user_by_id', 'get_user_by_studentname', 'get_user_by_username', 'get_week_plan_by_id', 'get_week_plans_by_student', 'register_user_with_student', 'remove_skill_from_student', 'update_day_plan_finish', 'update_experience', 'update_student', 'update_user_last_login', 'update_user_password', 'update_week_plan_finish']"
+  },
+  {
+   "tag": "KNOWN",
+   "title": "DatabaseInterface 未连上库（已知缺陷，待 D0 修复）",
+   "detail": "use_sqlserver=False，已静默降级到内存样本，users=0"
+  },
+  {
+   "tag": "PASS",
+   "title": "证实：默认配置下系统走的是内存样本",
+   "detail": "内存 users 条数=0"
+  },
+  {
+   "tag": "PASS",
+   "title": "内存模式 注册→查询",
+   "detail": "命中 verify_user@csu.edu.cn"
+  },
+  {
+   "tag": "PASS",
+   "title": "样本学生 2024001",
+   "detail": "张三 / IEC / GPA 3.6"
+  },
+  {
+   "tag": "PASS",
+   "title": "实习推荐返回 1 条",
+   "detail": "Top1=字节跳动/数据分析实习生 分数=78.6"
+  },
+  {
+   "tag": "PASS",
+   "title": "课程推荐返回 1 条",
+   "detail": "缺口 1 项 / Top1=Python数据分析进阶"
+  },
+  {
+   "tag": "PASS",
+   "title": "路径推荐返回 2 条",
+   "detail": "Top1=数据科学家发展路径"
+  },
+  {
+   "tag": "PASS",
+   "title": "插入 64 字符哈希被拒绝 → 证明 D4 必须做",
+   "detail": "语句已终止。 (3621)')"
+  },
+  {
+   "tag": "PASS",
+   "title": "回滚后行数复原",
+   "detail": "20 → 20"
+  },
+  {
+   "tag": "PASS",
+   "title": "D1 holland_tests → holland_test_results",
+   "detail": ""
+  },
+  {
+   "tag": "PASS",
+   "title": "D2 work_values → career_values",
+   "detail": ""
+  },
+  {
+   "tag": "PASS",
+   "title": "D3 worth_test_time → value_test_time",
+   "detail": ""
+  },
+  {
+   "tag": "PASS",
+   "title": "D5 worth_id → value_id",
+   "detail": ""
+  },
+  {
+   "tag": "PASS",
+   "title": "D4 password_hash → nvarchar(255)",
+   "detail": ""
+  },
+  {
+   "tag": "PASS",
+   "title": "D6 新增 student_id 并回填 20 行",
+   "detail": "users_login 共 20 行"
+  },
+  {
+   "tag": "PASS",
+   "title": "对齐后 SQL 通过 55/58",
+   "detail": "仍失败：['get_day_plans_by_student', 'get_jobs_by_criteria', 'get_user_by_studentname']（预期仅 get_user_by_studentname 的真实 bug + 2 条静态误报）"
+  },
+  {
+   "tag": "PASS",
+   "title": "D4 后 64 字符哈希完整写入",
+   "detail": "LEN=64"
+  },
+  {
+   "tag": "PASS",
+   "title": "回滚后表清单完全复原",
+   "detail": "14 张表"
+  },
+  {
+   "tag": "PASS",
+   "title": "users_login 行数不变",
+   "detail": "20"
+  },
+  {
+   "tag": "PASS",
+   "title": "student_id 列已随回滚消失",
+   "detail": ""
+  },
+  {
+   "tag": "PASS",
+   "title": "password_hash 宽度已恢复 nvarchar(20)（40 字节）",
+   "detail": ""
+  },
+  {
+   "tag": "WARN",
+   "title": "附带发现：user_email 仅 varchar/nvarchar 40 字符",
+   "detail": "CHARACTER_MAXIMUM_LENGTH=40，真实邮箱超 40 字符会被拒"
+  }
+ ]
+}

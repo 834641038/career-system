@@ -1,0 +1,322 @@
+{
+ "result": {
+  "ok": 52,
+  "fail": 0,
+  "items": [
+   {
+    "ok": true,
+    "title": "改名表 student_info → students",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "改名列 name → student_name / major → student_major",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "grade 由文本转数字（加临时列 → 映射 → 删旧列 → 改名）",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "放宽 student_number / email：改可空 + 唯一约束改成筛选唯一索引",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "改名表 user → users_login",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "改名列 email → user_email / create_time → user_created_time",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "补 4 列：user_name / user_status / user_remark / student_id",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "回填 user_name（邮箱前缀）",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "回填 student_id（经 students.user_id 反查）",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "改名表与列",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "改名表",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "改名 7 列",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "改名表与 2 列",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "补 6 个维度列",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "5 个价值观词条 → 宽表 6 维（4 个有对应，2 个留空）",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "建表",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "从旧库导入 9 家企业",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "改名表 + 补 company_id / salary_range",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "补 salary_range（按岗位类型给区间）+ 建外键",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "记录：3 个岗位均已挂企业",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "改名表 + 补 requirement_type",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "required_level 文本 → 数字（basic=3 / proficient=4 / expert=5，与旧库 3/4/5 同尺度）",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "改名表",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "改名表 + 3 列",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "新增 week_plan_finish（0/1），保留 completion_percentage 不丢 60% 这个事实",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "先拆掉会挡住改名的 CHECK、索引与默认约束",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "改名表 + 3 列",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "priority 文本 → day_plan_prority 数字（高=1/中=2/低=3）",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "is_completed bit → day_plan_finish tinyint",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "day_plan_ddl 收紧为 NOT NULL（接口用 >= DATEADD 过滤，NULL 会被静默丢掉）",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "建表",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "从最新一次测评明细迁入（basic=3 / proficient=4 / expert=5）",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "建表",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "从 student_info 的单值字段回填（行业名 + 地点）",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "建表",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "三表 UNION 迁入（实习 / 项目 / 校园活动）",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "接口 SQL 契约校验（56/56 通过）",
+    "detail": ""
+   },
+   {
+    "ok": true,
+    "title": "注册：users_login + students 双表插入并回填 student_id",
+    "detail": "('probe_user', 7003)"
+   },
+   {
+    "ok": true,
+    "title": "登录：按 user_name 取整行，能读出 student_id",
+    "detail": "user_id=7002, student_id=7003, hash_len=64"
+   },
+   {
+    "ok": true,
+    "title": "霍兰德：写入六维并倒序取最新",
+    "detail": "(10, 90)"
+   },
+   {
+    "ok": true,
+    "title": "价值观：宽表六维写入与读取",
+    "detail": "(70, 82)"
+   },
+   {
+    "ok": true,
+    "title": "经历：统一表写入（type 区分）",
+    "detail": "(4, '实习')"
+   },
+   {
+    "ok": true,
+    "title": "日计划：写入 + 近 7 天过滤",
+    "detail": "近7天条数=1"
+   },
+   {
+    "ok": true,
+    "title": "周计划：写入 + 按学生查",
+    "detail": "条数=2"
+   },
+   {
+    "ok": true,
+    "title": "技能：查/改/插三选一 + JOIN 技能名",
+    "detail": "技能行数=15"
+   },
+   {
+    "ok": true,
+    "title": "岗位：按企业新增",
+    "detail": "该公司岗位数=1"
+   },
+   {
+    "ok": true,
+    "title": "岗位技能要求：写入 + JOIN 技能名",
+    "detail": "要求条数=5"
+   },
+   {
+    "ok": true,
+    "title": "偏好：先查后 UPDATE/INSERT",
+    "detail": "('互联网,人工智能', '8000-12000')"
+   },
+   {
+    "ok": true,
+    "title": "匹配结果：写入 + 三表 JOIN（含企业名）",
+    "detail": "[(7003, 1, 1, '数据分析师', '拼多多', Decimal('88.50')), (1, 1, 1, '数据分析师', '拼多多', Decimal('85.50'))]"
+   },
+   {
+    "ok": true,
+    "title": "表清单复原",
+    "detail": "执行前 24 张 → 回滚后 24 张"
+   },
+   {
+    "ok": true,
+    "title": "行数复原",
+    "detail": "执行前 82 行 → 回滚后 82 行"
+   },
+   {
+    "ok": true,
+    "title": "新增列已消失（users_login.student_id 不存在）",
+    "detail": ""
+   }
+  ]
+ },
+ "sql_pass": 56,
+ "sql_total": 57,
+ "baseline": {
+  "achievement": 4,
+  "campus_activity": 0,
+  "career_plan": 2,
+  "certificate": 2,
+  "competition_award": 2,
+  "daily_task": 3,
+  "holland_assessment": 1,
+  "industry": 4,
+  "internship_experience": 1,
+  "job_library": 3,
+  "job_match": 2,
+  "job_skill_requirement": 7,
+  "job_value_requirement": 0,
+  "project_experience": 2,
+  "skill_assessment": 1,
+  "skill_assessment_detail": 15,
+  "skill_library": 15,
+  "student_info": 1,
+  "study_time": 4,
+  "user": 1,
+  "value_assessment": 1,
+  "value_assessment_detail": 5,
+  "values_library": 5,
+  "weekly_task": 1
+ },
+ "after_rollback": {
+  "achievement": 4,
+  "campus_activity": 0,
+  "career_plan": 2,
+  "certificate": 2,
+  "competition_award": 2,
+  "daily_task": 3,
+  "holland_assessment": 1,
+  "industry": 4,
+  "internship_experience": 1,
+  "job_library": 3,
+  "job_match": 2,
+  "job_skill_requirement": 7,
+  "job_value_requirement": 0,
+  "project_experience": 2,
+  "skill_assessment": 1,
+  "skill_assessment_detail": 15,
+  "skill_library": 15,
+  "student_info": 1,
+  "study_time": 4,
+  "user": 1,
+  "value_assessment": 1,
+  "value_assessment_detail": 5,
+  "values_library": 5,
+  "weekly_task": 1
+ }
+}

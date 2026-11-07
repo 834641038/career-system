@@ -1,0 +1,92 @@
+﻿序号,接口表,接口字段,语义与关联,使用方法(行号),旧库 career_recommendation,新库 career_system,判定,备注
+1,users_login,user_id,账户主键；JWT 载荷；鉴权按此取用户,get_user_by_id 252 / token_required 64 / add_user 281,users_login.user_id int 非自增,user.user_id int 非自增,⚠ 需语义或类型转换,名称一致，但两库均无自增，插入失败
+2,users_login,user_name,登录名；前端实际传邮箱,get_user_by_username 186 / add_user 281,users_login.user_name nvarchar(50),无此列（仅 email）,❌ 无可匹配项,旧库存量值为 stu_0001，与邮箱语义不同
+3,users_login,password_hash,SHA-256 十六进制 64 位,add_user 281 / update_user_password 338,nvarchar(20),varchar(255),⚠ 需语义或类型转换,旧库列宽不足；两库存量值均非 SHA-256
+4,users_login,user_email,邮箱，唯一；资料页 email,get_user_by_email 208 / add_user 281,users_login.user_email,user.email（唯一）,✅ 直接改名,
+5,users_login,user_status,账号启用状态，默认 1,add_user 281,users_login.user_status tinyint,无此列,❌ 无可匹配项,
+6,users_login,user_created_time,注册时间,add_user 281,users_login.user_created_time datetime2,user.create_time,✅ 直接改名,新库有默认 GETDATE
+7,users_login,last_login_time,最后登录时间,update_user_last_login 316,last_Login_time,user.last_login_time,✅ 直接改名,大小写不敏感，不构成问题
+8,users_login,user_remark,备注,add_user 281,users_login.user_remark nvarchar(500),无此列,❌ 无可匹配项,
+9,users_login,student_id（读取）,期望账户直接带出学生ID,resolve_student_id 72 / get_profile 798,无此列，需 students.user_id,无此列，需 student_info.user_id,❌ 无可匹配项,两库都需 JOIN；导致前端 studentId 恒为空
+10,students,student_id,学生主键；26 张业务表 FK 父键,get_student_by_id 361 / add_student 399 / update_student 428 / delete_student 459,students.student_id int 非自增,student_info.student_id int 非自增,⚠ 需语义或类型转换,
+11,students,student_name,姓名,update_student 428 / register_user_with_student 1146,students.student_name,student_info.name NOT NULL,✅ 直接改名,
+12,students,student_major,专业,add_student 399 / update_student 428,students.student_major,student_info.major,✅ 直接改名,
+13,students,grade,年级,update_student 428,tinyint（3/4）,varchar(20)（大二）,⚠ 需语义或类型转换,类型与值域都不同，需定口径
+14,students,gpa,绩点,update_student 428,"decimal(3,2)","decimal(3,2)",✅ 直接改名,
+15,students,user_id,关联账户，1:1,add_student 399 / update_student 428 / register 1146,可空,NOT NULL + 唯一,✅ 直接改名,可空性变了
+16,companies,company_id,公司主键；jobs.company_id 父键,get_company_by_id 481 / get_all_companies 495 / add_company 512,companies.company_id,无表,❌ 无可匹配项,不能用 industry_id 顶替
+17,companies,company_name,公司名称；匹配结果展示列,get_matching_results 1086,companies.company_name,无列,❌ 无可匹配项,
+18,companies,company_location,公司所在地,add_company 512,companies.company_location,无列,❌ 无可匹配项,
+19,companies,company_size,公司规模,add_company 512,companies.company_size,无列,❌ 无可匹配项,
+20,companies,company_description,公司简介,add_company 512,companies.company_description,无列,❌ 无可匹配项,
+21,skills,skill_id,技能主键；被三张表引用,get_skill_by_id 533 / add_skill 562,skills.skill_id 非自增,skill_library.skill_id 非自增,⚠ 需语义或类型转换,
+22,skills,skill_name,技能名，唯一,get_skill_by_name 542 / add_skill 562,唯一,唯一,✅ 直接改名,
+23,skills,skill_category,技能分类,add_skill 562,nvarchar(20),varchar(50),✅ 直接改名,
+24,skills,skill_description,技能说明,add_skill 562,skill_description,description,✅ 直接改名,
+25,holland_test_results,holland_test_id,测评主键,add_holland_test 593,holland_tests.holland_test_id,holland_assessment.holland_id,✅ 直接改名,旧库表名不同
+26,holland_test_results,student_id,关联学生,get_holland_test_by_student 580 / add 593,FK,FK,✅ 直接改名,
+27,holland_test_results,holland_R,R 型得分,get_holland 580 / add 593,tinyint,r_score INT NOT NULL,✅ 直接改名,类型放宽
+28,holland_test_results,holland_I,I 型得分,同上,tinyint,i_score,✅ 直接改名,
+29,holland_test_results,holland_A,A 型得分,同上,tinyint,a_score,✅ 直接改名,
+30,holland_test_results,holland_S,S 型得分,同上,tinyint,s_score,✅ 直接改名,
+31,holland_test_results,holland_E,E 型得分,同上,tinyint,e_score,✅ 直接改名,
+32,holland_test_results,holland_C,C 型得分,同上,tinyint,c_score,✅ 直接改名,
+33,holland_test_results,holland_test_time,测评时间，倒序取最新,get_holland 580 / add 593,holland_test_time,test_time,✅ 直接改名,
+34,career_values,value_id,结果记录主键,add_career_values 633,work_values.worth_id,value_assessment.value_assess_id / values_library.value_id,❌ 无可匹配项,一个名字两种含义，不能直接改
+35,career_values,student_id,关联学生,get_career_values 617 / add 633,FK,主表 FK,⚠ 需语义或类型转换,写入位置从单表变主表
+36,career_values,social_contribution,社会贡献分,add_career_values 633,work_values 列,values_library 行 + detail.score,⛔ 需结构重建,列转行
+37,career_values,achievement_oriented,成就导向分,同上,列,行 + score,⛔ 需结构重建,列转行
+38,career_values,safe_stable,安全稳定分,同上,列,行 + score,⛔ 需结构重建,列转行
+39,career_values,work_life_balance,工作生活平衡分,同上,列,行 + score,⛔ 需结构重建,列转行
+40,career_values,power_status,权力地位分,同上,列,行 + score,⛔ 需结构重建,列转行
+41,career_values,innovation_challenge,创新挑战分,同上,列,行 + score,⛔ 需结构重建,列转行
+42,career_values,value_test_time,测评时间,add_career_values 633,worth_test_time,value_assessment.test_time,⚠ 需语义或类型转换,旧库列名不同
+43,experiences,experience_id,经历主键,update_experience 701 / delete 726,experiences.experience_id,internship_id / project_id / activity_id,⛔ 需结构重建,无统一主键
+44,experiences,student_id,关联学生,get_experiences 661 / add 674 / update 701,FK,三表 FK,✅ 直接改名,
+45,experiences,experience_type,经历类型（实习/项目/校园）,add_experience 674 / update 701,varchar(50),无此列（靠表区分）,⛔ 需结构重建,新库无处存放类型
+46,experiences,experience_title,经历标题,同上,experience_title,position / project_name / campus_role,⛔ 需结构重建,三表名字不同
+47,experiences,experience_content,经历内容,同上,experience_content,description / description / responsibility,⛔ 需结构重建,三表名字不同
+48,experiences,experience_role,担任角色,同上,experience_role,position / role / campus_role,⛔ 需结构重建,三表名字不同
+49,experiences,experience_start_time,开始时间,同上,date,start_date,✅ 直接改名,
+50,experiences,experience_end_time,结束时间,同上,date,end_date,✅ 直接改名,
+51,experiences,updated_time,最后更新时间,add_experience 674 / update 701,datetime 默认 GETDATE,三表均无,❌ 无可匹配项,
+52,day_plans,day_plan_id,日计划主键,get_day_plan_by_id 739 / update 787 / delete 798,day_plans.day_plan_id 非自增,daily_task.daily_task_id 非自增,✅ 直接改名,
+53,day_plans,student_id,关联学生,get_day_plans 749 / add 765,FK,FK,✅ 直接改名,
+54,day_plans,day_plan_name,计划名,add_day_plan 765,day_plan_name,daily_task_name,✅ 直接改名,
+55,day_plans,day_plan_describe,计划描述,add_day_plan 765,nvarchar(max),task_content text,✅ 直接改名,
+56,day_plans,day_plan_prority,优先级（接口传 1/2/3）,add_day_plan 765,tinyint,priority varchar(10) 高/中/低,⚠ 需语义或类型转换,值域需映射
+57,day_plans,day_plan_ddl,截止时间；近7天过滤与倒序,get_day_plans 749 / add 765,NOT NULL,end_time 可空,⚠ 需语义或类型转换,可空会导致 DATEADD 过滤失效
+58,day_plans,day_plan_finish,完成标志 0/1,update_day_plan_finish 787,tinyint 默认 0,is_completed BIT 默认 0,✅ 直接改名,
+59,week_plans,week_plan_id,周计划主键,get_week_plan_by_id 809 / update 852,week_plans.week_plan_id 非自增,weekly_task.weekly_task_id 非自增,✅ 直接改名,
+60,week_plans,student_id,关联学生,get_week_plans 818 / add 831,FK,FK,✅ 直接改名,
+61,week_plans,week_plan_name,周计划名,get_week_plans 818 / add 831,week_plan_name,weekly_task_name,✅ 直接改名,
+62,week_plans,week_plan_start,周开始时间，倒序,get_week_plans 818 / add 831,NOT NULL,start_time 可空,⚠ 需语义或类型转换,
+63,week_plans,week_plan_ddl,周截止时间,add_week_plan 831,NOT NULL,end_time,✅ 直接改名,
+64,week_plans,week_plan_finish,完成标志 0/1,update_week_plan_finish 852,0/1,completion_percentage 0-100,⚠ 需语义或类型转换,需换算为 0/100
+65,student_skills,skill_record_id,关联记录主键,get_student_skills 868,student_skills.skill_record_id 非自增,skill_assessment_detail.detail_id,⚠ 需语义或类型转换,语义变为某次评估的明细
+66,student_skills,student_id,关联学生,add_skill_to_student 892/901 / remove 915,FK,明细表无此列,⛔ 需结构重建,需经 skill_assessment 主表
+67,student_skills,skill_id,关联技能,同上 / get_student_skills 868,FK,FK,✅ 直接改名,
+68,student_skills,proficiency_level,熟练度,同上,tinyint,varchar(20),⚠ 需语义或类型转换,值域不一致
+69,student_skills,experience_months,经验月数,同上,int,无此列,❌ 无可匹配项,
+70,jobs,job_id,职位主键,get_job_by_id 926 / get_all_jobs 935 / add 969,jobs.job_id 非自增,job_library.job_id 非自增,✅ 直接改名,
+71,jobs,job_title,职位名称；按此筛选,get_jobs_by_criteria 947 / add 969,job_title,job_title,✅ 直接改名,
+72,jobs,job_type,职位类型,add_job 969,nvarchar(20),varchar(50),✅ 直接改名,
+73,jobs,company_id,招聘企业，关联 companies,add_job 969,FK,无此列,❌ 无可匹配项,industry_id 是行业，不能替代
+74,jobs,salary_range,薪资范围,add_job 969,nvarchar(50),无此列,❌ 无可匹配项,
+75,job_skill_requirements,requirement_id,要求记录主键,get_job_skill_req 991 / add 1010,非自增,非自增,✅ 直接改名,表名去复数 s
+76,job_skill_requirements,job_id,关联职位,同上,FK CASCADE,FK CASCADE,✅ 直接改名,
+77,job_skill_requirements,skill_id,关联技能，JOIN 出 skill_name,同上,FK,FK,✅ 直接改名,
+78,job_skill_requirements,required_level,要求等级,同上,tinyint（1-5）,varchar(20)（熟练）,⚠ 需语义或类型转换,类型与值域都不同
+79,job_skill_requirements,requirement_type,必需 / 加分,get_job_skill_req 991 / add 1010,nvarchar(10),无此列,❌ 无可匹配项,
+80,student_preferences,preference_id,偏好记录主键,add_student_preferences 1063,非自增,无表,❌ 无可匹配项,
+81,student_preferences,student_id,关联学生，一人一条,get_student_preferences 1031 / add 1045/1063,FK 唯一,仅 student_info.student_id,❌ 无可匹配项,无承载表
+82,student_preferences,preferred_industries,意向行业，多值,同上,nvarchar(max),desired_industry_id 单值 FK,❌ 无可匹配项,多值 vs 单值
+83,student_preferences,preferred_locations,意向城市，多值,同上,nvarchar(max),desired_location 单值,❌ 无可匹配项,多值 vs 单值
+84,student_preferences,expected_salary,期望薪资,同上,nvarchar(50),无此列,❌ 无可匹配项,
+85,student_preferences,work_mode_preference,工作方式偏好,同上,nvarchar(20),无此列,❌ 无可匹配项,
+86,matching_results,match_id,匹配记录主键,add_matching_result 1110,非自增,job_match.match_id 非自增,✅ 直接改名,
+87,matching_results,student_id,关联学生,get_matching 1086 / add 1110,FK,FK,✅ 直接改名,
+88,matching_results,job_id,关联职位，JOIN 出 job_title,同上,FK,FK → job_library,✅ 直接改名,JOIN 表名要换
+89,matching_results,match_score,匹配分，倒序,同上,"decimal(5,2) 可空","decimal(5,2) NOT NULL",⚠ 需语义或类型转换,可空性差异
+90,matching_results,job_title（JOIN输出）,结果展示职位名,get_matching 1086,jobs.job_title,job_library.job_title,✅ 直接改名,
+91,matching_results,company_name（JOIN输出）,结果展示公司名,get_matching 1086,经 jobs→companies,无 companies，JOIN 断链,❌ 无可匹配项,

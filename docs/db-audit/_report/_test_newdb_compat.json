@@ -1,0 +1,77 @@
+[
+ {
+  "ok": true,
+  "name": "读到 14/14 张表结构",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "CREATE SCHEMA api",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "建立 14/14 张 api 表",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "建立 14 个 dbo 同义词（holland_tests/work_values 已按新名建）",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "同义词可被元数据识别",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "接口 SQL 通过率 55/58（目标 >=55，与旧库对齐后同级）",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "INSERT 不写主键成功（IDENTITY 生效）",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "取回自增主键 user_id=1",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "UPDATE 命中 1 行",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "DELETE 命中 1 行",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "跨表 JOIN（student_skills × skills）可执行（兼容层是空表，0 行属正常）",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "表数复原 24 == 24",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "schema 数复原 13 == 13",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "同义词数复原 0 == 0",
+  "detail": ""
+ },
+ {
+  "ok": true,
+  "name": "api schema 无残留对象",
+  "detail": ""
+ }
+]

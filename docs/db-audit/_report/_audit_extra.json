@@ -1,0 +1,28 @@
+{
+ "career_recommendation": {
+  "tables": 14,
+  "columns": 88,
+  "fks": 13,
+  "unique_constraints": 5,
+  "unique_indexes": 164,
+  "checks": 21,
+  "triggers": 0,
+  "views": 1,
+  "procs": 1,
+  "identity_cols": 14,
+  "rows": 296
+ },
+ "career_system": {
+  "tables": 24,
+  "columns": 152,
+  "fks": 30,
+  "unique_constraints": 12,
+  "unique_indexes": 164,
+  "checks": 5,
+  "triggers": 0,
+  "views": 0,
+  "procs": 0,
+  "identity_cols": 24,
+  "rows": 82
+ }
+}

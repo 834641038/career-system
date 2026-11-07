@@ -15,38 +15,62 @@
 
 ```
 career-system/
-├── career-system-front/        # 前端（Next.js，端口 3000）
-├── career-system-back/backend/ # 后端（Flask，端口 5000）
-│   ├── backingend_API.py       # 后端入口
+├── career-system-front/          # 前端（Next.js，端口 3000）
+├── career-system-back/backend/   # 后端（Flask，端口 5000）
+│   ├── backingend_API.py         # 后端入口
 │   └── requirements.txt
-├── database/                   # 数据库初始化脚本
-│   ├── init_schema.sql         # 建库、建登录账号、建 19 张表
-│   ├── seed_data.sql           # 基础数据（账号/学生/技能/职位等）
-│   └── seed_recommend.sql      # 推荐数据（学生画像/岗位/课程，供推荐接口读取）
+├── database/
+│   ├── prod_backup/              # 数据库组交付的全库备份（当前使用）
+│   │   ├── career_system_prod_full_20261107.sql    # 34 表 + 1 万行数据（含演示学生）
+│   │   ├── career_system_prod_数据库版_20261107.sql # 同上但学生侧清零
+│   │   └── 补建表与授权_app_user.sql                # 授权 app_user + 补 5 张扩展表
+│   ├── init_schema.sql           # 早期自建 19 表方案（保留，可随时回退）
+│   ├── seed_data.sql
+│   └── seed_recommend.sql
+├── docs/db-audit/                # 数据库交接材料归档（核查报告、交付说明、参考代码）
+├── tools/                        # 本地工具（cloudflared 等）
 └── README.md
 ```
 
 ## 数据库初始化（SQL Server）
 
-1. 本机安装 SQL Server（含 ODBC Driver 17 for SQL Server）。
-2. 以管理员身份执行（Windows 认证）：
+### 方式 A：导入团队交付的完整库（推荐，当前使用）
+
+以管理员身份（Windows 认证）执行两条脚本：
 
 ```bash
-sqlcmd -S localhost -E -i database/init_schema.sql   # 建库 + 建表
-sqlcmd -S localhost -E -i database/seed_data.sql     # 插入基础数据
-sqlcmd -S localhost -E -i database/seed_recommend.sql  # 插入推荐数据（学生画像/岗位/课程）
+sqlcmd -S localhost -E -i database/prod_backup/career_system_prod_full_20261107.sql
+sqlcmd -S localhost -E -i database/prod_backup/补建表与授权_app_user.sql
 ```
 
-3. 脚本会创建：
-   - 数据库 `career_recommendation`（排序规则 Chinese_PRC_CI_AS）
-   - SQL 登录 `app_user`（与后端 `database_interface.py` 默认连接配置一致）
-   - 19 张表：`users_login`、`students`、`companies`、`skills`、`holland_test_results`、`career_values`、`experiences`、`day_plans`、`week_plans`、`student_skills`、`jobs`、`job_skill_requirements`、`student_preferences`、`matching_results`、`tasks`、`saved_career_plans`、`sample_students`、`sample_jobs`、`sample_courses`
-   - 基础数据：2 个测试账号、2 名学生、15 项技能、4 家公司、4 个职位等
-   - 推荐数据：2 份学生画像、5 个推荐岗位、8 门推荐课程（推荐接口 career-paths/internships/courses 从数据库读取）
+第一条脚本创建 `career_system_prod` 库：**34 张业务表**，含岗位 2102 条（国聘采集）、
+课程 4805 条、技能 134 条、岗位技能要求 1421 条、公司 1263 家、职业路径 12 条，
+以及 1 套完整演示学生数据。
 
-4. 测试账号（密码均为 `Test123456`）：`testuser`、`zhangsan`。
+第二条脚本只做两件事：授权 `app_user` 访问该库；补建本项目自有的 5 张扩展表
+（`tasks`、`saved_career_plans`、`sample_students`、`sample_jobs`、`sample_courses`，
+推荐接口和计划任务从这些表读取）。脚本幂等，可重复执行。
 
-> 未安装 SQL Server / pyodbc 时，后端自动使用内存样本数据（每次重启用户数据会重置，需重新注册）。连接参数如需调整，修改 `database_interface.py` 顶部 `DatabaseInterface(...)` 默认值即可。
+账号：
+
+| 账号 | 密码 | 说明 |
+|---|---|---|
+| `zhangxm_ui@test.com` | `UiTest123` | 交付方提供的演示账号（含完整学生档案） |
+| `testuser` / `zhangsan` | `Test123456` | 本项目测试账号（已随切换迁入 prod 库） |
+
+### 方式 B：早期自建 19 表方案（保留备查，可回退）
+
+```bash
+sqlcmd -S localhost -E -i database/init_schema.sql
+sqlcmd -S localhost -E -i database/seed_data.sql
+sqlcmd -S localhost -E -i database/seed_recommend.sql
+```
+
+该方案创建 `career_recommendation` 库与 SQL 登录 `app_user`，19 张表、2 名学生、
+5 个岗位、8 门课程。切回方式：把 `database_interface.py` 中两处
+`database='career_system_prod'` 改回 `'career_recommendation'` 即可。
+
+> 未安装 SQL Server / pyodbc 时，后端自动回退为内存样本数据（每次重启用户数据重置，需重新注册）。
 
 ## 快速启动
 

@@ -1,0 +1,1293 @@
+{
+ "instance": {
+  "version": "16.0.1150.1",
+  "level": "RTM",
+  "edition": "Express Edition (64-bit)",
+  "collation": "Chinese_PRC_CI_AS",
+  "login": "安玖\\33648",
+  "is_sysadmin": 1,
+  "current_db": "master"
+ },
+ "databases": {
+  "_list": [
+   {
+    "name": "career_recommendation",
+    "state": "ONLINE",
+    "recovery": "SIMPLE",
+    "compat": 160,
+    "collation": null,
+    "read_only": false
+   },
+   {
+    "name": "career_system",
+    "state": "ONLINE",
+    "recovery": "SIMPLE",
+    "compat": 160,
+    "collation": null,
+    "read_only": false
+   }
+  ],
+  "career_recommendation": {
+   "schemas": [
+    "db_accessadmin",
+    "db_backupoperator",
+    "db_datareader",
+    "db_datawriter",
+    "db_ddladmin",
+    "db_denydatareader",
+    "db_denydatawriter",
+    "db_owner",
+    "db_securityadmin",
+    "dbo",
+    "guest",
+    "INFORMATION_SCHEMA",
+    "sys"
+   ],
+   "object_counts": {
+    "VIEW": 1,
+    "SQL_STORED_PROCEDURE": 1,
+    "USER_TABLE": 14
+   },
+   "synonyms": [],
+   "tables": {
+    "companies": {
+     "rows": 9,
+     "cols": 5,
+     "identity": [
+      "company_id"
+     ],
+     "pk": [
+      "company_id"
+     ]
+    },
+    "day_plans": {
+     "rows": 0,
+     "cols": 7,
+     "identity": [
+      "day_plan_id"
+     ],
+     "pk": [
+      "day_plan_id"
+     ]
+    },
+    "experiences": {
+     "rows": 0,
+     "cols": 9,
+     "identity": [
+      "experience_id"
+     ],
+     "pk": [
+      "experience_id"
+     ]
+    },
+    "holland_tests": {
+     "rows": 0,
+     "cols": 9,
+     "identity": [
+      "holland_test_id"
+     ],
+     "pk": [
+      "holland_test_id"
+     ]
+    },
+    "job_skill_requirements": {
+     "rows": 46,
+     "cols": 5,
+     "identity": [
+      "requirement_id"
+     ],
+     "pk": [
+      "requirement_id"
+     ]
+    },
+    "jobs": {
+     "rows": 23,
+     "cols": 5,
+     "identity": [
+      "job_id"
+     ],
+     "pk": [
+      "job_id"
+     ]
+    },
+    "matching_results": {
+     "rows": 93,
+     "cols": 4,
+     "identity": [
+      "match_id"
+     ],
+     "pk": [
+      "match_id"
+     ]
+    },
+    "skills": {
+     "rows": 25,
+     "cols": 4,
+     "identity": [
+      "skill_id"
+     ],
+     "pk": [
+      "skill_id"
+     ]
+    },
+    "student_preferences": {
+     "rows": 20,
+     "cols": 6,
+     "identity": [
+      "preference_id"
+     ],
+     "pk": [
+      "preference_id"
+     ]
+    },
+    "student_skills": {
+     "rows": 40,
+     "cols": 5,
+     "identity": [
+      "skill_record_id"
+     ],
+     "pk": [
+      "skill_record_id"
+     ]
+    },
+    "students": {
+     "rows": 20,
+     "cols": 6,
+     "identity": [
+      "student_id"
+     ],
+     "pk": [
+      "student_id"
+     ]
+    },
+    "users_login": {
+     "rows": 20,
+     "cols": 8,
+     "identity": [
+      "user_id"
+     ],
+     "pk": [
+      "user_id"
+     ]
+    },
+    "week_plans": {
+     "rows": 0,
+     "cols": 6,
+     "identity": [
+      "week_plan_id"
+     ],
+     "pk": [
+      "week_plan_id"
+     ]
+    },
+    "work_values": {
+     "rows": 0,
+     "cols": 9,
+     "identity": [
+      "worth_id"
+     ],
+     "pk": [
+      "worth_id"
+     ]
+    }
+   },
+   "fks": [
+    {
+     "name": "FK__matching___stude__5BAD9CC8",
+     "child": "matching_results",
+     "child_col": "student_id",
+     "parent": "students",
+     "parent_col": "student_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK__student_p__stude__56E8E7AB",
+     "child": "student_preferences",
+     "child_col": "student_id",
+     "parent": "students",
+     "parent_col": "student_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK__student_s__stude__47A6A41B",
+     "child": "student_skills",
+     "child_col": "student_id",
+     "parent": "students",
+     "parent_col": "student_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK__holland_t__stude__22401542",
+     "child": "holland_tests",
+     "child_col": "student_id",
+     "parent": "students",
+     "parent_col": "student_id",
+     "on_delete": "NO_ACTION"
+    },
+    {
+     "name": "FK__work_valu__stude__2BC97F7C",
+     "child": "work_values",
+     "child_col": "student_id",
+     "parent": "students",
+     "parent_col": "student_id",
+     "on_delete": "NO_ACTION"
+    },
+    {
+     "name": "FK__week_plan__stude__382F5661",
+     "child": "week_plans",
+     "child_col": "student_id",
+     "parent": "students",
+     "parent_col": "student_id",
+     "on_delete": "NO_ACTION"
+    },
+    {
+     "name": "FK__experienc__stude__2F9A1060",
+     "child": "experiences",
+     "child_col": "student_id",
+     "parent": "students",
+     "parent_col": "student_id",
+     "on_delete": "NO_ACTION"
+    },
+    {
+     "name": "FK__day_plans__stude__345EC57D",
+     "child": "day_plans",
+     "child_col": "student_id",
+     "parent": "students",
+     "parent_col": "student_id",
+     "on_delete": "NO_ACTION"
+    },
+    {
+     "name": "FK__jobs__company_id__4C6B5938",
+     "child": "jobs",
+     "child_col": "company_id",
+     "parent": "companies",
+     "parent_col": "company_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK__student_s__skill__489AC854",
+     "child": "student_skills",
+     "child_col": "skill_id",
+     "parent": "skills",
+     "parent_col": "skill_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK__job_skill__skill__531856C7",
+     "child": "job_skill_requirements",
+     "child_col": "skill_id",
+     "parent": "skills",
+     "parent_col": "skill_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK__job_skill__job_i__5224328E",
+     "child": "job_skill_requirements",
+     "child_col": "job_id",
+     "parent": "jobs",
+     "parent_col": "job_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK__matching___job_i__5CA1C101",
+     "child": "matching_results",
+     "child_col": "job_id",
+     "parent": "jobs",
+     "parent_col": "job_id",
+     "on_delete": "CASCADE"
+    }
+   ],
+   "unique_nonpk": [
+    {
+     "table": "skills",
+     "index": "UQ__skills__73C038ADCDAE75F1",
+     "col": "skill_name"
+    },
+    {
+     "table": "student_skills",
+     "index": "UQ__student___A588AEAC5D8917B4",
+     "col": "student_id"
+    },
+    {
+     "table": "student_skills",
+     "index": "UQ__student___A588AEAC5D8917B4",
+     "col": "skill_id"
+    },
+    {
+     "table": "job_skill_requirements",
+     "index": "UQ__job_skil__E1891E935F9DBFD1",
+     "col": "job_id"
+    },
+    {
+     "table": "job_skill_requirements",
+     "index": "UQ__job_skil__E1891E935F9DBFD1",
+     "col": "skill_id"
+    },
+    {
+     "table": "student_preferences",
+     "index": "UQ__student___2A33069B44C887DD",
+     "col": "student_id"
+    },
+    {
+     "table": "matching_results",
+     "index": "UQ__matching__6CD02DF109345656",
+     "col": "student_id"
+    },
+    {
+     "table": "matching_results",
+     "index": "UQ__matching__6CD02DF109345656",
+     "col": "job_id"
+    }
+   ],
+   "row_total": 296,
+   "identity_tables": 14
+  },
+  "career_system": {
+   "schemas": [
+    "db_accessadmin",
+    "db_backupoperator",
+    "db_datareader",
+    "db_datawriter",
+    "db_ddladmin",
+    "db_denydatareader",
+    "db_denydatawriter",
+    "db_owner",
+    "db_securityadmin",
+    "dbo",
+    "guest",
+    "INFORMATION_SCHEMA",
+    "sys"
+   ],
+   "object_counts": {
+    "USER_TABLE": 24
+   },
+   "synonyms": [],
+   "tables": {
+    "achievement": {
+     "rows": 4,
+     "cols": 4,
+     "identity": [
+      "achievement_id"
+     ],
+     "pk": [
+      "achievement_id"
+     ]
+    },
+    "campus_activity": {
+     "rows": 0,
+     "cols": 6,
+     "identity": [
+      "activity_id"
+     ],
+     "pk": [
+      "activity_id"
+     ]
+    },
+    "career_plan": {
+     "rows": 2,
+     "cols": 13,
+     "identity": [
+      "plan_id"
+     ],
+     "pk": [
+      "plan_id"
+     ]
+    },
+    "certificate": {
+     "rows": 2,
+     "cols": 4,
+     "identity": [
+      "certificate_id"
+     ],
+     "pk": [
+      "certificate_id"
+     ]
+    },
+    "competition_award": {
+     "rows": 2,
+     "cols": 6,
+     "identity": [
+      "award_id"
+     ],
+     "pk": [
+      "award_id"
+     ]
+    },
+    "daily_task": {
+     "rows": 3,
+     "cols": 12,
+     "identity": [
+      "daily_task_id"
+     ],
+     "pk": [
+      "daily_task_id"
+     ]
+    },
+    "holland_assessment": {
+     "rows": 1,
+     "cols": 9,
+     "identity": [
+      "holland_id"
+     ],
+     "pk": [
+      "holland_id"
+     ]
+    },
+    "industry": {
+     "rows": 4,
+     "cols": 3,
+     "identity": [
+      "industry_id"
+     ],
+     "pk": [
+      "industry_id"
+     ]
+    },
+    "internship_experience": {
+     "rows": 1,
+     "cols": 7,
+     "identity": [
+      "internship_id"
+     ],
+     "pk": [
+      "internship_id"
+     ]
+    },
+    "job_library": {
+     "rows": 3,
+     "cols": 7,
+     "identity": [
+      "job_id"
+     ],
+     "pk": [
+      "job_id"
+     ]
+    },
+    "job_match": {
+     "rows": 2,
+     "cols": 5,
+     "identity": [
+      "match_id"
+     ],
+     "pk": [
+      "match_id"
+     ]
+    },
+    "job_skill_requirement": {
+     "rows": 7,
+     "cols": 4,
+     "identity": [
+      "requirement_id"
+     ],
+     "pk": [
+      "requirement_id"
+     ]
+    },
+    "job_value_requirement": {
+     "rows": 0,
+     "cols": 4,
+     "identity": [
+      "requirement_id"
+     ],
+     "pk": [
+      "requirement_id"
+     ]
+    },
+    "project_experience": {
+     "rows": 2,
+     "cols": 7,
+     "identity": [
+      "project_id"
+     ],
+     "pk": [
+      "project_id"
+     ]
+    },
+    "skill_assessment": {
+     "rows": 1,
+     "cols": 3,
+     "identity": [
+      "skill_assess_id"
+     ],
+     "pk": [
+      "skill_assess_id"
+     ]
+    },
+    "skill_assessment_detail": {
+     "rows": 15,
+     "cols": 5,
+     "identity": [
+      "detail_id"
+     ],
+     "pk": [
+      "detail_id"
+     ]
+    },
+    "skill_library": {
+     "rows": 15,
+     "cols": 4,
+     "identity": [
+      "skill_id"
+     ],
+     "pk": [
+      "skill_id"
+     ]
+    },
+    "student_info": {
+     "rows": 1,
+     "cols": 20,
+     "identity": [
+      "student_id"
+     ],
+     "pk": [
+      "student_id"
+     ]
+    },
+    "study_time": {
+     "rows": 4,
+     "cols": 4,
+     "identity": [
+      "study_record_id"
+     ],
+     "pk": [
+      "study_record_id"
+     ]
+    },
+    "user": {
+     "rows": 1,
+     "cols": 5,
+     "identity": [
+      "user_id"
+     ],
+     "pk": [
+      "user_id"
+     ]
+    },
+    "value_assessment": {
+     "rows": 1,
+     "cols": 3,
+     "identity": [
+      "value_assess_id"
+     ],
+     "pk": [
+      "value_assess_id"
+     ]
+    },
+    "value_assessment_detail": {
+     "rows": 5,
+     "cols": 4,
+     "identity": [
+      "detail_id"
+     ],
+     "pk": [
+      "detail_id"
+     ]
+    },
+    "values_library": {
+     "rows": 5,
+     "cols": 3,
+     "identity": [
+      "value_id"
+     ],
+     "pk": [
+      "value_id"
+     ]
+    },
+    "weekly_task": {
+     "rows": 1,
+     "cols": 10,
+     "identity": [
+      "weekly_task_id"
+     ],
+     "pk": [
+      "weekly_task_id"
+     ]
+    }
+   },
+   "fks": [
+    {
+     "name": "FK_daily_task_weekly",
+     "child": "daily_task",
+     "child_col": "weekly_task_id",
+     "parent": "weekly_task",
+     "parent_col": "weekly_task_id",
+     "on_delete": "NO_ACTION"
+    },
+    {
+     "name": "FK_student_info_user",
+     "child": "student_info",
+     "child_col": "user_id",
+     "parent": "user",
+     "parent_col": "user_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_student_info_industry",
+     "child": "student_info",
+     "child_col": "desired_industry_id",
+     "parent": "industry",
+     "parent_col": "industry_id",
+     "on_delete": "SET_NULL"
+    },
+    {
+     "name": "FK_job_library_industry",
+     "child": "job_library",
+     "child_col": "industry_id",
+     "parent": "industry",
+     "parent_col": "industry_id",
+     "on_delete": "SET_NULL"
+    },
+    {
+     "name": "FK_career_plan_student",
+     "child": "career_plan",
+     "child_col": "student_id",
+     "parent": "student_info",
+     "parent_col": "student_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_weekly_task_student",
+     "child": "weekly_task",
+     "child_col": "student_id",
+     "parent": "student_info",
+     "parent_col": "student_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_daily_task_student",
+     "child": "daily_task",
+     "child_col": "student_id",
+     "parent": "student_info",
+     "parent_col": "student_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_study_time_student",
+     "child": "study_time",
+     "child_col": "student_id",
+     "parent": "student_info",
+     "parent_col": "student_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_achievement_student",
+     "child": "achievement",
+     "child_col": "student_id",
+     "parent": "student_info",
+     "parent_col": "student_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_holland_assessment_student",
+     "child": "holland_assessment",
+     "child_col": "student_id",
+     "parent": "student_info",
+     "parent_col": "student_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_skill_assessment_student",
+     "child": "skill_assessment",
+     "child_col": "student_id",
+     "parent": "student_info",
+     "parent_col": "student_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_value_assessment_student",
+     "child": "value_assessment",
+     "child_col": "student_id",
+     "parent": "student_info",
+     "parent_col": "student_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_job_match_student",
+     "child": "job_match",
+     "child_col": "student_id",
+     "parent": "student_info",
+     "parent_col": "student_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_internship_experience_student",
+     "child": "internship_experience",
+     "child_col": "student_id",
+     "parent": "student_info",
+     "parent_col": "student_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_project_experience_student",
+     "child": "project_experience",
+     "child_col": "student_id",
+     "parent": "student_info",
+     "parent_col": "student_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_campus_activity_student",
+     "child": "campus_activity",
+     "child_col": "student_id",
+     "parent": "student_info",
+     "parent_col": "student_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_certificate_student",
+     "child": "certificate",
+     "child_col": "student_id",
+     "parent": "student_info",
+     "parent_col": "student_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_competition_award_student",
+     "child": "competition_award",
+     "child_col": "student_id",
+     "parent": "student_info",
+     "parent_col": "student_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_career_plan_skill",
+     "child": "career_plan",
+     "child_col": "target_skill_id",
+     "parent": "skill_library",
+     "parent_col": "skill_id",
+     "on_delete": "SET_NULL"
+    },
+    {
+     "name": "FK_weekly_task_skill",
+     "child": "weekly_task",
+     "child_col": "target_skill_id",
+     "parent": "skill_library",
+     "parent_col": "skill_id",
+     "on_delete": "SET_NULL"
+    },
+    {
+     "name": "FK_daily_task_skill",
+     "child": "daily_task",
+     "child_col": "target_skill_id",
+     "parent": "skill_library",
+     "parent_col": "skill_id",
+     "on_delete": "SET_NULL"
+    },
+    {
+     "name": "FK_skill_assessment_detail_skill",
+     "child": "skill_assessment_detail",
+     "child_col": "skill_id",
+     "parent": "skill_library",
+     "parent_col": "skill_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_job_skill_requirement_skill",
+     "child": "job_skill_requirement",
+     "child_col": "skill_id",
+     "parent": "skill_library",
+     "parent_col": "skill_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_skill_assessment_detail_main",
+     "child": "skill_assessment_detail",
+     "child_col": "skill_assess_id",
+     "parent": "skill_assessment",
+     "parent_col": "skill_assess_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_value_assessment_detail_value",
+     "child": "value_assessment_detail",
+     "child_col": "value_id",
+     "parent": "values_library",
+     "parent_col": "value_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_job_value_requirement_value",
+     "child": "job_value_requirement",
+     "child_col": "value_id",
+     "parent": "values_library",
+     "parent_col": "value_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_value_assessment_detail_main",
+     "child": "value_assessment_detail",
+     "child_col": "value_assess_id",
+     "parent": "value_assessment",
+     "parent_col": "value_assess_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_job_skill_requirement_job",
+     "child": "job_skill_requirement",
+     "child_col": "job_id",
+     "parent": "job_library",
+     "parent_col": "job_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_job_value_requirement_job",
+     "child": "job_value_requirement",
+     "child_col": "job_id",
+     "parent": "job_library",
+     "parent_col": "job_id",
+     "on_delete": "CASCADE"
+    },
+    {
+     "name": "FK_job_match_job",
+     "child": "job_match",
+     "child_col": "job_id",
+     "parent": "job_library",
+     "parent_col": "job_id",
+     "on_delete": "CASCADE"
+    }
+   ],
+   "unique_nonpk": [
+    {
+     "table": "study_time",
+     "index": "UQ_study_time_student_date",
+     "col": "student_id"
+    },
+    {
+     "table": "study_time",
+     "index": "UQ_study_time_student_date",
+     "col": "study_date"
+    },
+    {
+     "table": "user",
+     "index": "UQ_user_email",
+     "col": "email"
+    },
+    {
+     "table": "industry",
+     "index": "UQ_industry_name",
+     "col": "industry_name"
+    },
+    {
+     "table": "student_info",
+     "index": "UQ_student_user",
+     "col": "user_id"
+    },
+    {
+     "table": "student_info",
+     "index": "UQ_student_email",
+     "col": "email"
+    },
+    {
+     "table": "student_info",
+     "index": "UQ_student_number",
+     "col": "student_number"
+    },
+    {
+     "table": "skill_library",
+     "index": "UQ_skill_name",
+     "col": "skill_name"
+    },
+    {
+     "table": "skill_assessment_detail",
+     "index": "UQ_assess_skill",
+     "col": "skill_assess_id"
+    },
+    {
+     "table": "skill_assessment_detail",
+     "index": "UQ_assess_skill",
+     "col": "skill_id"
+    },
+    {
+     "table": "values_library",
+     "index": "UQ_value_name",
+     "col": "value_name"
+    },
+    {
+     "table": "value_assessment_detail",
+     "index": "UQ_assess_value",
+     "col": "value_assess_id"
+    },
+    {
+     "table": "value_assessment_detail",
+     "index": "UQ_assess_value",
+     "col": "value_id"
+    },
+    {
+     "table": "job_skill_requirement",
+     "index": "UQ_job_skill",
+     "col": "job_id"
+    },
+    {
+     "table": "job_skill_requirement",
+     "index": "UQ_job_skill",
+     "col": "skill_id"
+    },
+    {
+     "table": "job_value_requirement",
+     "index": "UQ_job_value",
+     "col": "job_id"
+    },
+    {
+     "table": "job_value_requirement",
+     "index": "UQ_job_value",
+     "col": "value_id"
+    }
+   ],
+   "row_total": 82,
+   "identity_tables": 24
+  }
+ },
+ "accounts": {
+  "login": {
+   "name": "app_user",
+   "type": "SQL_LOGIN",
+   "default_db": "career_recommendation",
+   "disabled": false,
+   "created": "2025-12-07 00:12:35.470000"
+  },
+  "career_recommendation": {
+   "mapped": false,
+   "roles": []
+  },
+  "career_system": {
+   "mapped": true,
+   "roles": [
+    "db_datareader",
+    "db_datawriter"
+   ]
+  },
+  "connect": {
+   "career_recommendation": "('28000', '[28000] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]用户 \\'app_user\\' 登录失败。 (18456) (SQLDriverConnect",
+   "career_system": "OK"
+  }
+ },
+ "sql": {
+  "total": 58,
+  "career_recommendation": {
+   "pass": 51,
+   "fail": [
+    {
+     "method": "get_user_by_studentname",
+     "error": "('42000', '[42000] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]“)”附近有语法错误。 (102) (SQLExecDirectW); ["
+    },
+    {
+     "method": "get_holland_test_by_student",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'holland_test_results' 无效。 (208) "
+    },
+    {
+     "method": "add_holland_test",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'holland_test_results' 无效。 (208) "
+    },
+    {
+     "method": "get_career_values_by_student",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'career_values' 无效。 (208) (SQLExe"
+    },
+    {
+     "method": "add_career_values",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'career_values' 无效。 (208) (SQLExe"
+    },
+    {
+     "method": "get_day_plans_by_student",
+     "error": "('42000', '[42000] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]参数数据类型 NULL 对于 dateadd 函数的参数 2 无效。 (8"
+    },
+    {
+     "method": "get_jobs_by_criteria",
+     "error": "('42000', '[42000] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]“}”附近有语法错误。 (102) (SQLExecDirectW); ["
+    }
+   ]
+  },
+  "career_system": {
+   "pass": 3,
+   "fail": [
+    {
+     "method": "get_user_by_username",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'users_login' 无效。 (208) (SQLExecD"
+    },
+    {
+     "method": "get_user_by_email",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'users_login' 无效。 (208) (SQLExecD"
+    },
+    {
+     "method": "get_user_by_studentname",
+     "error": "('42000', '[42000] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]“)”附近有语法错误。 (102) (SQLExecDirectW); ["
+    },
+    {
+     "method": "get_user_by_id",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'users_login' 无效。 (208) (SQLExecD"
+    },
+    {
+     "method": "add_user",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'users_login' 无效。 (208) (SQLExecD"
+    },
+    {
+     "method": "update_user_last_login",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'users_login' 无效。 (208) (SQLExecD"
+    },
+    {
+     "method": "update_user_password",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'users_login' 无效。 (208) (SQLExecD"
+    },
+    {
+     "method": "get_student_by_id",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'students' 无效。 (208) (SQLExecDire"
+    },
+    {
+     "method": "get_all_students",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'students' 无效。 (208) (SQLExecDire"
+    },
+    {
+     "method": "add_student",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'students' 无效。 (208) (SQLExecDire"
+    },
+    {
+     "method": "update_student",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'students' 无效。 (208) (SQLExecDire"
+    },
+    {
+     "method": "delete_student",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'students' 无效。 (208) (SQLExecDire"
+    },
+    {
+     "method": "get_company_by_id",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'companies' 无效。 (208) (SQLExecDir"
+    },
+    {
+     "method": "get_all_companies",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'companies' 无效。 (208) (SQLExecDir"
+    },
+    {
+     "method": "add_company",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'companies' 无效。 (208) (SQLExecDir"
+    },
+    {
+     "method": "get_skill_by_id",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'skills' 无效。 (208) (SQLExecDirect"
+    },
+    {
+     "method": "get_skill_by_name",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'skills' 无效。 (208) (SQLExecDirect"
+    },
+    {
+     "method": "get_all_skills",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'skills' 无效。 (208) (SQLExecDirect"
+    },
+    {
+     "method": "add_skill",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'skills' 无效。 (208) (SQLExecDirect"
+    },
+    {
+     "method": "get_holland_test_by_student",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'holland_test_results' 无效。 (208) "
+    },
+    {
+     "method": "add_holland_test",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'holland_test_results' 无效。 (208) "
+    },
+    {
+     "method": "get_career_values_by_student",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'career_values' 无效。 (208) (SQLExe"
+    },
+    {
+     "method": "add_career_values",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'career_values' 无效。 (208) (SQLExe"
+    },
+    {
+     "method": "get_experiences_by_student",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'experiences' 无效。 (208) (SQLExecD"
+    },
+    {
+     "method": "add_experience",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'experiences' 无效。 (208) (SQLExecD"
+    },
+    {
+     "method": "update_experience",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'experiences' 无效。 (208) (SQLExecD"
+    },
+    {
+     "method": "delete_experience",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'experiences' 无效。 (208) (SQLExecD"
+    },
+    {
+     "method": "get_day_plan_by_id",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'day_plans' 无效。 (208) (SQLExecDir"
+    },
+    {
+     "method": "get_day_plans_by_student",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'day_plans' 无效。 (208) (SQLExecDir"
+    },
+    {
+     "method": "add_day_plan",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'day_plans' 无效。 (208) (SQLExecDir"
+    },
+    {
+     "method": "update_day_plan_finish",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'day_plans' 无效。 (208) (SQLExecDir"
+    },
+    {
+     "method": "delete_day_plan",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'day_plans' 无效。 (208) (SQLExecDir"
+    },
+    {
+     "method": "get_week_plan_by_id",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'week_plans' 无效。 (208) (SQLExecDi"
+    },
+    {
+     "method": "get_week_plans_by_student",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'week_plans' 无效。 (208) (SQLExecDi"
+    },
+    {
+     "method": "add_week_plan",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'week_plans' 无效。 (208) (SQLExecDi"
+    },
+    {
+     "method": "update_week_plan_finish",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'week_plans' 无效。 (208) (SQLExecDi"
+    },
+    {
+     "method": "get_student_skills",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'student_skills' 无效。 (208) (SQLEx"
+    },
+    {
+     "method": "add_skill_to_student",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'student_skills' 无效。 (208) (SQLEx"
+    },
+    {
+     "method": "add_skill_to_student",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'student_skills' 无效。 (208) (SQLEx"
+    },
+    {
+     "method": "add_skill_to_student",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'student_skills' 无效。 (208) (SQLEx"
+    },
+    {
+     "method": "remove_skill_from_student",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'student_skills' 无效。 (208) (SQLEx"
+    },
+    {
+     "method": "get_job_by_id",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'jobs' 无效。 (208) (SQLExecDirectW)"
+    },
+    {
+     "method": "get_all_jobs",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'jobs' 无效。 (208) (SQLExecDirectW)"
+    },
+    {
+     "method": "get_jobs_by_criteria",
+     "error": "('42000', '[42000] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]“}”附近有语法错误。 (102) (SQLExecDirectW); ["
+    },
+    {
+     "method": "add_job",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'jobs' 无效。 (208) (SQLExecDirectW)"
+    },
+    {
+     "method": "get_job_skill_requirements",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'job_skill_requirements' 无效。 (208"
+    },
+    {
+     "method": "add_job_skill_requirement",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'job_skill_requirements' 无效。 (208"
+    },
+    {
+     "method": "get_student_preferences",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'student_preferences' 无效。 (208) ("
+    },
+    {
+     "method": "add_student_preferences",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'student_preferences' 无效。 (208) ("
+    },
+    {
+     "method": "add_student_preferences",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'student_preferences' 无效。 (208) ("
+    },
+    {
+     "method": "add_student_preferences",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'student_preferences' 无效。 (208) ("
+    },
+    {
+     "method": "get_matching_results_by_student",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'matching_results' 无效。 (208) (SQL"
+    },
+    {
+     "method": "add_matching_result",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'matching_results' 无效。 (208) (SQL"
+    },
+    {
+     "method": "register_user_with_student",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'users_login' 无效。 (208) (SQLExecD"
+    },
+    {
+     "method": "register_user_with_student",
+     "error": "('42S02', \"[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]对象名 'students' 无效。 (208) (SQLExecDire"
+    }
+   ]
+  }
+ },
+ "data": {
+  "career_recommendation": {
+   "users_login": 20,
+   "students": 20,
+   "students 有 user_id": 20,
+   "students 有技能记录": 20,
+   "students 有偏好": 20,
+   "holland_tests": 0,
+   "work_values": 0,
+   "experiences": 0,
+   "day_plans": 0,
+   "week_plans": 0,
+   "companies": 9,
+   "jobs": 23,
+   "skills": 25,
+   "student_skills": 40,
+   "job_skill_requirements": 46,
+   "matching_results": 93
+  },
+  "career_system": {
+   "user": 1,
+   "student_info": 1,
+   "holland_assessment": 1,
+   "value_assessment_detail": 5,
+   "values_library": 5,
+   "skill_library": 15,
+   "skill_assessment_detail": 15,
+   "internship_experience": 1,
+   "project_experience": 2,
+   "industry": 4,
+   "job_library": 3,
+   "job_skill_requirement": 7,
+   "job_match": 2,
+   "career_plan": 2,
+   "weekly_task": 1,
+   "daily_task": 3
+  }
+ },
+ "code": {
+  "database_interface_methods": 56,
+  "business_methods": 50,
+  "sql_in_interface": 58,
+  "db_methods_called_by_api": [
+   "add_user",
+   "get_user_by_email",
+   "get_user_by_id",
+   "get_user_by_username",
+   "update_user_last_login",
+   "update_user_password"
+  ],
+  "api_routes": 21,
+  "sample_data_imports": [
+   "from sample_data import ("
+  ],
+  "has_data_source_switch": false,
+  "api_lines": 1111,
+  "interface_lines": 1209
+ },
+ "defects": {
+  "password_hash_max_bytes": 40,
+  "user_email_max_bytes": 80,
+  "user_email_chars": 40,
+  "student_id_exists": false,
+  "stored_hash_len_min": 9,
+  "stored_hash_len_max": 9,
+  "sha256_len": 64,
+  "user_student_join": "20/20"
+ }
+}

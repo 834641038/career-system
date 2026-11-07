@@ -1,0 +1,5417 @@
+{
+ "maps": [
+  {
+   "old_table": "day_plans",
+   "old_rows": 0,
+   "new_target": "day_plans",
+   "new_real": "daily_task",
+   "new_rows": 3,
+   "old_cols": [
+    "day_plan_id",
+    "day_plan_name",
+    "day_plan_describe",
+    "day_plan_prority",
+    "day_plan_ddl",
+    "day_plan_finish",
+    "student_id"
+   ],
+   "new_cols": [
+    "daily_task_id",
+    "student_id",
+    "weekly_task_id",
+    "daily_task_name",
+    "start_time",
+    "end_time",
+    "priority",
+    "task_type",
+    "task_content",
+    "is_completed",
+    "target_skill_id",
+    "current_proficiency_level"
+   ],
+   "only_old": [
+    {
+     "col": "day_plan_id",
+     "type": "int",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "day_plan_name",
+     "type": "nvarchar(50)",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "day_plan_describe",
+     "type": "nvarchar(max)",
+     "nullable": true,
+     "default": null
+    },
+    {
+     "col": "day_plan_prority",
+     "type": "tinyint",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "day_plan_ddl",
+     "type": "datetime",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "day_plan_finish",
+     "type": "tinyint",
+     "nullable": false,
+     "default": "((0))"
+    }
+   ],
+   "only_new": [
+    {
+     "col": "daily_task_id",
+     "type": "int",
+     "nullable": false
+    },
+    {
+     "col": "weekly_task_id",
+     "type": "int",
+     "nullable": true
+    },
+    {
+     "col": "daily_task_name",
+     "type": "varchar(200)",
+     "nullable": false
+    },
+    {
+     "col": "start_time",
+     "type": "datetime",
+     "nullable": true
+    },
+    {
+     "col": "end_time",
+     "type": "datetime",
+     "nullable": true
+    },
+    {
+     "col": "priority",
+     "type": "varchar(10)",
+     "nullable": true
+    },
+    {
+     "col": "task_type",
+     "type": "varchar(50)",
+     "nullable": true
+    },
+    {
+     "col": "task_content",
+     "type": "text",
+     "nullable": true
+    },
+    {
+     "col": "is_completed",
+     "type": "bit",
+     "nullable": true
+    },
+    {
+     "col": "target_skill_id",
+     "type": "int",
+     "nullable": true
+    },
+    {
+     "col": "current_proficiency_level",
+     "type": "varchar(20)",
+     "nullable": true
+    }
+   ],
+   "type_diff": [],
+   "null_diff": []
+  },
+  {
+   "old_table": "holland_tests",
+   "old_rows": 0,
+   "new_target": "holland_test_results",
+   "new_real": "holland_assessment",
+   "new_rows": 1,
+   "old_cols": [
+    "holland_test_id",
+    "student_id",
+    "holland_R",
+    "holland_I",
+    "holland_A",
+    "holland_S",
+    "holland_E",
+    "holland_C",
+    "holland_test_time"
+   ],
+   "new_cols": [
+    "holland_id",
+    "student_id",
+    "test_time",
+    "r_score",
+    "i_score",
+    "a_score",
+    "s_score",
+    "e_score",
+    "c_score"
+   ],
+   "only_old": [
+    {
+     "col": "holland_test_id",
+     "type": "int",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "holland_R",
+     "type": "tinyint",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "holland_I",
+     "type": "tinyint",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "holland_A",
+     "type": "tinyint",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "holland_S",
+     "type": "tinyint",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "holland_E",
+     "type": "tinyint",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "holland_C",
+     "type": "tinyint",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "holland_test_time",
+     "type": "datetime",
+     "nullable": false,
+     "default": "(getdate())"
+    }
+   ],
+   "only_new": [
+    {
+     "col": "holland_id",
+     "type": "int",
+     "nullable": false
+    },
+    {
+     "col": "test_time",
+     "type": "datetime",
+     "nullable": false
+    },
+    {
+     "col": "r_score",
+     "type": "int",
+     "nullable": false
+    },
+    {
+     "col": "i_score",
+     "type": "int",
+     "nullable": false
+    },
+    {
+     "col": "a_score",
+     "type": "int",
+     "nullable": false
+    },
+    {
+     "col": "s_score",
+     "type": "int",
+     "nullable": false
+    },
+    {
+     "col": "e_score",
+     "type": "int",
+     "nullable": false
+    },
+    {
+     "col": "c_score",
+     "type": "int",
+     "nullable": false
+    }
+   ],
+   "type_diff": [],
+   "null_diff": []
+  },
+  {
+   "old_table": "job_skill_requirements",
+   "old_rows": 46,
+   "new_target": "job_skill_requirements",
+   "new_real": "job_skill_requirement",
+   "new_rows": 7,
+   "old_cols": [
+    "requirement_id",
+    "job_id",
+    "skill_id",
+    "required_level",
+    "requirement_type"
+   ],
+   "new_cols": [
+    "requirement_id",
+    "job_id",
+    "skill_id",
+    "required_level"
+   ],
+   "only_old": [
+    {
+     "col": "requirement_type",
+     "type": "nvarchar(10)",
+     "nullable": true,
+     "default": null
+    }
+   ],
+   "only_new": [],
+   "type_diff": [
+    {
+     "col": "required_level",
+     "old": "tinyint",
+     "new": "varchar(20)"
+    }
+   ],
+   "null_diff": [
+    {
+     "col": "required_level",
+     "old_nullable": true,
+     "new_nullable": false
+    }
+   ]
+  },
+  {
+   "old_table": "jobs",
+   "old_rows": 23,
+   "new_target": "jobs",
+   "new_real": "job_library",
+   "new_rows": 3,
+   "old_cols": [
+    "job_id",
+    "company_id",
+    "job_title",
+    "job_type",
+    "salary_range"
+   ],
+   "new_cols": [
+    "job_id",
+    "job_title",
+    "industry_id",
+    "education_requirement",
+    "job_type",
+    "holland_code",
+    "job_description"
+   ],
+   "only_old": [
+    {
+     "col": "company_id",
+     "type": "int",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "salary_range",
+     "type": "nvarchar(50)",
+     "nullable": true,
+     "default": null
+    }
+   ],
+   "only_new": [
+    {
+     "col": "industry_id",
+     "type": "int",
+     "nullable": true
+    },
+    {
+     "col": "education_requirement",
+     "type": "varchar(50)",
+     "nullable": true
+    },
+    {
+     "col": "holland_code",
+     "type": "char(6)",
+     "nullable": true
+    },
+    {
+     "col": "job_description",
+     "type": "text",
+     "nullable": true
+    }
+   ],
+   "type_diff": [
+    {
+     "col": "job_title",
+     "old": "nvarchar(100)",
+     "new": "varchar(100)"
+    },
+    {
+     "col": "job_type",
+     "old": "nvarchar(20)",
+     "new": "varchar(50)"
+    }
+   ],
+   "null_diff": []
+  },
+  {
+   "old_table": "matching_results",
+   "old_rows": 93,
+   "new_target": "matching_results",
+   "new_real": "job_match",
+   "new_rows": 2,
+   "old_cols": [
+    "match_id",
+    "student_id",
+    "job_id",
+    "match_score"
+   ],
+   "new_cols": [
+    "match_id",
+    "student_id",
+    "job_id",
+    "match_score",
+    "match_time"
+   ],
+   "only_old": [],
+   "only_new": [
+    {
+     "col": "match_time",
+     "type": "datetime",
+     "nullable": false
+    }
+   ],
+   "type_diff": [],
+   "null_diff": [
+    {
+     "col": "match_score",
+     "old_nullable": true,
+     "new_nullable": false
+    }
+   ]
+  },
+  {
+   "old_table": "skills",
+   "old_rows": 25,
+   "new_target": "skills",
+   "new_real": "skill_library",
+   "new_rows": 15,
+   "old_cols": [
+    "skill_id",
+    "skill_name",
+    "skill_category",
+    "skill_description"
+   ],
+   "new_cols": [
+    "skill_id",
+    "skill_name",
+    "skill_category",
+    "description"
+   ],
+   "only_old": [
+    {
+     "col": "skill_description",
+     "type": "nvarchar(max)",
+     "nullable": true,
+     "default": null
+    }
+   ],
+   "only_new": [
+    {
+     "col": "description",
+     "type": "text",
+     "nullable": true
+    }
+   ],
+   "type_diff": [
+    {
+     "col": "skill_name",
+     "old": "nvarchar(50)",
+     "new": "varchar(100)"
+    },
+    {
+     "col": "skill_category",
+     "old": "nvarchar(20)",
+     "new": "varchar(50)"
+    }
+   ],
+   "null_diff": []
+  },
+  {
+   "old_table": "students",
+   "old_rows": 20,
+   "new_target": "students",
+   "new_real": "student_info",
+   "new_rows": 1,
+   "old_cols": [
+    "student_id",
+    "student_name",
+    "student_major",
+    "grade",
+    "gpa",
+    "user_id"
+   ],
+   "new_cols": [
+    "student_id",
+    "user_id",
+    "name",
+    "student_number",
+    "gender",
+    "birthday",
+    "email",
+    "phone",
+    "major",
+    "university",
+    "bio",
+    "avatar_url",
+    "enrollment_year",
+    "expected_graduation",
+    "grade",
+    "gaokao_score",
+    "gpa",
+    "current_location",
+    "desired_location",
+    "desired_industry_id"
+   ],
+   "only_old": [
+    {
+     "col": "student_name",
+     "type": "nvarchar(50)",
+     "nullable": true,
+     "default": null
+    },
+    {
+     "col": "student_major",
+     "type": "nvarchar(50)",
+     "nullable": true,
+     "default": null
+    }
+   ],
+   "only_new": [
+    {
+     "col": "name",
+     "type": "varchar(50)",
+     "nullable": false
+    },
+    {
+     "col": "student_number",
+     "type": "varchar(30)",
+     "nullable": false
+    },
+    {
+     "col": "gender",
+     "type": "varchar(10)",
+     "nullable": true
+    },
+    {
+     "col": "birthday",
+     "type": "date",
+     "nullable": true
+    },
+    {
+     "col": "email",
+     "type": "varchar(100)",
+     "nullable": false
+    },
+    {
+     "col": "phone",
+     "type": "varchar(20)",
+     "nullable": true
+    },
+    {
+     "col": "major",
+     "type": "varchar(100)",
+     "nullable": true
+    },
+    {
+     "col": "university",
+     "type": "varchar(100)",
+     "nullable": true
+    },
+    {
+     "col": "bio",
+     "type": "text",
+     "nullable": true
+    },
+    {
+     "col": "avatar_url",
+     "type": "varchar(500)",
+     "nullable": true
+    },
+    {
+     "col": "enrollment_year",
+     "type": "int",
+     "nullable": true
+    },
+    {
+     "col": "expected_graduation",
+     "type": "date",
+     "nullable": true
+    },
+    {
+     "col": "gaokao_score",
+     "type": "int",
+     "nullable": true
+    },
+    {
+     "col": "current_location",
+     "type": "varchar(100)",
+     "nullable": true
+    },
+    {
+     "col": "desired_location",
+     "type": "varchar(100)",
+     "nullable": true
+    },
+    {
+     "col": "desired_industry_id",
+     "type": "int",
+     "nullable": true
+    }
+   ],
+   "type_diff": [
+    {
+     "col": "grade",
+     "old": "tinyint",
+     "new": "varchar(20)"
+    }
+   ],
+   "null_diff": [
+    {
+     "col": "user_id",
+     "old_nullable": true,
+     "new_nullable": false
+    }
+   ]
+  },
+  {
+   "old_table": "users_login",
+   "old_rows": 20,
+   "new_target": "users_login",
+   "new_real": "user",
+   "new_rows": 1,
+   "old_cols": [
+    "user_id",
+    "user_name",
+    "password_hash",
+    "user_email",
+    "user_status",
+    "user_created_time",
+    "last_Login_time",
+    "user_remark"
+   ],
+   "new_cols": [
+    "user_id",
+    "email",
+    "password_hash",
+    "create_time",
+    "last_login_time"
+   ],
+   "only_old": [
+    {
+     "col": "user_name",
+     "type": "nvarchar(50)",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "user_email",
+     "type": "nvarchar(40)",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "user_status",
+     "type": "tinyint",
+     "nullable": false,
+     "default": "((1))"
+    },
+    {
+     "col": "user_created_time",
+     "type": "datetime2",
+     "nullable": false,
+     "default": "(getdate())"
+    },
+    {
+     "col": "last_Login_time",
+     "type": "datetime2",
+     "nullable": true,
+     "default": null
+    },
+    {
+     "col": "user_remark",
+     "type": "nvarchar(500)",
+     "nullable": true,
+     "default": null
+    }
+   ],
+   "only_new": [
+    {
+     "col": "email",
+     "type": "varchar(100)",
+     "nullable": false
+    },
+    {
+     "col": "create_time",
+     "type": "datetime",
+     "nullable": false
+    },
+    {
+     "col": "last_login_time",
+     "type": "datetime",
+     "nullable": true
+    }
+   ],
+   "type_diff": [
+    {
+     "col": "password_hash",
+     "old": "nvarchar(20)",
+     "new": "varchar(255)"
+    }
+   ],
+   "null_diff": []
+  },
+  {
+   "old_table": "week_plans",
+   "old_rows": 0,
+   "new_target": "week_plans",
+   "new_real": "weekly_task",
+   "new_rows": 1,
+   "old_cols": [
+    "week_plan_id",
+    "week_plan_name",
+    "week_plan_start",
+    "week_plan_ddl",
+    "week_plan_finish",
+    "student_id"
+   ],
+   "new_cols": [
+    "weekly_task_id",
+    "student_id",
+    "weekly_task_name",
+    "start_time",
+    "end_time",
+    "priority",
+    "task_type",
+    "completion_percentage",
+    "target_skill_id",
+    "current_proficiency_level"
+   ],
+   "only_old": [
+    {
+     "col": "week_plan_id",
+     "type": "int",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "week_plan_name",
+     "type": "nvarchar(50)",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "week_plan_start",
+     "type": "datetime",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "week_plan_ddl",
+     "type": "datetime",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "week_plan_finish",
+     "type": "tinyint",
+     "nullable": false,
+     "default": "((0))"
+    }
+   ],
+   "only_new": [
+    {
+     "col": "weekly_task_id",
+     "type": "int",
+     "nullable": false
+    },
+    {
+     "col": "weekly_task_name",
+     "type": "varchar(200)",
+     "nullable": false
+    },
+    {
+     "col": "start_time",
+     "type": "datetime",
+     "nullable": true
+    },
+    {
+     "col": "end_time",
+     "type": "datetime",
+     "nullable": true
+    },
+    {
+     "col": "priority",
+     "type": "varchar(10)",
+     "nullable": true
+    },
+    {
+     "col": "task_type",
+     "type": "varchar(50)",
+     "nullable": true
+    },
+    {
+     "col": "completion_percentage",
+     "type": "tinyint",
+     "nullable": true
+    },
+    {
+     "col": "target_skill_id",
+     "type": "int",
+     "nullable": true
+    },
+    {
+     "col": "current_proficiency_level",
+     "type": "varchar(20)",
+     "nullable": true
+    }
+   ],
+   "type_diff": [],
+   "null_diff": []
+  },
+  {
+   "old_table": "work_values",
+   "old_rows": 0,
+   "new_target": "career_values",
+   "new_real": "value_assessment",
+   "new_rows": 1,
+   "old_cols": [
+    "worth_id",
+    "student_id",
+    "social_contribution",
+    "achievement_oriented",
+    "safe_stable",
+    "work_life_balance",
+    "power_status",
+    "innovation_challenge",
+    "worth_test_time"
+   ],
+   "new_cols": [
+    "value_assess_id",
+    "student_id",
+    "test_time"
+   ],
+   "only_old": [
+    {
+     "col": "worth_id",
+     "type": "int",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "social_contribution",
+     "type": "tinyint",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "achievement_oriented",
+     "type": "tinyint",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "safe_stable",
+     "type": "tinyint",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "work_life_balance",
+     "type": "tinyint",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "power_status",
+     "type": "tinyint",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "innovation_challenge",
+     "type": "tinyint",
+     "nullable": false,
+     "default": null
+    },
+    {
+     "col": "worth_test_time",
+     "type": "datetime",
+     "nullable": false,
+     "default": "(getdate())"
+    }
+   ],
+   "only_new": [
+    {
+     "col": "value_assess_id",
+     "type": "int",
+     "nullable": false
+    },
+    {
+     "col": "test_time",
+     "type": "datetime",
+     "nullable": false
+    }
+   ],
+   "type_diff": [],
+   "null_diff": []
+  }
+ ],
+ "unmapped_old": [
+  {
+   "old_table": "companies",
+   "rows": 9,
+   "cols": [
+    "company_id",
+    "company_name",
+    "company_location",
+    "company_size",
+    "company_description"
+   ]
+  },
+  {
+   "old_table": "experiences",
+   "rows": 0,
+   "cols": [
+    "experience_id",
+    "student_id",
+    "experience_title",
+    "experience_content",
+    "experience_type",
+    "experience_role",
+    "experience_start_time",
+    "experience_end_time",
+    "updated_time"
+   ]
+  },
+  {
+   "old_table": "student_preferences",
+   "rows": 20,
+   "cols": [
+    "preference_id",
+    "student_id",
+    "preferred_industries",
+    "preferred_locations",
+    "expected_salary",
+    "work_mode_preference"
+   ]
+  },
+  {
+   "old_table": "student_skills",
+   "rows": 40,
+   "cols": [
+    "skill_record_id",
+    "student_id",
+    "skill_id",
+    "proficiency_level",
+    "experience_months"
+   ]
+  }
+ ],
+ "unmapped_new": [
+  {
+   "new_table": "achievement",
+   "rows": 4,
+   "cols": [
+    "achievement_id",
+    "student_id",
+    "achievement_name",
+    "obtain_time"
+   ]
+  },
+  {
+   "new_table": "campus_activity",
+   "rows": 0,
+   "cols": [
+    "activity_id",
+    "student_id",
+    "start_date",
+    "end_date",
+    "campus_role",
+    "responsibility"
+   ]
+  },
+  {
+   "new_table": "career_plan",
+   "rows": 2,
+   "cols": [
+    "plan_id",
+    "student_id",
+    "task_name",
+    "start_time",
+    "end_time",
+    "priority",
+    "task_type",
+    "task_content",
+    "key_result",
+    "completion_status",
+    "target_skill_id",
+    "target_proficiency",
+    "learning_stage"
+   ]
+  },
+  {
+   "new_table": "certificate",
+   "rows": 2,
+   "cols": [
+    "certificate_id",
+    "student_id",
+    "obtain_date",
+    "certificate_name"
+   ]
+  },
+  {
+   "new_table": "competition_award",
+   "rows": 2,
+   "cols": [
+    "award_id",
+    "student_id",
+    "obtain_date",
+    "competition_level",
+    "competition_name",
+    "award_level"
+   ]
+  },
+  {
+   "new_table": "industry",
+   "rows": 4,
+   "cols": [
+    "industry_id",
+    "industry_name",
+    "description"
+   ]
+  },
+  {
+   "new_table": "internship_experience",
+   "rows": 1,
+   "cols": [
+    "internship_id",
+    "student_id",
+    "start_date",
+    "end_date",
+    "location",
+    "position",
+    "description"
+   ]
+  },
+  {
+   "new_table": "job_value_requirement",
+   "rows": 0,
+   "cols": [
+    "requirement_id",
+    "job_id",
+    "value_id",
+    "expected_score_level"
+   ]
+  },
+  {
+   "new_table": "project_experience",
+   "rows": 2,
+   "cols": [
+    "project_id",
+    "student_id",
+    "start_date",
+    "end_date",
+    "project_name",
+    "role",
+    "description"
+   ]
+  },
+  {
+   "new_table": "skill_assessment",
+   "rows": 1,
+   "cols": [
+    "skill_assess_id",
+    "student_id",
+    "test_time"
+   ]
+  },
+  {
+   "new_table": "skill_assessment_detail",
+   "rows": 15,
+   "cols": [
+    "detail_id",
+    "skill_assess_id",
+    "skill_id",
+    "proficiency_level",
+    "self_score"
+   ]
+  },
+  {
+   "new_table": "study_time",
+   "rows": 4,
+   "cols": [
+    "study_record_id",
+    "student_id",
+    "study_date",
+    "study_hours"
+   ]
+  },
+  {
+   "new_table": "value_assessment_detail",
+   "rows": 5,
+   "cols": [
+    "detail_id",
+    "value_assess_id",
+    "value_id",
+    "score"
+   ]
+  },
+  {
+   "new_table": "values_library",
+   "rows": 5,
+   "cols": [
+    "value_id",
+    "value_name",
+    "description"
+   ]
+  }
+ ],
+ "summary": {
+  "old_tables": 14,
+  "new_tables": 24,
+  "old_cols": 88,
+  "new_cols": 152,
+  "old_rows": 296,
+  "new_rows": 82,
+  "cols_missing_in_new": 39,
+  "type_diffs": 7,
+  "tables_to_create": 4
+ },
+ "meta": {
+  "old": {
+   "fks": [
+    {
+     "fk": "FK__day_plans__stude__345EC57D",
+     "child_tbl": "day_plans",
+     "child_col": "student_id",
+     "parent_tbl": "students",
+     "parent_col": "student_id"
+    },
+    {
+     "fk": "FK__experienc__stude__2F9A1060",
+     "child_tbl": "experiences",
+     "child_col": "student_id",
+     "parent_tbl": "students",
+     "parent_col": "student_id"
+    },
+    {
+     "fk": "FK__holland_t__stude__22401542",
+     "child_tbl": "holland_tests",
+     "child_col": "student_id",
+     "parent_tbl": "students",
+     "parent_col": "student_id"
+    },
+    {
+     "fk": "FK__job_skill__job_i__5224328E",
+     "child_tbl": "job_skill_requirements",
+     "child_col": "job_id",
+     "parent_tbl": "jobs",
+     "parent_col": "job_id"
+    },
+    {
+     "fk": "FK__job_skill__skill__531856C7",
+     "child_tbl": "job_skill_requirements",
+     "child_col": "skill_id",
+     "parent_tbl": "skills",
+     "parent_col": "skill_id"
+    },
+    {
+     "fk": "FK__jobs__company_id__4C6B5938",
+     "child_tbl": "jobs",
+     "child_col": "company_id",
+     "parent_tbl": "companies",
+     "parent_col": "company_id"
+    },
+    {
+     "fk": "FK__matching___job_i__5CA1C101",
+     "child_tbl": "matching_results",
+     "child_col": "job_id",
+     "parent_tbl": "jobs",
+     "parent_col": "job_id"
+    },
+    {
+     "fk": "FK__matching___stude__5BAD9CC8",
+     "child_tbl": "matching_results",
+     "child_col": "student_id",
+     "parent_tbl": "students",
+     "parent_col": "student_id"
+    },
+    {
+     "fk": "FK__student_p__stude__56E8E7AB",
+     "child_tbl": "student_preferences",
+     "child_col": "student_id",
+     "parent_tbl": "students",
+     "parent_col": "student_id"
+    },
+    {
+     "fk": "FK__student_s__skill__489AC854",
+     "child_tbl": "student_skills",
+     "child_col": "skill_id",
+     "parent_tbl": "skills",
+     "parent_col": "skill_id"
+    },
+    {
+     "fk": "FK__student_s__stude__47A6A41B",
+     "child_tbl": "student_skills",
+     "child_col": "student_id",
+     "parent_tbl": "students",
+     "parent_col": "student_id"
+    },
+    {
+     "fk": "FK__week_plan__stude__382F5661",
+     "child_tbl": "week_plans",
+     "child_col": "student_id",
+     "parent_tbl": "students",
+     "parent_col": "student_id"
+    },
+    {
+     "fk": "FK__work_valu__stude__2BC97F7C",
+     "child_tbl": "work_values",
+     "child_col": "student_id",
+     "parent_tbl": "students",
+     "parent_col": "student_id"
+    }
+   ],
+   "chks": [
+    {
+     "tbl": "day_plans",
+     "chk": "CK__day_plans__day_p__32767D0B",
+     "def": "([day_plan_prority]>=(1) AND [day_plan_prority]<=(5))"
+    },
+    {
+     "tbl": "holland_tests",
+     "chk": "CK__holland_t__holla__1B9317B3",
+     "def": "([holland_R]>=(0))"
+    },
+    {
+     "tbl": "holland_tests",
+     "chk": "CK__holland_t__holla__1C873BEC",
+     "def": "([holland_I]>=(0))"
+    },
+    {
+     "tbl": "holland_tests",
+     "chk": "CK__holland_t__holla__1D7B6025",
+     "def": "([holland_A]>=(0))"
+    },
+    {
+     "tbl": "holland_tests",
+     "chk": "CK__holland_t__holla__1E6F845E",
+     "def": "([holland_S]>=(0))"
+    },
+    {
+     "tbl": "holland_tests",
+     "chk": "CK__holland_t__holla__1F63A897",
+     "def": "([holland_E]>=(0))"
+    },
+    {
+     "tbl": "holland_tests",
+     "chk": "CK__holland_t__holla__2057CCD0",
+     "def": "([holland_C]>=(0))"
+    },
+    {
+     "tbl": "job_skill_requirements",
+     "chk": "CK__job_skill__requi__503BEA1C",
+     "def": "([required_level]>=(1) AND [required_level]<=(5))"
+    },
+    {
+     "tbl": "job_skill_requirements",
+     "chk": "CK__job_skill__requi__51300E55",
+     "def": "([requirement_type]='加分' OR [requirement_type]='必需')"
+    },
+    {
+     "tbl": "jobs",
+     "chk": "CK__jobs__job_type__4B7734FF",
+     "def": "([job_type]='兼职' OR [job_type]='全职' OR [job_type]='实习')"
+    },
+    {
+     "tbl": "matching_results",
+     "chk": "CK__matching___match__5AB9788F",
+     "def": "([match_score]>=(0) AND [match_score]<=(100))"
+    },
+    {
+     "tbl": "student_skills",
+     "chk": "CK__student_s__exper__46B27FE2",
+     "def": "([experience_months]>=(0))"
+    },
+    {
+     "tbl": "student_skills",
+     "chk": "CK__student_s__profi__45BE5BA9",
+     "def": "([proficiency_level]>=(1) AND [proficiency_level]<=(5))"
+    },
+    {
+     "tbl": "students",
+     "chk": "CK__students__gpa__3D2915A8",
+     "def": "([gpa]>=(0.00) AND [gpa]<=(4.00))"
+    },
+    {
+     "tbl": "students",
+     "chk": "CK__students__grade__3C34F16F",
+     "def": "([grade]>=(1) AND [grade]<=(4))"
+    },
+    {
+     "tbl": "work_values",
+     "chk": "CK__work_valu__achie__2610A626",
+     "def": "([achievement_oriented]>=(0))"
+    },
+    {
+     "tbl": "work_values",
+     "chk": "CK__work_valu__innov__29E1370A",
+     "def": "([innovation_challenge]>=(0))"
+    },
+    {
+     "tbl": "work_values",
+     "chk": "CK__work_valu__power__28ED12D1",
+     "def": "([power_status]>=(0))"
+    },
+    {
+     "tbl": "work_values",
+     "chk": "CK__work_valu__safe___2704CA5F",
+     "def": "([safe_stable]>=(0))"
+    },
+    {
+     "tbl": "work_values",
+     "chk": "CK__work_valu__socia__251C81ED",
+     "def": "([social_contribution]>=(0))"
+    },
+    {
+     "tbl": "work_values",
+     "chk": "CK__work_valu__work___27F8EE98",
+     "def": "([work_life_balance]>=(0))"
+    }
+   ],
+   "idxs": [
+    {
+     "tbl": "companies",
+     "idx": "PK__companie__3E267235242B86B8",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "company_id"
+    },
+    {
+     "tbl": "day_plans",
+     "idx": "idx_plan_ddl",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "day_plan_ddl"
+    },
+    {
+     "tbl": "day_plans",
+     "idx": "idx_plan_finish",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "day_plan_finish"
+    },
+    {
+     "tbl": "day_plans",
+     "idx": "PK__day_plan__D022548DE2949AC6",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "day_plan_id"
+    },
+    {
+     "tbl": "experiences",
+     "idx": "idx_experience_time",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "experience_start_time"
+    },
+    {
+     "tbl": "experiences",
+     "idx": "idx_experience_type",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "experience_type"
+    },
+    {
+     "tbl": "experiences",
+     "idx": "PK__experien__EB216AFCCFD57027",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "experience_id"
+    },
+    {
+     "tbl": "holland_tests",
+     "idx": "PK__holland___4CAB7BE615C1EF0A",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "holland_test_id"
+    },
+    {
+     "tbl": "job_skill_requirements",
+     "idx": "PK__job_skil__2A73C1ADCED4EF19",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "requirement_id"
+    },
+    {
+     "tbl": "job_skill_requirements",
+     "idx": "UQ__job_skil__E1891E935F9DBFD1",
+     "uniq": true,
+     "pk": false,
+     "filt": null,
+     "cols": "job_id,skill_id"
+    },
+    {
+     "tbl": "jobs",
+     "idx": "PK__jobs__6E32B6A564A5668C",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "job_id"
+    },
+    {
+     "tbl": "matching_results",
+     "idx": "IX_MatchingResults_StudentScore",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "student_id,match_score"
+    },
+    {
+     "tbl": "matching_results",
+     "idx": "PK__matching__9D7FCBA3084BEAB8",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "match_id"
+    },
+    {
+     "tbl": "matching_results",
+     "idx": "UQ__matching__6CD02DF109345656",
+     "uniq": true,
+     "pk": false,
+     "filt": null,
+     "cols": "student_id,job_id"
+    },
+    {
+     "tbl": "skills",
+     "idx": "PK__skills__FBBA837935CC250E",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "skill_id"
+    },
+    {
+     "tbl": "skills",
+     "idx": "UQ__skills__73C038ADCDAE75F1",
+     "uniq": true,
+     "pk": false,
+     "filt": null,
+     "cols": "skill_name"
+    },
+    {
+     "tbl": "student_preferences",
+     "idx": "PK__student___FB41DBCFF1F80E51",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "preference_id"
+    },
+    {
+     "tbl": "student_preferences",
+     "idx": "UQ__student___2A33069B44C887DD",
+     "uniq": true,
+     "pk": false,
+     "filt": null,
+     "cols": "student_id"
+    },
+    {
+     "tbl": "student_skills",
+     "idx": "PK__student___A82E97B2314EE0C5",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "skill_record_id"
+    },
+    {
+     "tbl": "student_skills",
+     "idx": "UQ__student___A588AEAC5D8917B4",
+     "uniq": true,
+     "pk": false,
+     "filt": null,
+     "cols": "student_id,skill_id"
+    },
+    {
+     "tbl": "students",
+     "idx": "PK__students__2A33069AF486238F",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "student_id"
+    },
+    {
+     "tbl": "users_login",
+     "idx": "PK__User__3214EC077EC4CC95",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "user_id"
+    },
+    {
+     "tbl": "week_plans",
+     "idx": "idx_week_ddl",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "week_plan_ddl"
+    },
+    {
+     "tbl": "week_plans",
+     "idx": "idx_week_finish",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "week_plan_finish"
+    },
+    {
+     "tbl": "week_plans",
+     "idx": "PK__week_pla__BBCB15B103CB8B51",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "week_plan_id"
+    },
+    {
+     "tbl": "work_values",
+     "idx": "PK__work_val__E51D2DB93829F86D",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "worth_id"
+    }
+   ],
+   "tables": {
+    "companies": [
+     {
+      "tbl": "companies",
+      "col": "company_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "companies",
+      "col": "company_name",
+      "ord": 2,
+      "dtype": "nvarchar",
+      "len": 200,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "companies",
+      "col": "company_location",
+      "ord": 3,
+      "dtype": "nvarchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "companies",
+      "col": "company_size",
+      "ord": 4,
+      "dtype": "nvarchar",
+      "len": 40,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "companies",
+      "col": "company_description",
+      "ord": 5,
+      "dtype": "nvarchar",
+      "len": -1,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "day_plans": [
+     {
+      "tbl": "day_plans",
+      "col": "day_plan_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "day_plans",
+      "col": "day_plan_name",
+      "ord": 2,
+      "dtype": "nvarchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "day_plans",
+      "col": "day_plan_describe",
+      "ord": 3,
+      "dtype": "nvarchar",
+      "len": -1,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "day_plans",
+      "col": "day_plan_prority",
+      "ord": 4,
+      "dtype": "tinyint",
+      "len": 1,
+      "prec": 3,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "day_plans",
+      "col": "day_plan_ddl",
+      "ord": 5,
+      "dtype": "datetime",
+      "len": 8,
+      "prec": 23,
+      "scl": 3,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "day_plans",
+      "col": "day_plan_finish",
+      "ord": 6,
+      "dtype": "tinyint",
+      "len": 1,
+      "prec": 3,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": "((0))"
+     },
+     {
+      "tbl": "day_plans",
+      "col": "student_id",
+      "ord": 7,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "experiences": [
+     {
+      "tbl": "experiences",
+      "col": "experience_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "experiences",
+      "col": "student_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "experiences",
+      "col": "experience_title",
+      "ord": 3,
+      "dtype": "nvarchar",
+      "len": 200,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "experiences",
+      "col": "experience_content",
+      "ord": 4,
+      "dtype": "nvarchar",
+      "len": -1,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "experiences",
+      "col": "experience_type",
+      "ord": 5,
+      "dtype": "varchar",
+      "len": 50,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "experiences",
+      "col": "experience_role",
+      "ord": 6,
+      "dtype": "varchar",
+      "len": 50,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "experiences",
+      "col": "experience_start_time",
+      "ord": 7,
+      "dtype": "date",
+      "len": 3,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "experiences",
+      "col": "experience_end_time",
+      "ord": 8,
+      "dtype": "date",
+      "len": 3,
+      "prec": 10,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "experiences",
+      "col": "updated_time",
+      "ord": 9,
+      "dtype": "datetime",
+      "len": 8,
+      "prec": 23,
+      "scl": 3,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": "(getdate())"
+     }
+    ],
+    "holland_tests": [
+     {
+      "tbl": "holland_tests",
+      "col": "holland_test_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "holland_tests",
+      "col": "student_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "holland_tests",
+      "col": "holland_R",
+      "ord": 3,
+      "dtype": "tinyint",
+      "len": 1,
+      "prec": 3,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "holland_tests",
+      "col": "holland_I",
+      "ord": 4,
+      "dtype": "tinyint",
+      "len": 1,
+      "prec": 3,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "holland_tests",
+      "col": "holland_A",
+      "ord": 5,
+      "dtype": "tinyint",
+      "len": 1,
+      "prec": 3,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "holland_tests",
+      "col": "holland_S",
+      "ord": 6,
+      "dtype": "tinyint",
+      "len": 1,
+      "prec": 3,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "holland_tests",
+      "col": "holland_E",
+      "ord": 7,
+      "dtype": "tinyint",
+      "len": 1,
+      "prec": 3,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "holland_tests",
+      "col": "holland_C",
+      "ord": 8,
+      "dtype": "tinyint",
+      "len": 1,
+      "prec": 3,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "holland_tests",
+      "col": "holland_test_time",
+      "ord": 9,
+      "dtype": "datetime",
+      "len": 8,
+      "prec": 23,
+      "scl": 3,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": "(getdate())"
+     }
+    ],
+    "job_skill_requirements": [
+     {
+      "tbl": "job_skill_requirements",
+      "col": "requirement_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "job_skill_requirements",
+      "col": "job_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "job_skill_requirements",
+      "col": "skill_id",
+      "ord": 3,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "job_skill_requirements",
+      "col": "required_level",
+      "ord": 4,
+      "dtype": "tinyint",
+      "len": 1,
+      "prec": 3,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "job_skill_requirements",
+      "col": "requirement_type",
+      "ord": 5,
+      "dtype": "nvarchar",
+      "len": 20,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "jobs": [
+     {
+      "tbl": "jobs",
+      "col": "job_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "jobs",
+      "col": "company_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "jobs",
+      "col": "job_title",
+      "ord": 3,
+      "dtype": "nvarchar",
+      "len": 200,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "jobs",
+      "col": "job_type",
+      "ord": 4,
+      "dtype": "nvarchar",
+      "len": 40,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "jobs",
+      "col": "salary_range",
+      "ord": 5,
+      "dtype": "nvarchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "matching_results": [
+     {
+      "tbl": "matching_results",
+      "col": "match_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "matching_results",
+      "col": "student_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "matching_results",
+      "col": "job_id",
+      "ord": 3,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "matching_results",
+      "col": "match_score",
+      "ord": 4,
+      "dtype": "decimal",
+      "len": 5,
+      "prec": 5,
+      "scl": 2,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "skills": [
+     {
+      "tbl": "skills",
+      "col": "skill_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "skills",
+      "col": "skill_name",
+      "ord": 2,
+      "dtype": "nvarchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "skills",
+      "col": "skill_category",
+      "ord": 3,
+      "dtype": "nvarchar",
+      "len": 40,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "skills",
+      "col": "skill_description",
+      "ord": 4,
+      "dtype": "nvarchar",
+      "len": -1,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "student_preferences": [
+     {
+      "tbl": "student_preferences",
+      "col": "preference_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_preferences",
+      "col": "student_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_preferences",
+      "col": "preferred_industries",
+      "ord": 3,
+      "dtype": "nvarchar",
+      "len": -1,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_preferences",
+      "col": "preferred_locations",
+      "ord": 4,
+      "dtype": "nvarchar",
+      "len": -1,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_preferences",
+      "col": "expected_salary",
+      "ord": 5,
+      "dtype": "nvarchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_preferences",
+      "col": "work_mode_preference",
+      "ord": 6,
+      "dtype": "nvarchar",
+      "len": 40,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "student_skills": [
+     {
+      "tbl": "student_skills",
+      "col": "skill_record_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_skills",
+      "col": "student_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_skills",
+      "col": "skill_id",
+      "ord": 3,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_skills",
+      "col": "proficiency_level",
+      "ord": 4,
+      "dtype": "tinyint",
+      "len": 1,
+      "prec": 3,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_skills",
+      "col": "experience_months",
+      "ord": 5,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "students": [
+     {
+      "tbl": "students",
+      "col": "student_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "students",
+      "col": "student_name",
+      "ord": 2,
+      "dtype": "nvarchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "students",
+      "col": "student_major",
+      "ord": 3,
+      "dtype": "nvarchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "students",
+      "col": "grade",
+      "ord": 4,
+      "dtype": "tinyint",
+      "len": 1,
+      "prec": 3,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "students",
+      "col": "gpa",
+      "ord": 5,
+      "dtype": "decimal",
+      "len": 5,
+      "prec": 3,
+      "scl": 2,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "students",
+      "col": "user_id",
+      "ord": 6,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "users_login": [
+     {
+      "tbl": "users_login",
+      "col": "user_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "users_login",
+      "col": "user_name",
+      "ord": 2,
+      "dtype": "nvarchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "users_login",
+      "col": "password_hash",
+      "ord": 3,
+      "dtype": "nvarchar",
+      "len": 40,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "users_login",
+      "col": "user_email",
+      "ord": 5,
+      "dtype": "nvarchar",
+      "len": 80,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "users_login",
+      "col": "user_status",
+      "ord": 6,
+      "dtype": "tinyint",
+      "len": 1,
+      "prec": 3,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": "((1))"
+     },
+     {
+      "tbl": "users_login",
+      "col": "user_created_time",
+      "ord": 7,
+      "dtype": "datetime2",
+      "len": 8,
+      "prec": 27,
+      "scl": 7,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": "(getdate())"
+     },
+     {
+      "tbl": "users_login",
+      "col": "last_Login_time",
+      "ord": 8,
+      "dtype": "datetime2",
+      "len": 8,
+      "prec": 27,
+      "scl": 7,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "users_login",
+      "col": "user_remark",
+      "ord": 9,
+      "dtype": "nvarchar",
+      "len": 1000,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "week_plans": [
+     {
+      "tbl": "week_plans",
+      "col": "week_plan_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "week_plans",
+      "col": "week_plan_name",
+      "ord": 2,
+      "dtype": "nvarchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "week_plans",
+      "col": "week_plan_start",
+      "ord": 3,
+      "dtype": "datetime",
+      "len": 8,
+      "prec": 23,
+      "scl": 3,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "week_plans",
+      "col": "week_plan_ddl",
+      "ord": 4,
+      "dtype": "datetime",
+      "len": 8,
+      "prec": 23,
+      "scl": 3,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "week_plans",
+      "col": "week_plan_finish",
+      "ord": 5,
+      "dtype": "tinyint",
+      "len": 1,
+      "prec": 3,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": "((0))"
+     },
+     {
+      "tbl": "week_plans",
+      "col": "student_id",
+      "ord": 6,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "work_values": [
+     {
+      "tbl": "work_values",
+      "col": "worth_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "work_values",
+      "col": "student_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "work_values",
+      "col": "social_contribution",
+      "ord": 3,
+      "dtype": "tinyint",
+      "len": 1,
+      "prec": 3,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "work_values",
+      "col": "achievement_oriented",
+      "ord": 4,
+      "dtype": "tinyint",
+      "len": 1,
+      "prec": 3,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "work_values",
+      "col": "safe_stable",
+      "ord": 5,
+      "dtype": "tinyint",
+      "len": 1,
+      "prec": 3,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "work_values",
+      "col": "work_life_balance",
+      "ord": 6,
+      "dtype": "tinyint",
+      "len": 1,
+      "prec": 3,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "work_values",
+      "col": "power_status",
+      "ord": 7,
+      "dtype": "tinyint",
+      "len": 1,
+      "prec": 3,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "work_values",
+      "col": "innovation_challenge",
+      "ord": 8,
+      "dtype": "tinyint",
+      "len": 1,
+      "prec": 3,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "work_values",
+      "col": "worth_test_time",
+      "ord": 9,
+      "dtype": "datetime",
+      "len": 8,
+      "prec": 23,
+      "scl": 3,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": "(getdate())"
+     }
+    ]
+   },
+   "rows": {
+    "companies": 9,
+    "day_plans": 0,
+    "experiences": 0,
+    "holland_tests": 0,
+    "job_skill_requirements": 46,
+    "jobs": 23,
+    "matching_results": 93,
+    "skills": 25,
+    "student_preferences": 20,
+    "student_skills": 40,
+    "students": 20,
+    "users_login": 20,
+    "week_plans": 0,
+    "work_values": 0
+   }
+  },
+  "new": {
+   "fks": [
+    {
+     "fk": "FK_achievement_student",
+     "child_tbl": "achievement",
+     "child_col": "student_id",
+     "parent_tbl": "student_info",
+     "parent_col": "student_id"
+    },
+    {
+     "fk": "FK_campus_activity_student",
+     "child_tbl": "campus_activity",
+     "child_col": "student_id",
+     "parent_tbl": "student_info",
+     "parent_col": "student_id"
+    },
+    {
+     "fk": "FK_career_plan_skill",
+     "child_tbl": "career_plan",
+     "child_col": "target_skill_id",
+     "parent_tbl": "skill_library",
+     "parent_col": "skill_id"
+    },
+    {
+     "fk": "FK_career_plan_student",
+     "child_tbl": "career_plan",
+     "child_col": "student_id",
+     "parent_tbl": "student_info",
+     "parent_col": "student_id"
+    },
+    {
+     "fk": "FK_certificate_student",
+     "child_tbl": "certificate",
+     "child_col": "student_id",
+     "parent_tbl": "student_info",
+     "parent_col": "student_id"
+    },
+    {
+     "fk": "FK_competition_award_student",
+     "child_tbl": "competition_award",
+     "child_col": "student_id",
+     "parent_tbl": "student_info",
+     "parent_col": "student_id"
+    },
+    {
+     "fk": "FK_daily_task_skill",
+     "child_tbl": "daily_task",
+     "child_col": "target_skill_id",
+     "parent_tbl": "skill_library",
+     "parent_col": "skill_id"
+    },
+    {
+     "fk": "FK_daily_task_student",
+     "child_tbl": "daily_task",
+     "child_col": "student_id",
+     "parent_tbl": "student_info",
+     "parent_col": "student_id"
+    },
+    {
+     "fk": "FK_daily_task_weekly",
+     "child_tbl": "daily_task",
+     "child_col": "weekly_task_id",
+     "parent_tbl": "weekly_task",
+     "parent_col": "weekly_task_id"
+    },
+    {
+     "fk": "FK_holland_assessment_student",
+     "child_tbl": "holland_assessment",
+     "child_col": "student_id",
+     "parent_tbl": "student_info",
+     "parent_col": "student_id"
+    },
+    {
+     "fk": "FK_internship_experience_student",
+     "child_tbl": "internship_experience",
+     "child_col": "student_id",
+     "parent_tbl": "student_info",
+     "parent_col": "student_id"
+    },
+    {
+     "fk": "FK_job_library_industry",
+     "child_tbl": "job_library",
+     "child_col": "industry_id",
+     "parent_tbl": "industry",
+     "parent_col": "industry_id"
+    },
+    {
+     "fk": "FK_job_match_job",
+     "child_tbl": "job_match",
+     "child_col": "job_id",
+     "parent_tbl": "job_library",
+     "parent_col": "job_id"
+    },
+    {
+     "fk": "FK_job_match_student",
+     "child_tbl": "job_match",
+     "child_col": "student_id",
+     "parent_tbl": "student_info",
+     "parent_col": "student_id"
+    },
+    {
+     "fk": "FK_job_skill_requirement_job",
+     "child_tbl": "job_skill_requirement",
+     "child_col": "job_id",
+     "parent_tbl": "job_library",
+     "parent_col": "job_id"
+    },
+    {
+     "fk": "FK_job_skill_requirement_skill",
+     "child_tbl": "job_skill_requirement",
+     "child_col": "skill_id",
+     "parent_tbl": "skill_library",
+     "parent_col": "skill_id"
+    },
+    {
+     "fk": "FK_job_value_requirement_job",
+     "child_tbl": "job_value_requirement",
+     "child_col": "job_id",
+     "parent_tbl": "job_library",
+     "parent_col": "job_id"
+    },
+    {
+     "fk": "FK_job_value_requirement_value",
+     "child_tbl": "job_value_requirement",
+     "child_col": "value_id",
+     "parent_tbl": "values_library",
+     "parent_col": "value_id"
+    },
+    {
+     "fk": "FK_project_experience_student",
+     "child_tbl": "project_experience",
+     "child_col": "student_id",
+     "parent_tbl": "student_info",
+     "parent_col": "student_id"
+    },
+    {
+     "fk": "FK_skill_assessment_student",
+     "child_tbl": "skill_assessment",
+     "child_col": "student_id",
+     "parent_tbl": "student_info",
+     "parent_col": "student_id"
+    },
+    {
+     "fk": "FK_skill_assessment_detail_main",
+     "child_tbl": "skill_assessment_detail",
+     "child_col": "skill_assess_id",
+     "parent_tbl": "skill_assessment",
+     "parent_col": "skill_assess_id"
+    },
+    {
+     "fk": "FK_skill_assessment_detail_skill",
+     "child_tbl": "skill_assessment_detail",
+     "child_col": "skill_id",
+     "parent_tbl": "skill_library",
+     "parent_col": "skill_id"
+    },
+    {
+     "fk": "FK_student_info_industry",
+     "child_tbl": "student_info",
+     "child_col": "desired_industry_id",
+     "parent_tbl": "industry",
+     "parent_col": "industry_id"
+    },
+    {
+     "fk": "FK_student_info_user",
+     "child_tbl": "student_info",
+     "child_col": "user_id",
+     "parent_tbl": "user",
+     "parent_col": "user_id"
+    },
+    {
+     "fk": "FK_study_time_student",
+     "child_tbl": "study_time",
+     "child_col": "student_id",
+     "parent_tbl": "student_info",
+     "parent_col": "student_id"
+    },
+    {
+     "fk": "FK_value_assessment_student",
+     "child_tbl": "value_assessment",
+     "child_col": "student_id",
+     "parent_tbl": "student_info",
+     "parent_col": "student_id"
+    },
+    {
+     "fk": "FK_value_assessment_detail_main",
+     "child_tbl": "value_assessment_detail",
+     "child_col": "value_assess_id",
+     "parent_tbl": "value_assessment",
+     "parent_col": "value_assess_id"
+    },
+    {
+     "fk": "FK_value_assessment_detail_value",
+     "child_tbl": "value_assessment_detail",
+     "child_col": "value_id",
+     "parent_tbl": "values_library",
+     "parent_col": "value_id"
+    },
+    {
+     "fk": "FK_weekly_task_skill",
+     "child_tbl": "weekly_task",
+     "child_col": "target_skill_id",
+     "parent_tbl": "skill_library",
+     "parent_col": "skill_id"
+    },
+    {
+     "fk": "FK_weekly_task_student",
+     "child_tbl": "weekly_task",
+     "child_col": "student_id",
+     "parent_tbl": "student_info",
+     "parent_col": "student_id"
+    }
+   ],
+   "chks": [
+    {
+     "tbl": "career_plan",
+     "chk": "CK__career_pl__compl__01142BA1",
+     "def": "([completion_status]='已延期' OR [completion_status]='已完成' OR [completion_status]='进行中' OR [completion_status]='未开始')"
+    },
+    {
+     "tbl": "career_plan",
+     "chk": "CK__career_pl__prior__00200768",
+     "def": "([priority]='低' OR [priority]='中' OR [priority]='高')"
+    },
+    {
+     "tbl": "daily_task",
+     "chk": "CK__daily_tas__prior__0D7A0286",
+     "def": "([priority]='低' OR [priority]='中' OR [priority]='高')"
+    },
+    {
+     "tbl": "student_info",
+     "chk": "CK__student_i__gende__412EB0B6",
+     "def": "([gender]='其他' OR [gender]='女' OR [gender]='男')"
+    },
+    {
+     "tbl": "weekly_task",
+     "chk": "CK__weekly_ta__prior__06CD04F7",
+     "def": "([priority]='低' OR [priority]='中' OR [priority]='高')"
+    }
+   ],
+   "idxs": [
+    {
+     "tbl": "achievement",
+     "idx": "idx_achievement_student_time",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "student_id,obtain_time"
+    },
+    {
+     "tbl": "achievement",
+     "idx": "PK_achievement",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "achievement_id"
+    },
+    {
+     "tbl": "campus_activity",
+     "idx": "idx_campus_activity_student_dates",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "student_id,start_date,end_date"
+    },
+    {
+     "tbl": "campus_activity",
+     "idx": "PK_campus_activity",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "activity_id"
+    },
+    {
+     "tbl": "career_plan",
+     "idx": "idx_career_plan_deadline",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "end_time"
+    },
+    {
+     "tbl": "career_plan",
+     "idx": "idx_career_plan_student_status",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "student_id,completion_status"
+    },
+    {
+     "tbl": "career_plan",
+     "idx": "PK_career_plan",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "plan_id"
+    },
+    {
+     "tbl": "certificate",
+     "idx": "idx_certificate_student_date",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "student_id,obtain_date"
+    },
+    {
+     "tbl": "certificate",
+     "idx": "PK_certificate",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "certificate_id"
+    },
+    {
+     "tbl": "competition_award",
+     "idx": "idx_competition_award_student_date",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "student_id,obtain_date"
+    },
+    {
+     "tbl": "competition_award",
+     "idx": "PK_competition_award",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "award_id"
+    },
+    {
+     "tbl": "daily_task",
+     "idx": "idx_daily_task_completion",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "is_completed"
+    },
+    {
+     "tbl": "daily_task",
+     "idx": "idx_daily_task_student_date",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "student_id,start_time,end_time"
+    },
+    {
+     "tbl": "daily_task",
+     "idx": "PK_daily_task",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "daily_task_id"
+    },
+    {
+     "tbl": "holland_assessment",
+     "idx": "idx_student_test_time",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "student_id,test_time"
+    },
+    {
+     "tbl": "holland_assessment",
+     "idx": "PK_holland_assessment",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "holland_id"
+    },
+    {
+     "tbl": "industry",
+     "idx": "PK_industry",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "industry_id"
+    },
+    {
+     "tbl": "industry",
+     "idx": "UQ_industry_name",
+     "uniq": true,
+     "pk": false,
+     "filt": null,
+     "cols": "industry_name"
+    },
+    {
+     "tbl": "internship_experience",
+     "idx": "idx_student_dates",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "student_id,start_date,end_date"
+    },
+    {
+     "tbl": "internship_experience",
+     "idx": "PK_internship_experience",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "internship_id"
+    },
+    {
+     "tbl": "job_library",
+     "idx": "idx_job_title",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "job_title"
+    },
+    {
+     "tbl": "job_library",
+     "idx": "PK_job_library",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "job_id"
+    },
+    {
+     "tbl": "job_match",
+     "idx": "idx_student_match_time",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "student_id,match_time"
+    },
+    {
+     "tbl": "job_match",
+     "idx": "PK_job_match",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "match_id"
+    },
+    {
+     "tbl": "job_skill_requirement",
+     "idx": "PK_job_skill_requirement",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "requirement_id"
+    },
+    {
+     "tbl": "job_skill_requirement",
+     "idx": "UQ_job_skill",
+     "uniq": true,
+     "pk": false,
+     "filt": null,
+     "cols": "job_id,skill_id"
+    },
+    {
+     "tbl": "job_value_requirement",
+     "idx": "PK_job_value_requirement",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "requirement_id"
+    },
+    {
+     "tbl": "job_value_requirement",
+     "idx": "UQ_job_value",
+     "uniq": true,
+     "pk": false,
+     "filt": null,
+     "cols": "job_id,value_id"
+    },
+    {
+     "tbl": "project_experience",
+     "idx": "idx_project_experience_student_dates",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "student_id,start_date,end_date"
+    },
+    {
+     "tbl": "project_experience",
+     "idx": "PK_project_experience",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "project_id"
+    },
+    {
+     "tbl": "skill_assessment",
+     "idx": "idx_skill_assessment_student_test_time",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "student_id,test_time"
+    },
+    {
+     "tbl": "skill_assessment",
+     "idx": "PK_skill_assessment",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "skill_assess_id"
+    },
+    {
+     "tbl": "skill_assessment_detail",
+     "idx": "PK_skill_assessment_detail",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "detail_id"
+    },
+    {
+     "tbl": "skill_assessment_detail",
+     "idx": "UQ_assess_skill",
+     "uniq": true,
+     "pk": false,
+     "filt": null,
+     "cols": "skill_assess_id,skill_id"
+    },
+    {
+     "tbl": "skill_library",
+     "idx": "PK_skill_library",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "skill_id"
+    },
+    {
+     "tbl": "skill_library",
+     "idx": "UQ_skill_name",
+     "uniq": true,
+     "pk": false,
+     "filt": null,
+     "cols": "skill_name"
+    },
+    {
+     "tbl": "student_info",
+     "idx": "PK_student_info",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "student_id"
+    },
+    {
+     "tbl": "student_info",
+     "idx": "UQ_student_email",
+     "uniq": true,
+     "pk": false,
+     "filt": null,
+     "cols": "email"
+    },
+    {
+     "tbl": "student_info",
+     "idx": "UQ_student_number",
+     "uniq": true,
+     "pk": false,
+     "filt": null,
+     "cols": "student_number"
+    },
+    {
+     "tbl": "student_info",
+     "idx": "UQ_student_user",
+     "uniq": true,
+     "pk": false,
+     "filt": null,
+     "cols": "user_id"
+    },
+    {
+     "tbl": "study_time",
+     "idx": "PK_study_time",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "study_record_id"
+    },
+    {
+     "tbl": "study_time",
+     "idx": "UQ_study_time_student_date",
+     "uniq": true,
+     "pk": false,
+     "filt": null,
+     "cols": "student_id,study_date"
+    },
+    {
+     "tbl": "user",
+     "idx": "PK_user",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "user_id"
+    },
+    {
+     "tbl": "user",
+     "idx": "UQ_user_email",
+     "uniq": true,
+     "pk": false,
+     "filt": null,
+     "cols": "email"
+    },
+    {
+     "tbl": "value_assessment",
+     "idx": "idx_value_assessment_student_test_time",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "student_id,test_time"
+    },
+    {
+     "tbl": "value_assessment",
+     "idx": "PK_value_assessment",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "value_assess_id"
+    },
+    {
+     "tbl": "value_assessment_detail",
+     "idx": "PK_value_assessment_detail",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "detail_id"
+    },
+    {
+     "tbl": "value_assessment_detail",
+     "idx": "UQ_assess_value",
+     "uniq": true,
+     "pk": false,
+     "filt": null,
+     "cols": "value_assess_id,value_id"
+    },
+    {
+     "tbl": "values_library",
+     "idx": "PK_values_library",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "value_id"
+    },
+    {
+     "tbl": "values_library",
+     "idx": "UQ_value_name",
+     "uniq": true,
+     "pk": false,
+     "filt": null,
+     "cols": "value_name"
+    },
+    {
+     "tbl": "weekly_task",
+     "idx": "idx_weekly_task_student_week",
+     "uniq": false,
+     "pk": false,
+     "filt": null,
+     "cols": "student_id,start_time,end_time"
+    },
+    {
+     "tbl": "weekly_task",
+     "idx": "PK_weekly_task",
+     "uniq": true,
+     "pk": true,
+     "filt": null,
+     "cols": "weekly_task_id"
+    }
+   ],
+   "tables": {
+    "achievement": [
+     {
+      "tbl": "achievement",
+      "col": "achievement_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "achievement",
+      "col": "student_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "achievement",
+      "col": "achievement_name",
+      "ord": 3,
+      "dtype": "varchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "achievement",
+      "col": "obtain_time",
+      "ord": 4,
+      "dtype": "datetime",
+      "len": 8,
+      "prec": 23,
+      "scl": 3,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": "(getdate())"
+     }
+    ],
+    "campus_activity": [
+     {
+      "tbl": "campus_activity",
+      "col": "activity_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "campus_activity",
+      "col": "student_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "campus_activity",
+      "col": "start_date",
+      "ord": 3,
+      "dtype": "date",
+      "len": 3,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "campus_activity",
+      "col": "end_date",
+      "ord": 4,
+      "dtype": "date",
+      "len": 3,
+      "prec": 10,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "campus_activity",
+      "col": "campus_role",
+      "ord": 5,
+      "dtype": "varchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "campus_activity",
+      "col": "responsibility",
+      "ord": 6,
+      "dtype": "text",
+      "len": 16,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "career_plan": [
+     {
+      "tbl": "career_plan",
+      "col": "plan_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "career_plan",
+      "col": "student_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "career_plan",
+      "col": "task_name",
+      "ord": 3,
+      "dtype": "varchar",
+      "len": 200,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "career_plan",
+      "col": "start_time",
+      "ord": 4,
+      "dtype": "datetime",
+      "len": 8,
+      "prec": 23,
+      "scl": 3,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "career_plan",
+      "col": "end_time",
+      "ord": 5,
+      "dtype": "datetime",
+      "len": 8,
+      "prec": 23,
+      "scl": 3,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "career_plan",
+      "col": "priority",
+      "ord": 6,
+      "dtype": "varchar",
+      "len": 10,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "career_plan",
+      "col": "task_type",
+      "ord": 7,
+      "dtype": "varchar",
+      "len": 50,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "career_plan",
+      "col": "task_content",
+      "ord": 8,
+      "dtype": "text",
+      "len": 16,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "career_plan",
+      "col": "key_result",
+      "ord": 9,
+      "dtype": "text",
+      "len": 16,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "career_plan",
+      "col": "completion_status",
+      "ord": 10,
+      "dtype": "varchar",
+      "len": 10,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "career_plan",
+      "col": "target_skill_id",
+      "ord": 11,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "career_plan",
+      "col": "target_proficiency",
+      "ord": 12,
+      "dtype": "varchar",
+      "len": 20,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "career_plan",
+      "col": "learning_stage",
+      "ord": 13,
+      "dtype": "varchar",
+      "len": 50,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "certificate": [
+     {
+      "tbl": "certificate",
+      "col": "certificate_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "certificate",
+      "col": "student_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "certificate",
+      "col": "obtain_date",
+      "ord": 3,
+      "dtype": "date",
+      "len": 3,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "certificate",
+      "col": "certificate_name",
+      "ord": 4,
+      "dtype": "varchar",
+      "len": 200,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "competition_award": [
+     {
+      "tbl": "competition_award",
+      "col": "award_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "competition_award",
+      "col": "student_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "competition_award",
+      "col": "obtain_date",
+      "ord": 3,
+      "dtype": "date",
+      "len": 3,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "competition_award",
+      "col": "competition_level",
+      "ord": 4,
+      "dtype": "varchar",
+      "len": 50,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "competition_award",
+      "col": "competition_name",
+      "ord": 5,
+      "dtype": "varchar",
+      "len": 200,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "competition_award",
+      "col": "award_level",
+      "ord": 6,
+      "dtype": "varchar",
+      "len": 50,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "daily_task": [
+     {
+      "tbl": "daily_task",
+      "col": "daily_task_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "daily_task",
+      "col": "student_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "daily_task",
+      "col": "weekly_task_id",
+      "ord": 3,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "daily_task",
+      "col": "daily_task_name",
+      "ord": 4,
+      "dtype": "varchar",
+      "len": 200,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "daily_task",
+      "col": "start_time",
+      "ord": 5,
+      "dtype": "datetime",
+      "len": 8,
+      "prec": 23,
+      "scl": 3,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "daily_task",
+      "col": "end_time",
+      "ord": 6,
+      "dtype": "datetime",
+      "len": 8,
+      "prec": 23,
+      "scl": 3,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "daily_task",
+      "col": "priority",
+      "ord": 7,
+      "dtype": "varchar",
+      "len": 10,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": "('中')"
+     },
+     {
+      "tbl": "daily_task",
+      "col": "task_type",
+      "ord": 8,
+      "dtype": "varchar",
+      "len": 50,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "daily_task",
+      "col": "task_content",
+      "ord": 9,
+      "dtype": "text",
+      "len": 16,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "daily_task",
+      "col": "is_completed",
+      "ord": 10,
+      "dtype": "bit",
+      "len": 1,
+      "prec": 1,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": "((0))"
+     },
+     {
+      "tbl": "daily_task",
+      "col": "target_skill_id",
+      "ord": 11,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "daily_task",
+      "col": "current_proficiency_level",
+      "ord": 12,
+      "dtype": "varchar",
+      "len": 20,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "holland_assessment": [
+     {
+      "tbl": "holland_assessment",
+      "col": "holland_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "holland_assessment",
+      "col": "student_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "holland_assessment",
+      "col": "test_time",
+      "ord": 3,
+      "dtype": "datetime",
+      "len": 8,
+      "prec": 23,
+      "scl": 3,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": "(getdate())"
+     },
+     {
+      "tbl": "holland_assessment",
+      "col": "r_score",
+      "ord": 4,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "holland_assessment",
+      "col": "i_score",
+      "ord": 5,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "holland_assessment",
+      "col": "a_score",
+      "ord": 6,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "holland_assessment",
+      "col": "s_score",
+      "ord": 7,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "holland_assessment",
+      "col": "e_score",
+      "ord": 8,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "holland_assessment",
+      "col": "c_score",
+      "ord": 9,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "industry": [
+     {
+      "tbl": "industry",
+      "col": "industry_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "industry",
+      "col": "industry_name",
+      "ord": 2,
+      "dtype": "varchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "industry",
+      "col": "description",
+      "ord": 3,
+      "dtype": "text",
+      "len": 16,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "internship_experience": [
+     {
+      "tbl": "internship_experience",
+      "col": "internship_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "internship_experience",
+      "col": "student_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "internship_experience",
+      "col": "start_date",
+      "ord": 3,
+      "dtype": "date",
+      "len": 3,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "internship_experience",
+      "col": "end_date",
+      "ord": 4,
+      "dtype": "date",
+      "len": 3,
+      "prec": 10,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "internship_experience",
+      "col": "location",
+      "ord": 5,
+      "dtype": "varchar",
+      "len": 200,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "internship_experience",
+      "col": "position",
+      "ord": 6,
+      "dtype": "varchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "internship_experience",
+      "col": "description",
+      "ord": 7,
+      "dtype": "text",
+      "len": 16,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "job_library": [
+     {
+      "tbl": "job_library",
+      "col": "job_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "job_library",
+      "col": "job_title",
+      "ord": 2,
+      "dtype": "varchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "job_library",
+      "col": "industry_id",
+      "ord": 3,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "job_library",
+      "col": "education_requirement",
+      "ord": 4,
+      "dtype": "varchar",
+      "len": 50,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "job_library",
+      "col": "job_type",
+      "ord": 5,
+      "dtype": "varchar",
+      "len": 50,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "job_library",
+      "col": "holland_code",
+      "ord": 6,
+      "dtype": "char",
+      "len": 6,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "job_library",
+      "col": "job_description",
+      "ord": 7,
+      "dtype": "text",
+      "len": 16,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "job_match": [
+     {
+      "tbl": "job_match",
+      "col": "match_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "job_match",
+      "col": "student_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "job_match",
+      "col": "job_id",
+      "ord": 3,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "job_match",
+      "col": "match_score",
+      "ord": 4,
+      "dtype": "decimal",
+      "len": 5,
+      "prec": 5,
+      "scl": 2,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "job_match",
+      "col": "match_time",
+      "ord": 5,
+      "dtype": "datetime",
+      "len": 8,
+      "prec": 23,
+      "scl": 3,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": "(getdate())"
+     }
+    ],
+    "job_skill_requirement": [
+     {
+      "tbl": "job_skill_requirement",
+      "col": "requirement_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "job_skill_requirement",
+      "col": "job_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "job_skill_requirement",
+      "col": "skill_id",
+      "ord": 3,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "job_skill_requirement",
+      "col": "required_level",
+      "ord": 4,
+      "dtype": "varchar",
+      "len": 20,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "job_value_requirement": [
+     {
+      "tbl": "job_value_requirement",
+      "col": "requirement_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "job_value_requirement",
+      "col": "job_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "job_value_requirement",
+      "col": "value_id",
+      "ord": 3,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "job_value_requirement",
+      "col": "expected_score_level",
+      "ord": 4,
+      "dtype": "varchar",
+      "len": 20,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "project_experience": [
+     {
+      "tbl": "project_experience",
+      "col": "project_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "project_experience",
+      "col": "student_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "project_experience",
+      "col": "start_date",
+      "ord": 3,
+      "dtype": "date",
+      "len": 3,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "project_experience",
+      "col": "end_date",
+      "ord": 4,
+      "dtype": "date",
+      "len": 3,
+      "prec": 10,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "project_experience",
+      "col": "project_name",
+      "ord": 5,
+      "dtype": "varchar",
+      "len": 200,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "project_experience",
+      "col": "role",
+      "ord": 6,
+      "dtype": "varchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "project_experience",
+      "col": "description",
+      "ord": 7,
+      "dtype": "text",
+      "len": 16,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "skill_assessment": [
+     {
+      "tbl": "skill_assessment",
+      "col": "skill_assess_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "skill_assessment",
+      "col": "student_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "skill_assessment",
+      "col": "test_time",
+      "ord": 3,
+      "dtype": "datetime",
+      "len": 8,
+      "prec": 23,
+      "scl": 3,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": "(getdate())"
+     }
+    ],
+    "skill_assessment_detail": [
+     {
+      "tbl": "skill_assessment_detail",
+      "col": "detail_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "skill_assessment_detail",
+      "col": "skill_assess_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "skill_assessment_detail",
+      "col": "skill_id",
+      "ord": 3,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "skill_assessment_detail",
+      "col": "proficiency_level",
+      "ord": 4,
+      "dtype": "varchar",
+      "len": 20,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "skill_assessment_detail",
+      "col": "self_score",
+      "ord": 5,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "skill_library": [
+     {
+      "tbl": "skill_library",
+      "col": "skill_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "skill_library",
+      "col": "skill_name",
+      "ord": 2,
+      "dtype": "varchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "skill_library",
+      "col": "skill_category",
+      "ord": 3,
+      "dtype": "varchar",
+      "len": 50,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "skill_library",
+      "col": "description",
+      "ord": 4,
+      "dtype": "text",
+      "len": 16,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "student_info": [
+     {
+      "tbl": "student_info",
+      "col": "student_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_info",
+      "col": "user_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_info",
+      "col": "name",
+      "ord": 3,
+      "dtype": "varchar",
+      "len": 50,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_info",
+      "col": "student_number",
+      "ord": 4,
+      "dtype": "varchar",
+      "len": 30,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_info",
+      "col": "gender",
+      "ord": 5,
+      "dtype": "varchar",
+      "len": 10,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_info",
+      "col": "birthday",
+      "ord": 6,
+      "dtype": "date",
+      "len": 3,
+      "prec": 10,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_info",
+      "col": "email",
+      "ord": 7,
+      "dtype": "varchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_info",
+      "col": "phone",
+      "ord": 8,
+      "dtype": "varchar",
+      "len": 20,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_info",
+      "col": "major",
+      "ord": 9,
+      "dtype": "varchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_info",
+      "col": "university",
+      "ord": 10,
+      "dtype": "varchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_info",
+      "col": "bio",
+      "ord": 11,
+      "dtype": "text",
+      "len": 16,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_info",
+      "col": "avatar_url",
+      "ord": 12,
+      "dtype": "varchar",
+      "len": 500,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_info",
+      "col": "enrollment_year",
+      "ord": 13,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_info",
+      "col": "expected_graduation",
+      "ord": 14,
+      "dtype": "date",
+      "len": 3,
+      "prec": 10,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_info",
+      "col": "grade",
+      "ord": 15,
+      "dtype": "varchar",
+      "len": 20,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_info",
+      "col": "gaokao_score",
+      "ord": 16,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_info",
+      "col": "gpa",
+      "ord": 17,
+      "dtype": "decimal",
+      "len": 5,
+      "prec": 3,
+      "scl": 2,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_info",
+      "col": "current_location",
+      "ord": 18,
+      "dtype": "varchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_info",
+      "col": "desired_location",
+      "ord": 19,
+      "dtype": "varchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "student_info",
+      "col": "desired_industry_id",
+      "ord": 20,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "study_time": [
+     {
+      "tbl": "study_time",
+      "col": "study_record_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "study_time",
+      "col": "student_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "study_time",
+      "col": "study_date",
+      "ord": 3,
+      "dtype": "date",
+      "len": 3,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "study_time",
+      "col": "study_hours",
+      "ord": 4,
+      "dtype": "decimal",
+      "len": 5,
+      "prec": 4,
+      "scl": 2,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "user": [
+     {
+      "tbl": "user",
+      "col": "user_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "user",
+      "col": "email",
+      "ord": 2,
+      "dtype": "varchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "user",
+      "col": "password_hash",
+      "ord": 3,
+      "dtype": "varchar",
+      "len": 255,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "user",
+      "col": "create_time",
+      "ord": 4,
+      "dtype": "datetime",
+      "len": 8,
+      "prec": 23,
+      "scl": 3,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": "(getdate())"
+     },
+     {
+      "tbl": "user",
+      "col": "last_login_time",
+      "ord": 5,
+      "dtype": "datetime",
+      "len": 8,
+      "prec": 23,
+      "scl": 3,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "value_assessment": [
+     {
+      "tbl": "value_assessment",
+      "col": "value_assess_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "value_assessment",
+      "col": "student_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "value_assessment",
+      "col": "test_time",
+      "ord": 3,
+      "dtype": "datetime",
+      "len": 8,
+      "prec": 23,
+      "scl": 3,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": "(getdate())"
+     }
+    ],
+    "value_assessment_detail": [
+     {
+      "tbl": "value_assessment_detail",
+      "col": "detail_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "value_assessment_detail",
+      "col": "value_assess_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "value_assessment_detail",
+      "col": "value_id",
+      "ord": 3,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "value_assessment_detail",
+      "col": "score",
+      "ord": 4,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "values_library": [
+     {
+      "tbl": "values_library",
+      "col": "value_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "values_library",
+      "col": "value_name",
+      "ord": 2,
+      "dtype": "varchar",
+      "len": 100,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "values_library",
+      "col": "description",
+      "ord": 3,
+      "dtype": "text",
+      "len": 16,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ],
+    "weekly_task": [
+     {
+      "tbl": "weekly_task",
+      "col": "weekly_task_id",
+      "ord": 1,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": true,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "weekly_task",
+      "col": "student_id",
+      "ord": 2,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "weekly_task",
+      "col": "weekly_task_name",
+      "ord": 3,
+      "dtype": "varchar",
+      "len": 200,
+      "prec": 0,
+      "scl": 0,
+      "nullable": false,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "weekly_task",
+      "col": "start_time",
+      "ord": 4,
+      "dtype": "datetime",
+      "len": 8,
+      "prec": 23,
+      "scl": 3,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "weekly_task",
+      "col": "end_time",
+      "ord": 5,
+      "dtype": "datetime",
+      "len": 8,
+      "prec": 23,
+      "scl": 3,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "weekly_task",
+      "col": "priority",
+      "ord": 6,
+      "dtype": "varchar",
+      "len": 10,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": "('中')"
+     },
+     {
+      "tbl": "weekly_task",
+      "col": "task_type",
+      "ord": 7,
+      "dtype": "varchar",
+      "len": 50,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "weekly_task",
+      "col": "completion_percentage",
+      "ord": 8,
+      "dtype": "tinyint",
+      "len": 1,
+      "prec": 3,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": "((0))"
+     },
+     {
+      "tbl": "weekly_task",
+      "col": "target_skill_id",
+      "ord": 9,
+      "dtype": "int",
+      "len": 4,
+      "prec": 10,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     },
+     {
+      "tbl": "weekly_task",
+      "col": "current_proficiency_level",
+      "ord": 10,
+      "dtype": "varchar",
+      "len": 20,
+      "prec": 0,
+      "scl": 0,
+      "nullable": true,
+      "ident": false,
+      "computed": false,
+      "dfault": null
+     }
+    ]
+   },
+   "rows": {
+    "achievement": 4,
+    "campus_activity": 0,
+    "career_plan": 2,
+    "certificate": 2,
+    "competition_award": 2,
+    "daily_task": 3,
+    "holland_assessment": 1,
+    "industry": 4,
+    "internship_experience": 1,
+    "job_library": 3,
+    "job_match": 2,
+    "job_skill_requirement": 7,
+    "job_value_requirement": 0,
+    "project_experience": 2,
+    "skill_assessment": 1,
+    "skill_assessment_detail": 15,
+    "skill_library": 15,
+    "student_info": 1,
+    "study_time": 4,
+    "user": 1,
+    "value_assessment": 1,
+    "value_assessment_detail": 5,
+    "values_library": 5,
+    "weekly_task": 1
+   }
+  }
+ }
+}

@@ -17,4 +17,11 @@ venv/
 /*.png
 /*.jpg
 
+# 临时对比/迁移脚本与运行日志
+/tmp_*
+*.log
+
+# 本地工具二进制（cloudflared 等，体积大，不入库）
+/tools/
+
 !.env.example

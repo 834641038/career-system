@@ -1,0 +1,1205 @@
+{
+ "old_db": "career_recommendation",
+ "new_db": "career_system",
+ "tables": {
+  "users_login": {
+   "new_table": "user",
+   "old_count": 8,
+   "new_count": 5,
+   "cols": [
+    {
+     "old": "user_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": "user_id",
+     "new_type": "int",
+     "new_null": false,
+     "action": "keep",
+     "note": ""
+    },
+    {
+     "old": "user_name",
+     "old_type": "nvarchar",
+     "old_null": false,
+     "new": "email",
+     "new_type": "varchar",
+     "new_null": false,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "password_hash",
+     "old_type": "nvarchar",
+     "old_null": false,
+     "new": "password_hash",
+     "new_type": "varchar",
+     "new_null": false,
+     "action": "keep",
+     "note": ""
+    },
+    {
+     "old": "user_email",
+     "old_type": "nvarchar",
+     "old_null": false,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "user_status",
+     "old_type": "tinyint",
+     "old_null": false,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "user_created_time",
+     "old_type": "datetime2",
+     "old_null": false,
+     "new": "last_login_time",
+     "new_type": "datetime",
+     "new_null": true,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "last_Login_time",
+     "old_type": "datetime2",
+     "old_null": true,
+     "new": "create_time",
+     "new_type": "datetime",
+     "new_null": false,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "user_remark",
+     "old_type": "nvarchar",
+     "old_null": true,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    }
+   ],
+   "new_only": []
+  },
+  "students": {
+   "new_table": "student_info",
+   "old_count": 6,
+   "new_count": 20,
+   "cols": [
+    {
+     "old": "student_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": "student_id",
+     "new_type": "int",
+     "new_null": false,
+     "action": "keep",
+     "note": ""
+    },
+    {
+     "old": "student_name",
+     "old_type": "nvarchar",
+     "old_null": true,
+     "new": "name",
+     "new_type": "varchar",
+     "new_null": false,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "student_major",
+     "old_type": "nvarchar",
+     "old_null": true,
+     "new": "student_number",
+     "new_type": "varchar",
+     "new_null": false,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "grade",
+     "old_type": "tinyint",
+     "old_null": true,
+     "new": "grade",
+     "new_type": "varchar",
+     "new_null": true,
+     "action": "keep_retype",
+     "note": ""
+    },
+    {
+     "old": "gpa",
+     "old_type": "decimal",
+     "old_null": true,
+     "new": "gpa",
+     "new_type": "decimal",
+     "new_null": true,
+     "action": "keep",
+     "note": ""
+    },
+    {
+     "old": "user_id",
+     "old_type": "int",
+     "old_null": true,
+     "new": "user_id",
+     "new_type": "int",
+     "new_null": false,
+     "action": "keep_null",
+     "note": ""
+    }
+   ],
+   "new_only": [
+    {
+     "name": "gender",
+     "type": "varchar",
+     "nullable": true,
+     "pos": 5,
+     "insert_risk": false
+    },
+    {
+     "name": "birthday",
+     "type": "date",
+     "nullable": true,
+     "pos": 6,
+     "insert_risk": false
+    },
+    {
+     "name": "email",
+     "type": "varchar",
+     "nullable": false,
+     "pos": 7,
+     "insert_risk": true
+    },
+    {
+     "name": "phone",
+     "type": "varchar",
+     "nullable": true,
+     "pos": 8,
+     "insert_risk": false
+    },
+    {
+     "name": "major",
+     "type": "varchar",
+     "nullable": true,
+     "pos": 9,
+     "insert_risk": false
+    },
+    {
+     "name": "university",
+     "type": "varchar",
+     "nullable": true,
+     "pos": 10,
+     "insert_risk": false
+    },
+    {
+     "name": "bio",
+     "type": "text",
+     "nullable": true,
+     "pos": 11,
+     "insert_risk": false
+    },
+    {
+     "name": "avatar_url",
+     "type": "varchar",
+     "nullable": true,
+     "pos": 12,
+     "insert_risk": false
+    },
+    {
+     "name": "enrollment_year",
+     "type": "int",
+     "nullable": true,
+     "pos": 13,
+     "insert_risk": false
+    },
+    {
+     "name": "expected_graduation",
+     "type": "date",
+     "nullable": true,
+     "pos": 14,
+     "insert_risk": false
+    },
+    {
+     "name": "gaokao_score",
+     "type": "int",
+     "nullable": true,
+     "pos": 16,
+     "insert_risk": false
+    },
+    {
+     "name": "current_location",
+     "type": "varchar",
+     "nullable": true,
+     "pos": 18,
+     "insert_risk": false
+    },
+    {
+     "name": "desired_location",
+     "type": "varchar",
+     "nullable": true,
+     "pos": 19,
+     "insert_risk": false
+    },
+    {
+     "name": "desired_industry_id",
+     "type": "int",
+     "nullable": true,
+     "pos": 20,
+     "insert_risk": false
+    }
+   ]
+  },
+  "skills": {
+   "new_table": "skill_library",
+   "old_count": 4,
+   "new_count": 4,
+   "cols": [
+    {
+     "old": "skill_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": "skill_id",
+     "new_type": "int",
+     "new_null": false,
+     "action": "keep",
+     "note": ""
+    },
+    {
+     "old": "skill_name",
+     "old_type": "nvarchar",
+     "old_null": false,
+     "new": "skill_name",
+     "new_type": "varchar",
+     "new_null": false,
+     "action": "keep",
+     "note": ""
+    },
+    {
+     "old": "skill_category",
+     "old_type": "nvarchar",
+     "old_null": true,
+     "new": "skill_category",
+     "new_type": "varchar",
+     "new_null": true,
+     "action": "keep",
+     "note": ""
+    },
+    {
+     "old": "skill_description",
+     "old_type": "nvarchar",
+     "old_null": true,
+     "new": "description",
+     "new_type": "text",
+     "new_null": true,
+     "action": "rename",
+     "note": "同类型候选"
+    }
+   ],
+   "new_only": []
+  },
+  "holland_tests": {
+   "new_table": "holland_assessment",
+   "old_count": 9,
+   "new_count": 9,
+   "cols": [
+    {
+     "old": "holland_test_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": "holland_id",
+     "new_type": "int",
+     "new_null": false,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "student_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": "student_id",
+     "new_type": "int",
+     "new_null": false,
+     "action": "keep",
+     "note": ""
+    },
+    {
+     "old": "holland_R",
+     "old_type": "tinyint",
+     "old_null": false,
+     "new": "r_score",
+     "new_type": "int",
+     "new_null": false,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "holland_I",
+     "old_type": "tinyint",
+     "old_null": false,
+     "new": "i_score",
+     "new_type": "int",
+     "new_null": false,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "holland_A",
+     "old_type": "tinyint",
+     "old_null": false,
+     "new": "a_score",
+     "new_type": "int",
+     "new_null": false,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "holland_S",
+     "old_type": "tinyint",
+     "old_null": false,
+     "new": "s_score",
+     "new_type": "int",
+     "new_null": false,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "holland_E",
+     "old_type": "tinyint",
+     "old_null": false,
+     "new": "e_score",
+     "new_type": "int",
+     "new_null": false,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "holland_C",
+     "old_type": "tinyint",
+     "old_null": false,
+     "new": "c_score",
+     "new_type": "int",
+     "new_null": false,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "holland_test_time",
+     "old_type": "datetime",
+     "old_null": false,
+     "new": "test_time",
+     "new_type": "datetime",
+     "new_null": false,
+     "action": "rename",
+     "note": "同类型候选"
+    }
+   ],
+   "new_only": []
+  },
+  "work_values": {
+   "new_table": "value_assessment",
+   "old_count": 9,
+   "new_count": 3,
+   "cols": [
+    {
+     "old": "worth_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": "value_assess_id",
+     "new_type": "int",
+     "new_null": false,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "student_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": "student_id",
+     "new_type": "int",
+     "new_null": false,
+     "action": "keep",
+     "note": ""
+    },
+    {
+     "old": "social_contribution",
+     "old_type": "tinyint",
+     "old_null": false,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "achievement_oriented",
+     "old_type": "tinyint",
+     "old_null": false,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "safe_stable",
+     "old_type": "tinyint",
+     "old_null": false,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "work_life_balance",
+     "old_type": "tinyint",
+     "old_null": false,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "power_status",
+     "old_type": "tinyint",
+     "old_null": false,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "innovation_challenge",
+     "old_type": "tinyint",
+     "old_null": false,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "worth_test_time",
+     "old_type": "datetime",
+     "old_null": false,
+     "new": "test_time",
+     "new_type": "datetime",
+     "new_null": false,
+     "action": "rename",
+     "note": "同类型候选"
+    }
+   ],
+   "new_only": []
+  },
+  "jobs": {
+   "new_table": "job_library",
+   "old_count": 5,
+   "new_count": 7,
+   "cols": [
+    {
+     "old": "job_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": "job_id",
+     "new_type": "int",
+     "new_null": false,
+     "action": "keep",
+     "note": ""
+    },
+    {
+     "old": "company_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": "industry_id",
+     "new_type": "int",
+     "new_null": true,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "job_title",
+     "old_type": "nvarchar",
+     "old_null": false,
+     "new": "job_title",
+     "new_type": "varchar",
+     "new_null": false,
+     "action": "keep",
+     "note": ""
+    },
+    {
+     "old": "job_type",
+     "old_type": "nvarchar",
+     "old_null": true,
+     "new": "job_type",
+     "new_type": "varchar",
+     "new_null": true,
+     "action": "keep",
+     "note": ""
+    },
+    {
+     "old": "salary_range",
+     "old_type": "nvarchar",
+     "old_null": true,
+     "new": "education_requirement",
+     "new_type": "varchar",
+     "new_null": true,
+     "action": "rename",
+     "note": "同类型候选"
+    }
+   ],
+   "new_only": [
+    {
+     "name": "holland_code",
+     "type": "char",
+     "nullable": true,
+     "pos": 6,
+     "insert_risk": false
+    },
+    {
+     "name": "job_description",
+     "type": "text",
+     "nullable": true,
+     "pos": 7,
+     "insert_risk": false
+    }
+   ]
+  },
+  "job_skill_requirements": {
+   "new_table": "job_skill_requirement",
+   "old_count": 5,
+   "new_count": 4,
+   "cols": [
+    {
+     "old": "requirement_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": "requirement_id",
+     "new_type": "int",
+     "new_null": false,
+     "action": "keep",
+     "note": ""
+    },
+    {
+     "old": "job_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": "job_id",
+     "new_type": "int",
+     "new_null": false,
+     "action": "keep",
+     "note": ""
+    },
+    {
+     "old": "skill_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": "skill_id",
+     "new_type": "int",
+     "new_null": false,
+     "action": "keep",
+     "note": ""
+    },
+    {
+     "old": "required_level",
+     "old_type": "tinyint",
+     "old_null": true,
+     "new": "required_level",
+     "new_type": "varchar",
+     "new_null": false,
+     "action": "keep_retype",
+     "note": ""
+    },
+    {
+     "old": "requirement_type",
+     "old_type": "nvarchar",
+     "old_null": true,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    }
+   ],
+   "new_only": []
+  },
+  "matching_results": {
+   "new_table": "job_match",
+   "old_count": 4,
+   "new_count": 5,
+   "cols": [
+    {
+     "old": "match_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": "match_id",
+     "new_type": "int",
+     "new_null": false,
+     "action": "keep",
+     "note": ""
+    },
+    {
+     "old": "student_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": "student_id",
+     "new_type": "int",
+     "new_null": false,
+     "action": "keep",
+     "note": ""
+    },
+    {
+     "old": "job_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": "job_id",
+     "new_type": "int",
+     "new_null": false,
+     "action": "keep",
+     "note": ""
+    },
+    {
+     "old": "match_score",
+     "old_type": "decimal",
+     "old_null": true,
+     "new": "match_score",
+     "new_type": "decimal",
+     "new_null": false,
+     "action": "keep_null",
+     "note": ""
+    }
+   ],
+   "new_only": [
+    {
+     "name": "match_time",
+     "type": "datetime",
+     "nullable": false,
+     "pos": 5,
+     "insert_risk": false
+    }
+   ]
+  },
+  "week_plans": {
+   "new_table": "weekly_task",
+   "old_count": 6,
+   "new_count": 10,
+   "cols": [
+    {
+     "old": "week_plan_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": "weekly_task_id",
+     "new_type": "int",
+     "new_null": false,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "week_plan_name",
+     "old_type": "nvarchar",
+     "old_null": false,
+     "new": "weekly_task_name",
+     "new_type": "varchar",
+     "new_null": false,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "week_plan_start",
+     "old_type": "datetime",
+     "old_null": false,
+     "new": "start_time",
+     "new_type": "datetime",
+     "new_null": true,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "week_plan_ddl",
+     "old_type": "datetime",
+     "old_null": false,
+     "new": "end_time",
+     "new_type": "datetime",
+     "new_null": true,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "week_plan_finish",
+     "old_type": "tinyint",
+     "old_null": false,
+     "new": "student_id",
+     "new_type": "int",
+     "new_null": false,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "student_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": "student_id",
+     "new_type": "int",
+     "new_null": false,
+     "action": "keep",
+     "note": ""
+    }
+   ],
+   "new_only": [
+    {
+     "name": "priority",
+     "type": "varchar",
+     "nullable": true,
+     "pos": 6,
+     "insert_risk": false
+    },
+    {
+     "name": "task_type",
+     "type": "varchar",
+     "nullable": true,
+     "pos": 7,
+     "insert_risk": false
+    },
+    {
+     "name": "completion_percentage",
+     "type": "tinyint",
+     "nullable": true,
+     "pos": 8,
+     "insert_risk": false
+    },
+    {
+     "name": "target_skill_id",
+     "type": "int",
+     "nullable": true,
+     "pos": 9,
+     "insert_risk": false
+    },
+    {
+     "name": "current_proficiency_level",
+     "type": "varchar",
+     "nullable": true,
+     "pos": 10,
+     "insert_risk": false
+    }
+   ]
+  },
+  "day_plans": {
+   "new_table": "daily_task",
+   "old_count": 7,
+   "new_count": 12,
+   "cols": [
+    {
+     "old": "day_plan_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": "daily_task_id",
+     "new_type": "int",
+     "new_null": false,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "day_plan_name",
+     "old_type": "nvarchar",
+     "old_null": false,
+     "new": "daily_task_name",
+     "new_type": "varchar",
+     "new_null": false,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "day_plan_describe",
+     "old_type": "nvarchar",
+     "old_null": true,
+     "new": "priority",
+     "new_type": "varchar",
+     "new_null": true,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "day_plan_prority",
+     "old_type": "tinyint",
+     "old_null": false,
+     "new": "weekly_task_id",
+     "new_type": "int",
+     "new_null": true,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "day_plan_ddl",
+     "old_type": "datetime",
+     "old_null": false,
+     "new": "start_time",
+     "new_type": "datetime",
+     "new_null": true,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "day_plan_finish",
+     "old_type": "tinyint",
+     "old_null": false,
+     "new": "student_id",
+     "new_type": "int",
+     "new_null": false,
+     "action": "rename",
+     "note": "同类型候选"
+    },
+    {
+     "old": "student_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": "student_id",
+     "new_type": "int",
+     "new_null": false,
+     "action": "keep",
+     "note": ""
+    }
+   ],
+   "new_only": [
+    {
+     "name": "end_time",
+     "type": "datetime",
+     "nullable": true,
+     "pos": 6,
+     "insert_risk": false
+    },
+    {
+     "name": "task_type",
+     "type": "varchar",
+     "nullable": true,
+     "pos": 8,
+     "insert_risk": false
+    },
+    {
+     "name": "task_content",
+     "type": "text",
+     "nullable": true,
+     "pos": 9,
+     "insert_risk": false
+    },
+    {
+     "name": "is_completed",
+     "type": "bit",
+     "nullable": true,
+     "pos": 10,
+     "insert_risk": false
+    },
+    {
+     "name": "target_skill_id",
+     "type": "int",
+     "nullable": true,
+     "pos": 11,
+     "insert_risk": false
+    },
+    {
+     "name": "current_proficiency_level",
+     "type": "varchar",
+     "nullable": true,
+     "pos": 12,
+     "insert_risk": false
+    }
+   ]
+  },
+  "companies": {
+   "new_table": null,
+   "old_count": 5,
+   "new_count": 0,
+   "cols": [
+    {
+     "old": "company_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "company_name",
+     "old_type": "nvarchar",
+     "old_null": false,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "company_location",
+     "old_type": "nvarchar",
+     "old_null": true,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "company_size",
+     "old_type": "nvarchar",
+     "old_null": true,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "company_description",
+     "old_type": "nvarchar",
+     "old_null": true,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    }
+   ],
+   "new_only": []
+  },
+  "student_skills": {
+   "new_table": null,
+   "old_count": 5,
+   "new_count": 0,
+   "cols": [
+    {
+     "old": "skill_record_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "student_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "skill_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "proficiency_level",
+     "old_type": "tinyint",
+     "old_null": true,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "experience_months",
+     "old_type": "int",
+     "old_null": true,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    }
+   ],
+   "new_only": []
+  },
+  "student_preferences": {
+   "new_table": null,
+   "old_count": 6,
+   "new_count": 0,
+   "cols": [
+    {
+     "old": "preference_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "student_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "preferred_industries",
+     "old_type": "nvarchar",
+     "old_null": true,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "preferred_locations",
+     "old_type": "nvarchar",
+     "old_null": true,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "expected_salary",
+     "old_type": "nvarchar",
+     "old_null": true,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "work_mode_preference",
+     "old_type": "nvarchar",
+     "old_null": true,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    }
+   ],
+   "new_only": []
+  },
+  "experiences": {
+   "new_table": null,
+   "old_count": 9,
+   "new_count": 0,
+   "cols": [
+    {
+     "old": "experience_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "student_id",
+     "old_type": "int",
+     "old_null": false,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "experience_title",
+     "old_type": "nvarchar",
+     "old_null": false,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "experience_content",
+     "old_type": "nvarchar",
+     "old_null": true,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "experience_type",
+     "old_type": "varchar",
+     "old_null": false,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "experience_role",
+     "old_type": "varchar",
+     "old_null": true,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "experience_start_time",
+     "old_type": "date",
+     "old_null": false,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "experience_end_time",
+     "old_type": "date",
+     "old_null": true,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    },
+    {
+     "old": "updated_time",
+     "old_type": "datetime",
+     "old_null": true,
+     "new": null,
+     "new_type": null,
+     "new_null": null,
+     "action": "add",
+     "note": "新库无同类型列"
+    }
+   ],
+   "new_only": []
+  }
+ },
+ "summary": {
+  "keep": 24,
+  "rename": 29,
+  "add": 35,
+  "new_only": 28
+ }
+}

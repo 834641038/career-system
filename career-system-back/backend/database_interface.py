@@ -26,7 +26,9 @@ class DatabaseInterface:
     该类支持两种数据存储方式：SQL Server数据库和内存数据（作为数据库连接失败时的后备方案）。
     """
     
-    def __init__(self, host='localhost', user='app_user', password='34rj>sh&2uio3(jk12e', database='career_recommendation'):
+    def __init__(self, host='localhost', user='app_user', password='34rj>sh&2uio3(jk12e', database='career_system_prod'):
+        # 2026-11-07 切换到数据库组交付的 career_system_prod（34 表 / 真实岗位课程数据）
+        # 原 career_recommendation 保留未动，可随时回退
         """初始化数据库接口"""
         # 如果没有安装 pyodbc，则直接使用内存样本数据
         if not _HAS_PYODBC:
@@ -1361,7 +1363,7 @@ class DatabaseInterface:
 db = DatabaseInterface()
 
 
-def get_database(host='localhost', user='app_user', password='34rj>sh&2uio3(jk12e', database='career_recommendation'):
+def get_database(host='localhost', user='app_user', password='34rj>sh&2uio3(jk12e', database='career_system_prod'):
     """
     获取数据库实例（支持连接重连）
     
