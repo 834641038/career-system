@@ -1,7 +1,7 @@
 // 技能测评题库页面 - 每个专业10道必备技能题目
 'use client'
 import { PageHeader } from '@ant-design/pro-components'
-import { Card, Button, Typography, Select, Space, Radio, Progress, Result, Modal, Alert } from 'antd'
+import { Card, Button, Typography, Select, Space, Radio, Progress, Result, Modal, Alert, message } from 'antd'
 import { 
   ExperimentOutlined, 
   CheckCircleOutlined,
@@ -12,6 +12,7 @@ import {
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ROUTES } from '@/app/lib/routes'
+import { assessmentService } from '@/lib/services/assessmentService'
 
 const { Title, Paragraph } = Typography
 const { Option } = Select
@@ -594,6 +595,15 @@ export default function SkillsAssessmentPage() {
   const handleFinish = () => {
     setCurrentStep('result')
     setShowResultModal(false)
+    // 落库：把各维度百分制得分保存到后端，失败不阻塞查看结果
+    const result = calculateScores()
+    assessmentService.saveSkills(selectedMajor, result).then(res => {
+      if (res.success) {
+        message.success('测评结果已保存')
+      } else {
+        message.warning('测评已完成，但结果未保存：' + (res.error || ''))
+      }
+    })
   }
 
   // 重新测评

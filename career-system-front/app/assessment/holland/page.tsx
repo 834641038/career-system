@@ -11,7 +11,8 @@ import {
   Space, 
   Typography, 
   Result,
-  Modal
+  Modal,
+  message
 } from 'antd'
 import { 
   LeftOutlined, 
@@ -22,6 +23,7 @@ import {
 } from '@ant-design/icons'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { ROUTES } from '@/app/lib/routes'
+import { assessmentService } from '@/lib/services/assessmentService'
 
 const { Title, Text, Paragraph } = Typography
 const { Group: RadioGroup } = Radio
@@ -245,21 +247,41 @@ export default function HollandAssessmentPage() {
     }
   }
 
+  // 把原始得分按各维度满分归一化为百分制，便于入库与展示
+  const normalizeHollandScores = (rawScores: {[key: string]: number}) => {
+    const maxByType: {[key: string]: number} = {}
+    questions.forEach(q => { maxByType[q.type] = (maxByType[q.type] || 0) + 2 })
+    const normalized: {[key: string]: number} = {}
+    Object.keys(rawScores).forEach(type => {
+      const max = maxByType[type] || 0
+      normalized[type] = max > 0 ? Math.max(0, Math.round((rawScores[type] / max) * 100)) : 0
+    })
+    return normalized
+  }
+
+  // 落库：把六维得分保存到后端（失败不影响查看结果）
+  const finishAssessment = async (result: any) => {
+    setResultData(result)
+    setShowResult(true)
+    const res = await assessmentService.saveHolland(normalizeHollandScores(result.scores))
+    if (res.success) {
+      message.success('测评结果已保存')
+    } else {
+      message.warning('测评已完成，但结果未保存：' + (res.error || ''))
+    }
+  }
+
   const handleSubmit = () => {
     if (Object.keys(answers).length < questions.length) {
       Modal.confirm({
         title: '还有未完成的题目',
         content: `您还有${questions.length - Object.keys(answers).length}道题目未作答，确定要提交吗？`,
         onOk: () => {
-          const result = calculateResult()
-          setResultData(result)
-          setShowResult(true)
+          finishAssessment(calculateResult())
         }
       })
     } else {
-      const result = calculateResult()
-      setResultData(result)
-      setShowResult(true)
+      finishAssessment(calculateResult())
     }
   }
 

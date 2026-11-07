@@ -224,3 +224,96 @@ def get_database(self, ..., database='career_system_prod')      # 原 'career_re
 - 早期 24 表 `career_system` 原型脚本 `createtable(1).sql`、`testdata.sql`（GBK）从
   `database/` 移到 `docs/db-audit/legacy/`，仅作历史留档。
 - `database/` 现在只放当前可执行脚本，并新增 `database/README.md` 说明导入顺序与回退方法。
+
+---
+
+## 九、测评结果入库（2026-11-07）
+
+**背景**：中期冒烟测试发现霍兰德 / 价值观 / 技能三个测评页是纯前端，"测评记录"页是 4 条假数据，
+结果只在浏览器内存里、刷新即丢，"测评 → 推荐 → 规划"闭环缺最前端一环。本次把三类结果接入数据库。
+
+### 9.1 表设计：为什么新建一张表
+
+| 方案 | 结论 |
+|---|---|
+| 复用 `student_skills`（同学 P0 版做法） | **不用**。P0 按"具名技能 → `skills.skill_id`"入库，而当前前端技能测评问的是 7 个能力维度（技术/思维/学习/软技能/管理/创意/行业），不是具名技能，`skill_id` 无从映射 |
+| 新建 `skill_dimension_assessments` | **采用**。七维各一列，与前端 `calculateScores()` 的输出一一对应 |
+
+表结构（`TINYINT` 存 0–100，`student_id` 关联 `students.student_id`）：
+
+```sql
+CREATE TABLE skill_dimension_assessments (
+    assessment_id INT IDENTITY(1,1) PRIMARY KEY,
+    student_id    INT NOT NULL,
+    major         NVARCHAR(120) NULL,
+    technical / thinking / learning / soft / management / creative / industry  TINYINT NULL,
+    overall       TINYINT NULL,
+    assess_time   DATETIME NOT NULL DEFAULT GETDATE()
+);
+CREATE INDEX IX_skill_dim_student ON skill_dimension_assessments(student_id, assess_time DESC);
+```
+
+脚本 `database/prod_backup/建技能维度测评表.sql`（幂等，`IF OBJECT_ID(...) IS NULL`）。
+执行后 prod 库表数 **39 → 40**。
+
+### 9.2 后端改动
+
+**`database_interface.py`（4 个新方法 + 内存初始化）**
+
+| 方法 | 作用 |
+|---|---|
+| `get_student_by_user(user_id)` | 按 `students.user_id` 查档案（该表有 `user_id` 列，可直接挂钩登录用户） |
+| `get_or_create_student_by_user(user_id, student_name)` | 无档案时插一条最小记录再回查，保证新注册用户做测评不 404 |
+| `add_skill_dimension_assessment(data)` | 写七维测评 |
+| `get_skill_dimension_by_student(student_id)` | 按 `assess_time DESC` 读历史 |
+
+**`backingend_API.py`（7 个路由，插在"职业规划保存/查询接口"注释块之前）**
+
+| 路由 | 方法 | 说明 |
+|---|---|---|
+| `/api/assessment/holland` | POST / GET | 键兼容 `realistic/investigative/...`、`R/I/A/S/E/C`、中文名 |
+| `/api/assessment/values` | POST / GET | 键为中文六维（社会贡献/成就导向/安全稳定/工作生活平衡/权力地位/创新挑战） |
+| `/api/assessment/skills` | POST / GET | 七维 + `major`，`overall` 取非零维度均值 |
+| `/api/assessment/history` | GET | 一次返回 `{holland, values, skills}`，供测评记录页 |
+
+两个内部辅助：`_assessment_student(current_user_id)`（登录用户 → 学生档案，缺则创建）、
+`_num(scores, *keys)`（多键别名取值，四舍五入并 clamp 0–100）。全部走 `@token_required`。
+
+### 9.3 前端改动
+
+| 文件 | 改动 |
+|---|---|
+| `lib/services/assessmentService.ts`（新建） | `saveHolland` / `saveValues` / `saveSkills` / `getHistory`，Bearer 取 `localStorage.token` |
+| `app/assessment/holland/page.tsx` | `handleSubmit` 两条分支收敛到 `finishAssessment()`：先展示结果再提交入库；提交前把原始分按各维满分归一化为百分制 |
+| `app/assessment/values/page.tsx` | `handleSubmit` 计算后调 `saveValues(result.scores)` |
+| `app/assessment/skills/page.tsx` | `handleFinish`（"查看详细结果"）调 `saveSkills(selectedMajor, calculateScores())` |
+| `app/assessment/history/page.tsx` | 去掉 mock 作为初始数据，改为 `getHistory()` 拉取；`buildRecordsFromApi()` 把三类记录映射成表格行（含按日期倒序、筛选沿用原逻辑）；接口异常才回退示例数据 |
+
+**降级策略**：提交失败只弹 `message.warning`，不阻塞结果页展示——测评结果本地照常可见，
+不会因为网络或 token 问题让演示流程中断。
+
+### 9.4 验证结果
+
+| 检查项 | 结果 |
+|---|---|
+| 无 token 提交 | 401 |
+| `POST /api/assessment/holland` / `values` / `skills` | 均 200，返回 `student_id=25` |
+| 三个 GET | 各 1 条 |
+| `GET /api/assessment/history` | `holland=1 / values=1 / skills=1` |
+| 直连库核对 | `holland_test_results`、`career_values`、`skill_dimension_assessments` 三表均有新增行，字段值与提交一致 |
+| 前端实测（浏览器） | 霍兰德 10 题提交 → 结果页出现"测评结果已保存"；技能 10 题 → 同样；价值观 24 题 → 同样 |
+| 测评记录页 | 刷新后显示 **5 条真实记录**（3 类齐全），平均分 88.6，不再是假数据 |
+
+### 9.5 已知限制
+
+1. `thinking / creative / industry` 三个维度在软件工程题库里没有对应题目，`calculateScores()`
+   返回 0，入库即为 0，记录页显示"0 分"。这是题库覆盖问题，不是入库缺陷。
+2. 测评记录页的 `duration`（用时）是写死的估算值（20/15/10 分钟），库表没有真实耗时字段。
+3. 霍兰德入库值已归一化为百分制（按该维度题目满分换算），因此与页面"占比百分比"数值不同——
+   库里是"该维兴趣强度"，页面显示的是"六维占比"。
+
+### 9.6 回退方法
+
+删除 7 个 `/api/assessment/*` 路由与 4 个 db 方法即可回到改动前；前端把三处提交调用注释掉，
+测评记录页恢复 `mockAssessmentRecords` 初始值。数据表可保留（不影响其他模块）。
+

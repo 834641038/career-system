@@ -12,7 +12,8 @@ import {
   Steps,
   Result,
   Modal,
-  Alert
+  Alert,
+  message
 } from 'antd'
 import { 
   LeftOutlined, 
@@ -24,6 +25,7 @@ import {
 } from '@ant-design/icons'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { ROUTES } from '@/app/lib/routes'
+import { assessmentService } from '@/lib/services/assessmentService'
 
 const { Title, Text, Paragraph } = Typography
 const { Group: RadioGroup } = Radio
@@ -251,6 +253,14 @@ export default function ValuesAssessmentPage() {
     const result = calculateResult()
     setResultData(result)
     setShowResult(true)
+    // 落库：六维分数保存到后端，失败不阻塞查看结果
+    assessmentService.saveValues(result.scores).then(res => {
+      if (res.success) {
+        message.success('测评结果已保存')
+      } else {
+        message.warning('测评已完成，但结果未保存：' + (res.error || ''))
+      }
+    })
   }
 
   // 重新测评

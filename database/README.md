@@ -1,6 +1,6 @@
 # database 目录说明
 
-当前系统使用 **`career_system_prod`** 库（34 张业务表 + 5 张扩展表）。
+当前系统使用 **`career_system_prod`** 库（34 张业务表 + 5 张扩展表 + 1 张测评扩展表 = 40 张）。
 `career_recommendation`（19 表）是早期自建方案，数据保留未删，可回退。
 
 ## 当前方案（prod_backup/）
@@ -10,8 +10,10 @@
 | `prod_backup/career_system_prod_full_20261107.sql` | 全库备份：34 表 + 10,677 行，含演示学生数据 | `sqlcmd -S localhost -E -i 本文件` |
 | `prod_backup/career_system_prod_数据库版_20261107.sql` | 同上，但学生侧 8 表清零（10,661 行），适合干净重置 | 同上 |
 | `prod_backup/补建表与授权_app_user.sql` | 授权 `app_user` 访问 prod 库，并补建本项目自有的 5 张扩展表 | 在第一条执行之后运行 |
+| `prod_backup/建技能维度测评表.sql` | 建 `skill_dimension_assessments`（技能测评七维结果入库），幂等 | 同上，排在授权脚本之后 |
 
-导入顺序固定：先 `full`（或 `数据库版`），再 `补建表与授权_app_user.sql`。两条脚本都可重复执行。
+导入顺序固定：先 `full`（或 `数据库版`），再 `补建表与授权_app_user.sql`，最后 `建技能维度测评表.sql`。
+三条脚本都可重复执行。
 
 ## 早期方案（19 表，保留可回退）
 

@@ -70,6 +70,7 @@ class DatabaseInterface:
         self.skills = {}  # 技能字典表
         self.holland_test_results = {}  # 霍兰德测试结果
         self.career_values = {}  # 职业价值观
+        self.skill_dimension_assessments = {}  # 技能维度测评
         self.experiences = {}  # 经历表
         self.day_plans = {}  # 日计划表
         self.week_plans = {}  # 周计划概要表
@@ -351,6 +352,39 @@ class DatabaseInterface:
 
     # ==================== 学生信息模块 (students 表) ====================
     
+    def get_student_by_user(self, user_id):
+        """根据登录用户ID取学生档案（students.user_id），没有则返回 None"""
+        if self.use_sqlserver:
+            result = self._execute_query(
+                "SELECT * FROM students WHERE user_id = ?", (user_id,))
+            return result[0] if result else None
+        else:
+            for stu in self.students.values():
+                if str(stu.get('user_id')) == str(user_id):
+                    return stu
+            return None
+
+    def get_or_create_student_by_user(self, user_id, student_name=None):
+        """按登录用户取学生档案，不存在时创建一条最小档案（便于测评等模块直接入库）"""
+        student = self.get_student_by_user(user_id)
+        if student:
+            return student
+        if self.use_sqlserver:
+            try:
+                self._execute_update(
+                    "INSERT INTO students (user_id, student_name) VALUES (?, ?)",
+                    (int(user_id), student_name))
+            except Exception as e:
+                print(f"创建学生档案失败：{e}")
+                return None
+            return self.get_student_by_user(user_id)
+        else:
+            student_id = str(uuid.uuid4())
+            record = {'student_id': student_id, 'user_id': user_id,
+                      'student_name': student_name}
+            self.students[student_id] = record
+            return record
+
     def get_student_by_id(self, student_id):
         """
         根据学生ID获取学生信息
@@ -657,6 +691,49 @@ class DatabaseInterface:
             values_data['value_test_time'] = values_data.get('value_test_time', datetime.now())
             self.career_values[value_id] = values_data
             return True
+
+    # ==================== 技能维度测评模块 (skill_dimension_assessments 表) ====================
+
+    def add_skill_dimension_assessment(self, data):
+        """保存一次技能维度测评（技术/思维/学习/软技能/管理/创意/行业 七维）"""
+        if self.use_sqlserver:
+            query = """
+            INSERT INTO skill_dimension_assessments
+            (student_id, major, technical, thinking, learning, soft, management,
+             creative, industry, overall, assess_time)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """
+            params = (
+                data.get('student_id'),
+                data.get('major'),
+                data.get('technical'),
+                data.get('thinking'),
+                data.get('learning'),
+                data.get('soft'),
+                data.get('management'),
+                data.get('creative'),
+                data.get('industry'),
+                data.get('overall'),
+                data.get('assess_time', datetime.now())
+            )
+            return self._execute_update(query, params) > 0
+        else:
+            record_id = str(uuid.uuid4())
+            data['assessment_id'] = record_id
+            data['assess_time'] = data.get('assess_time', datetime.now())
+            self.skill_dimension_assessments[record_id] = data
+            return True
+
+    def get_skill_dimension_by_student(self, student_id):
+        """取学生的技能维度测评历史（按时间倒序）"""
+        if self.use_sqlserver:
+            query = ("SELECT * FROM skill_dimension_assessments "
+                     "WHERE student_id = ? ORDER BY assess_time DESC")
+            return self._execute_query(query, (student_id,))
+        else:
+            results = [v for v in self.skill_dimension_assessments.values()
+                       if str(v.get('student_id')) == str(student_id)]
+            return sorted(results, key=lambda x: x.get('assess_time', ''), reverse=True)
 
     # ==================== 经历模块 (experiences 表) ====================
     

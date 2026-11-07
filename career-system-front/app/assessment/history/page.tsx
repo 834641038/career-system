@@ -34,6 +34,7 @@ import {
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import type { ColumnsType } from 'antd/es/table';
+import { assessmentService } from '@/lib/services/assessmentService';
 
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
@@ -105,15 +106,105 @@ const mockAssessmentRecords: AssessmentRecord[] = [
   }
 ];
 
+// 把后端三类测评记录转成表格行（holland / values / skills）
+const buildRecordsFromApi = (data: any): AssessmentRecord[] => {
+  const records: AssessmentRecord[] = [];
+  const fmt = (t: any) => (t ? dayjs(t).format('YYYY-MM-DD') : dayjs().format('YYYY-MM-DD'));
+  const avg = (nums: number[]) => {
+    const valid = nums.filter(n => typeof n === 'number' && n > 0);
+    return valid.length ? Math.round(valid.reduce((a, b) => a + b, 0) / valid.length) : 0;
+  };
+
+  (data?.holland || []).forEach((row: any) => {
+    const dims = [
+      { key: '现实型(R)', v: row.holland_R },
+      { key: '研究型(I)', v: row.holland_I },
+      { key: '艺术型(A)', v: row.holland_A },
+      { key: '社会型(S)', v: row.holland_S },
+      { key: '企业型(E)', v: row.holland_E },
+      { key: '常规型(C)', v: row.holland_C },
+    ].sort((a, b) => (b.v || 0) - (a.v || 0));
+    records.push({
+      id: 'HO' + String(row.holland_test_id).padStart(4, '0'),
+      title: '霍兰德职业兴趣测评',
+      type: '兴趣测评',
+      date: fmt(row.holland_test_time),
+      score: avg(dims.map(d => Number(d.v) || 0) ),
+      duration: '20分钟',
+      status: 'completed',
+      category: '职业发展',
+      description: `六维得分：${dims.map(d => `${d.key}${d.v || 0}`).join(' / ')}`,
+      recommendations: dims.slice(0, 2).map(d => `推荐关注${d.key.replace(/\(.\)/, '')}相关岗位`),
+    });
+  });
+
+  (data?.values || []).forEach((row: any) => {
+    const dims = [
+      { key: '社会贡献', v: row.social_contribution },
+      { key: '成就导向', v: row.achievement_oriented },
+      { key: '安全稳定', v: row.safe_stable },
+      { key: '工作生活平衡', v: row.work_life_balance },
+      { key: '权力地位', v: row.power_status },
+      { key: '创新挑战', v: row.innovation_challenge },
+    ].sort((a, b) => (b.v || 0) - (a.v || 0));
+    records.push({
+      id: 'VA' + String(row.value_id).padStart(4, '0'),
+      title: '职业价值观测评',
+      type: '价值观测评',
+      date: fmt(row.value_test_time),
+      score: avg(dims.map(d => Number(d.v) || 0)),
+      duration: '15分钟',
+      status: 'completed',
+      category: '职业规划',
+      description: `最看重：${dims[0]?.key || '-'}（${dims[0]?.v || 0}分）`,
+      recommendations: dims.slice(0, 2).map(d => `${d.key}倾向明显，可优先考虑匹配该特质的岗位`),
+    });
+  });
+
+  (data?.skills || []).forEach((row: any) => {
+    records.push({
+      id: 'SK' + String(row.assessment_id).padStart(4, '0'),
+      title: '技能维度测评',
+      type: '技能测评',
+      date: fmt(row.assess_time),
+      score: Number(row.overall) || 0,
+      duration: '10分钟',
+      status: 'completed',
+      category: '专业技能',
+      description: `专业技术 ${row.technical || 0} / 思维能力 ${row.thinking || 0} / 学习能力 ${row.learning || 0} / 软技能 ${row.soft || 0}`,
+      recommendations: [],
+    });
+  });
+
+  // 按日期倒序
+  return records.sort((a, b) => (a.date < b.date ? 1 : -1));
+};
+
 export default function AssessmentHistoryPage() {
-  const [records, setRecords] = useState<AssessmentRecord[]>(mockAssessmentRecords);
-  const [filteredRecords, setFilteredRecords] = useState<AssessmentRecord[]>(mockAssessmentRecords);
+  const [records, setRecords] = useState<AssessmentRecord[]>([]);
+  const [filteredRecords, setFilteredRecords] = useState<AssessmentRecord[]>([]);
   const [searchText, setSearchText] = useState('');
   const [typeFilter, setTypeFilter] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<string>('');
   const [dateRange, setDateRange] = useState<[dayjs.Dayjs, dayjs.Dayjs] | null>(null);
   const [selectedRecord, setSelectedRecord] = useState<AssessmentRecord | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  // 从后端加载真实测评记录；接口异常时回退到示例数据
+  useEffect(() => {
+    let mounted = true
+    assessmentService.getHistory().then(res => {
+      if (!mounted) return
+      if (res.success) {
+        setRecords(buildRecordsFromApi(res.data))
+      } else {
+        setRecords(mockAssessmentRecords)
+      }
+    }).catch(() => {
+      if (mounted) setRecords(mockAssessmentRecords)
+    })
+    return () => { mounted = false }
+  }, [])
 
   // 统计数据
   const completedCount = records.filter(r => r.status === 'completed').length;

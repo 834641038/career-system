@@ -935,6 +935,169 @@ if FLASK_AVAILABLE:
             logger.error(f"Social login error: {str(e)}")
             return jsonify({'success': False, 'message': str(e)}), 500
 
+    # ==================== 职业测评入库接口（霍兰德 / 价值观 / 技能） ====================
+
+    def _assessment_student(current_user_id):
+        """取当前登录用户的学生档案，没有就按用户信息创建一条，保证测评能落库"""
+        user = db.get_user_by_id(current_user_id) or {}
+        return db.get_or_create_student_by_user(current_user_id, user.get('user_name'))
+
+    def _num(scores, *keys):
+        """从测评结果里按给定键取数值（负数归零、上限 100）"""
+        for key in keys:
+            if key in scores:
+                try:
+                    return max(0, min(100, int(round(float(scores[key])))))
+                except (TypeError, ValueError):
+                    return 0
+        return 0
+
+    @app.route('/api/assessment/holland', methods=['POST'])
+    @token_required
+    def submit_holland(current_user_id):
+        """保存霍兰德职业兴趣测评（六维：现实/研究/艺术/社会/企业/常规）"""
+        try:
+            stu = _assessment_student(current_user_id)
+            if not stu:
+                return jsonify({'success': False, 'error': '无法创建学生档案'}), 500
+            data = request.json or {}
+            scores = data.get('scores') or data
+            payload = {
+                'student_id': stu['student_id'],
+                'holland_R': _num(scores, 'realistic', 'R', '现实型'),
+                'holland_I': _num(scores, 'investigative', 'I', '研究型'),
+                'holland_A': _num(scores, 'artistic', 'A', '艺术型'),
+                'holland_S': _num(scores, 'social', 'S', '社会型'),
+                'holland_E': _num(scores, 'enterprising', 'E', '企业型'),
+                'holland_C': _num(scores, 'conventional', 'C', '常规型'),
+            }
+            ok = db.add_holland_test(payload)
+            return jsonify({'success': bool(ok), 'student_id': stu['student_id'],
+                            'message': '霍兰德测评结果已保存'})
+        except Exception as e:
+            logger.error(f"Holland submit error: {str(e)}")
+            return jsonify({'success': False, 'error': str(e)}), 500
+
+    @app.route('/api/assessment/holland', methods=['GET'])
+    @token_required
+    def get_holland_history(current_user_id):
+        """读取当前用户的霍兰德测评历史"""
+        try:
+            stu = _assessment_student(current_user_id)
+            if not stu:
+                return jsonify({'success': True, 'data': []})
+            return jsonify({'success': True, 'data': db.get_holland_test_by_student(stu['student_id']) or []})
+        except Exception as e:
+            logger.error(f"Holland history error: {str(e)}")
+            return jsonify({'success': False, 'error': str(e)}), 500
+
+    @app.route('/api/assessment/values', methods=['POST'])
+    @token_required
+    def submit_values(current_user_id):
+        """保存职业价值观测评（六维）"""
+        try:
+            stu = _assessment_student(current_user_id)
+            if not stu:
+                return jsonify({'success': False, 'error': '无法创建学生档案'}), 500
+            data = request.json or {}
+            scores = data.get('scores') or data
+            payload = {
+                'student_id': stu['student_id'],
+                'social_contribution': _num(scores, '社会贡献', 'social_contribution'),
+                'achievement_oriented': _num(scores, '成就导向', 'achievement_oriented'),
+                'safe_stable': _num(scores, '安全稳定', 'safe_stable'),
+                'work_life_balance': _num(scores, '工作生活平衡', 'work_life_balance'),
+                'power_status': _num(scores, '权力地位', 'power_status'),
+                'innovation_challenge': _num(scores, '创新挑战', 'innovation_challenge'),
+            }
+            ok = db.add_career_values(payload)
+            return jsonify({'success': bool(ok), 'student_id': stu['student_id'],
+                            'message': '职业价值观测评结果已保存'})
+        except Exception as e:
+            logger.error(f"Values submit error: {str(e)}")
+            return jsonify({'success': False, 'error': str(e)}), 500
+
+    @app.route('/api/assessment/values', methods=['GET'])
+    @token_required
+    def get_values_history(current_user_id):
+        """读取当前用户的价值观测评历史"""
+        try:
+            stu = _assessment_student(current_user_id)
+            if not stu:
+                return jsonify({'success': True, 'data': []})
+            return jsonify({'success': True, 'data': db.get_career_values_by_student(stu['student_id']) or []})
+        except Exception as e:
+            logger.error(f"Values history error: {str(e)}")
+            return jsonify({'success': False, 'error': str(e)}), 500
+
+    @app.route('/api/assessment/skills', methods=['POST'])
+    @token_required
+    def submit_skills(current_user_id):
+        """保存技能维度测评（技术/思维/学习/软技能/管理/创意/行业）"""
+        try:
+            stu = _assessment_student(current_user_id)
+            if not stu:
+                return jsonify({'success': False, 'error': '无法创建学生档案'}), 500
+            data = request.json or {}
+            scores = data.get('scores') or {}
+            values = [_num(scores, k) for k in
+                      ('technical', 'thinking', 'learning', 'soft', 'management', 'creative', 'industry')]
+            present = [v for v in values if v > 0]
+            payload = {
+                'student_id': stu['student_id'],
+                'major': data.get('major'),
+                'technical': values[0],
+                'thinking': values[1],
+                'learning': values[2],
+                'soft': values[3],
+                'management': values[4],
+                'creative': values[5],
+                'industry': values[6],
+                'overall': int(round(sum(present) / len(present))) if present else 0,
+            }
+            ok = db.add_skill_dimension_assessment(payload)
+            return jsonify({'success': bool(ok), 'student_id': stu['student_id'],
+                            'message': '技能测评结果已保存'})
+        except Exception as e:
+            logger.error(f"Skills submit error: {str(e)}")
+            return jsonify({'success': False, 'error': str(e)}), 500
+
+    @app.route('/api/assessment/skills', methods=['GET'])
+    @token_required
+    def get_skills_history(current_user_id):
+        """读取当前用户的技能维度测评历史"""
+        try:
+            stu = _assessment_student(current_user_id)
+            if not stu:
+                return jsonify({'success': True, 'data': []})
+            return jsonify({'success': True, 'data': db.get_skill_dimension_by_student(stu['student_id']) or []})
+        except Exception as e:
+            logger.error(f"Skills history error: {str(e)}")
+            return jsonify({'success': False, 'error': str(e)}), 500
+
+    @app.route('/api/assessment/history', methods=['GET'])
+    @token_required
+    def get_assessment_history(current_user_id):
+        """一次性返回三类测评记录，供测评记录页展示"""
+        try:
+            stu = _assessment_student(current_user_id)
+            if not stu:
+                return jsonify({'success': True, 'data': {'holland': [], 'values': [], 'skills': []},
+                                'student_id': None})
+            sid = stu['student_id']
+            return jsonify({
+                'success': True,
+                'student_id': sid,
+                'data': {
+                    'holland': db.get_holland_test_by_student(sid) or [],
+                    'values': db.get_career_values_by_student(sid) or [],
+                    'skills': db.get_skill_dimension_by_student(sid) or []
+                }
+            })
+        except Exception as e:
+            logger.error(f"Assessment history error: {str(e)}")
+            return jsonify({'success': False, 'error': str(e)}), 500
+
     # ==================== 职业规划保存/查询接口 ====================
 
     @app.route('/api/career-plans', methods=['GET'])
