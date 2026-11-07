@@ -29,7 +29,16 @@ const { Title, Text } = Typography
 const { TextArea } = Input
 const { Option } = Select
 
+import LoginRequired, { useLoginGuard } from '@/app/components/LoginRequired'
+
 export default function EditProfilePage() {
+  const { checked, needLogin } = useLoginGuard()
+  if (!checked) return null
+  if (needLogin) return <LoginRequired pageName="个人资料编辑" />
+  return <EditProfilePageInner />
+}
+
+function EditProfilePageInner() {
   const router = useRouter()
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)

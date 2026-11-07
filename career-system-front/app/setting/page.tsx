@@ -31,7 +31,16 @@ import { useRouter } from 'next/navigation'; // 确保从正确的路径导入
 
 const { Title, Text } = Typography;
 
+import LoginRequired, { useLoginGuard } from '@/app/components/LoginRequired'
+
 export default function SettingsPage() {
+  const { checked, needLogin } = useLoginGuard()
+  if (!checked) return null
+  if (needLogin) return <LoginRequired pageName="账号设置" />
+  return <SettingsPageInner />
+}
+
+function SettingsPageInner() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [changePasswordModal, setChangePasswordModal] = useState(false);

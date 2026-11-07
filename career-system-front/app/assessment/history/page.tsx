@@ -180,7 +180,16 @@ const buildRecordsFromApi = (data: any): AssessmentRecord[] => {
   return records.sort((a, b) => (a.date < b.date ? 1 : -1));
 };
 
+import LoginRequired, { useLoginGuard } from '@/app/components/LoginRequired'
+
 export default function AssessmentHistoryPage() {
+  const { checked, needLogin } = useLoginGuard()
+  if (!checked) return null
+  if (needLogin) return <LoginRequired pageName="测评记录" />
+  return <AssessmentHistoryPageInner />
+}
+
+function AssessmentHistoryPageInner() {
   const [records, setRecords] = useState<AssessmentRecord[]>([]);
   const [filteredRecords, setFilteredRecords] = useState<AssessmentRecord[]>([]);
   const [searchText, setSearchText] = useState('');

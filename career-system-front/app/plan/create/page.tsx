@@ -59,7 +59,16 @@ interface GeneratedPlan {
   plan_phases: PlanPhase[]
 }
 
+import LoginRequired, { useLoginGuard } from '@/app/components/LoginRequired'
+
 export default function CreatePlanPage() {
+  const { checked, needLogin } = useLoginGuard()
+  if (!checked) return null
+  if (needLogin) return <LoginRequired pageName="创建规划" />
+  return <CreatePlanPageInner />
+}
+
+function CreatePlanPageInner() {
   const router = useRouter()
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)

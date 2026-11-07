@@ -34,7 +34,16 @@ import dayjs from 'dayjs'
 
 const { Title, Text, Paragraph } = Typography
 
+import LoginRequired, { useLoginGuard } from '@/app/components/LoginRequired'
+
 export default function ResumePreviewPage() {
+  const { checked, needLogin } = useLoginGuard()
+  if (!checked) return null
+  if (needLogin) return <LoginRequired pageName="简历预览" />
+  return <ResumePreviewPageInner />
+}
+
+function ResumePreviewPageInner() {
   const router = useRouter()
   const [resumeData, setResumeData] = useState<ResumeData | null>(null)
   const [loading, setLoading] = useState(true)

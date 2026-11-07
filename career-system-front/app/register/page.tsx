@@ -38,9 +38,9 @@ export default function RegisterPage() {
       })
       
       if (result.success) {
-        message.success('注册成功！')
-        // 注册成功后跳转到登录页面
-        router.push('/login')
+        message.success(`注册成功！请使用姓名「${values.name}」登录`)
+        // 注册成功后跳转到登录页面，并把刚注册的账号名带过去预填
+        router.push(`/login?prefill=${encodeURIComponent(values.name)}`)
       } else {
         message.error(result.message || '注册失败')
       }

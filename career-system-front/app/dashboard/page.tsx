@@ -61,7 +61,16 @@ interface Task {
   estimatedDuration?: number;
 }
 
+import LoginRequired, { useLoginGuard } from '@/app/components/LoginRequired'
+
 export default function DashboardPage() {
+  const { checked, needLogin } = useLoginGuard()
+  if (!checked) return null
+  if (needLogin) return <LoginRequired pageName="个人仪表盘" />
+  return <DashboardPageInner />
+}
+
+function DashboardPageInner() {
   const [loading, setLoading] = useState(true)
   const [selectedTask, setSelectedTask] = useState<Task | null>(null)
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)

@@ -108,7 +108,16 @@ const mockAssessmentDetails: {[key: string]: any} = {
   }
 }
 
+import LoginRequired, { useLoginGuard } from '@/app/components/LoginRequired'
+
 export default function AssessmentHistoryDetailPage() {
+  const { checked, needLogin } = useLoginGuard()
+  if (!checked) return null
+  if (needLogin) return <LoginRequired pageName="测评详情" />
+  return <AssessmentHistoryDetailPageInner />
+}
+
+function AssessmentHistoryDetailPageInner() {
   const router = useRouter()
   const params = useParams()
   const id = params.id as string

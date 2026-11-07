@@ -48,7 +48,16 @@ interface QuickQuestion {
   color: string
 }
 
+import LoginRequired, { useLoginGuard } from '@/app/components/LoginRequired'
+
 export default function AIAdvisorPage() {
+  const { checked, needLogin } = useLoginGuard()
+  if (!checked) return null
+  if (needLogin) return <LoginRequired pageName="AI 顾问" />
+  return <AIAdvisorPageInner />
+}
+
+function AIAdvisorPageInner() {
   const router = useRouter()
   const [messages, setMessages] = useState<Message[]>([])
   const [inputValue, setInputValue] = useState('')

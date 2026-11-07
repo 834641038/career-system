@@ -45,7 +45,16 @@ import styles from './career.module.css'
 
 const { Title, Paragraph } = Typography
 
+import LoginRequired, { useLoginGuard } from '@/app/components/LoginRequired'
+
 export default function CareerPage() {
+  const { checked, needLogin } = useLoginGuard()
+  if (!checked) return null
+  if (needLogin) return <LoginRequired pageName="职业探索结果" />
+  return <CareerPageInner />
+}
+
+function CareerPageInner() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [careerPaths, setCareerPaths] = useState<any[]>([])

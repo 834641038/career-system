@@ -139,7 +139,16 @@ const DEFAULT_USER_DATA: UserData = {
   ]
 };
 
+import LoginRequired, { useLoginGuard } from '@/app/components/LoginRequired'
+
 export default function ProfilePage() {
+  const { checked, needLogin } = useLoginGuard()
+  if (!checked) return null
+  if (needLogin) return <LoginRequired pageName="个人中心" />
+  return <ProfilePageInner />
+}
+
+function ProfilePageInner() {
   const router = useRouter()
 
   // 从localStorage获取用户数据，如果没有则使用默认数据（SSR 阶段无法访问 localStorage，须在 useEffect 中读取）

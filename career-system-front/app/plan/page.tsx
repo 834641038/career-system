@@ -50,7 +50,16 @@ const { Title, Paragraph } = Typography
 const { Option } = Select
 
 
+import LoginRequired, { useLoginGuard } from '@/app/components/LoginRequired'
+
 export default function PlanPage() {
+  const { checked, needLogin } = useLoginGuard()
+  if (!checked) return null
+  if (needLogin) return <LoginRequired pageName="生涯规划" />
+  return <PlanPageInner />
+}
+
+function PlanPageInner() {
   const router = useRouter()
   const [filterStatus, setFilterStatus] = useState<string>('all')
   const [filterPriority, setFilterPriority] = useState<string>('all')
@@ -468,7 +477,7 @@ export default function PlanPage() {
       {/* 提醒通知栏 */}
       {alertInfo.totalCount > 0 && (
         <Alert
-          message={
+          title={
             <div>
               <Space>
                 {alertInfo.overduePlans.length > 0 && (

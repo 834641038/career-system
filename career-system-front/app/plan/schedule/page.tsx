@@ -44,7 +44,16 @@ const getPriorityText = (priority: string) => {
   }
 }
 
+import LoginRequired, { useLoginGuard } from '@/app/components/LoginRequired'
+
 export default function SchedulePage() {
+  const { checked, needLogin } = useLoginGuard()
+  if (!checked) return null
+  if (needLogin) return <LoginRequired pageName="日程安排" />
+  return <SchedulePageInner />
+}
+
+function SchedulePageInner() {
   const [activeView, setActiveView] = useState<'day' | 'week'>('day')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null) // 添加错误状态

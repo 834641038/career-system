@@ -9,13 +9,14 @@ import {
   Card, 
   Typography, 
   message, 
-  Checkbox
+  Checkbox,
+  Alert
 } from 'antd'
 import { 
   LockOutlined, 
   MailOutlined
 } from '@ant-design/icons'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { authService } from '@/app/services/authService'
 
@@ -25,6 +26,9 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [rememberMe, setRememberMe] = useState(false)
   const router = useRouter()
+  const searchParams = useSearchParams()
+  // 从注册页跳转过来时，把刚注册的账号名带过来预填
+  const prefill = searchParams.get('prefill') || ''
 
   const onLoginFinish = async (values: any) => {
     setLoading(true)
@@ -61,12 +65,22 @@ export default function LoginPage() {
             <Title level={2}>欢迎回来</Title>
             <Text type="secondary">登录你的生涯规划账户</Text>
           </div>
+
+          {prefill && (
+            <Alert
+              type="success"
+              showIcon
+              style={{ marginBottom: 16, textAlign: 'left' }}
+              title={`注册成功，请使用账号「${prefill}」登录`}
+            />
+          )}
           
           <Form
             name="login"
             onFinish={onLoginFinish}
             layout="vertical"
             size="large"
+            initialValues={{ email: prefill }}
           >
             <Form.Item
               name="email"

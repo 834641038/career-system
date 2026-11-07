@@ -79,6 +79,19 @@
   margin-left: 16px;
 }
 
+.welcomeText {
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.3s;
+}
+
+.welcomeText:hover {
+  color: #1890ff;
+}
+
 .loginBtn {
   color: rgba(0, 0, 0, 0.85);
   transition: color 0.3s;

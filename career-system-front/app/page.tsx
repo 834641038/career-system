@@ -20,12 +20,14 @@ import {
 import { useRouter } from 'next/navigation'
 import styles from './page.module.css'
 import Link from 'next/link'
+import { useAuthState } from '@/app/lib/useAuthState'
 
 const { Title, Paragraph } = Typography
 const { Header, Content, Footer } = Layout
 
 export default function Home() {
   const router = useRouter()
+  const { user, checked, isAuthenticated } = useAuthState()
   
   // 核心三端闭环
   const coreFeatures = [
@@ -146,20 +148,32 @@ export default function Home() {
             <Link href="/about" className={styles.navLink}>关于</Link>
             
             <div className={styles.authButtons}>
-              <Button 
-                type="link" 
-                className={styles.loginBtn}
-                onClick={() => router.push('/login')}
-              >
-                登录
-              </Button>
-              <Button 
-                type="primary" 
-                className={styles.registerBtn}
-                onClick={() => router.push('/register')}
-              >
-                免费注册
-              </Button>
+              {checked && isAuthenticated && user ? (
+                <span
+                  className={styles.welcomeText}
+                  onClick={() => router.push('/profile')}
+                  title="进入个人中心"
+                >
+                  欢迎使用，{user.name}！
+                </span>
+              ) : (
+                <>
+                  <Button 
+                    type="link" 
+                    className={styles.loginBtn}
+                    onClick={() => router.push('/login')}
+                  >
+                    登录
+                  </Button>
+                  <Button 
+                    type="primary" 
+                    className={styles.registerBtn}
+                    onClick={() => router.push('/register')}
+                  >
+                    免费注册
+                  </Button>
+                </>
+              )}
             </div>
           </Space>
         </div>

@@ -57,7 +57,16 @@ import { StorageManager } from '@/lib/utils/storage';
 
 const { Title } = Typography
 
+import LoginRequired, { useLoginGuard } from '@/app/components/LoginRequired'
+
 export default function ResumeEditPage() {
+  const { checked, needLogin } = useLoginGuard()
+  if (!checked) return null
+  if (needLogin) return <LoginRequired pageName="简历编辑" />
+  return <ResumeEditPageInner />
+}
+
+function ResumeEditPageInner() {
   const router = useRouter()
   const [form] = ProForm.useForm()
   const [loading, setLoading] = useState(false)
